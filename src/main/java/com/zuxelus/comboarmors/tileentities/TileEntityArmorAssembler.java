@@ -1,5 +1,7 @@
 package com.zuxelus.comboarmors.tileentities;
 
+import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.blocks.BlockArmorAssembler;
 import com.zuxelus.comboarmors.init.ModItems;
 import com.zuxelus.comboarmors.items.IItemUpgrade;
 import com.zuxelus.comboarmors.items.IItemUpgradeable;
@@ -8,27 +10,29 @@ import com.zuxelus.comboarmors.items.armor.ItemArmorTankUtility;
 import com.zuxelus.comboarmors.recipes.ArmorAssemblerRecipes;
 import com.zuxelus.comboarmors.recipes.RecipeHandler;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.tile.IWrenchable;
-import ic2.core.Ic2Items;
 import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityArmorAssembler extends TileEntityEnergySink implements IWrenchable {
+public class TileEntityArmorAssembler extends TileEntityEnergySink implements ITickable {
 	public static final int SLOT_INPUT1 = 0;
 	public static final int SLOT_INPUT2 = 1;
 	public static final int SLOT_OUTPUT = 2;
@@ -110,18 +114,25 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 	}
 
 	@Override
-	public Packet getDescriptionPacket() {
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag = writeProperties(tag);
 		tag.setBoolean("active", active);
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+		return new SPacketUpdateTileEntity(getPos(), 0, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		if (!worldObj.isRemote)
-			return;
-		readProperties(pkt.func_148857_g());
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		readProperties(pkt.getNbtCompound());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound tag = super.getUpdateTag();
+		tag = writeProperties(tag);
+		updateActive();
+		tag.setBoolean("active", active);
+		return tag;
 	}
 
 	@Override
@@ -131,12 +142,8 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 			production = tag.getInteger("production");
 		if (tag.hasKey("productionMax"))
 			productionMax = tag.getInteger("productionMax");
-		if (tag.hasKey("active")) {
-			boolean old = active;
+		if (tag.hasKey("active"))
 			active = tag.getBoolean("active");
-			if (worldObj.isRemote && active != old)
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
 	}
 
 	@Override
@@ -154,13 +161,13 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		writeProperties(tag);
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		return writeProperties(super.writeToNBT(tag));
 	}
 
+	@Override
 	public void onLoad() {
-		if (!addedToEnet && worldObj != null && !worldObj.isRemote && Info.isIc2Available()) {
+		if (!addedToEnet && world != null && !world.isRemote && Info.isIc2Available()) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			addedToEnet = true;
 			updateActive();
@@ -168,8 +175,8 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 	}
 
 	@Override
-	public void updateEntity() {
-		if (worldObj.isRemote)
+	public void update() {
+		if (world.isRemote)
 			return;
 		onLoad();
 		handleDischarger(SLOT_DISCHARGER);
@@ -179,7 +186,7 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 			energy -= CONSUMPTION;
 			production += TIMEFACTOR;
 			ItemStack stack = getStackInSlot(SLOT_UPGRADE);
-			if (production >= productionMax || (stack != null && stack.getItem() == ModItems.creativeUpgrade)) {
+			if (production >= productionMax || (!stack.isEmpty() && stack.getItem() == ModItems.creativeUpgrade)) {
 				combineItem();
 				production = 0;
 				updateState();
@@ -192,13 +199,14 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 	}
 
 	public void notifyBlockUpdate() {
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		IBlockState iblockstate = world.getBlockState(pos);
+		world.notifyBlockUpdate(pos, iblockstate, iblockstate, 2);
 	}
 
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		if (worldObj == null || worldObj.isRemote)
+		if (world == null || world.isRemote)
 			return;
 		updateState();
 	}
@@ -217,7 +225,14 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 		updateActive();
 		if (active != old) {
 			production = 0;
-			notifyBlockUpdate();
+			IBlockState iblockstate = world.getBlockState(pos);
+			Block block = iblockstate.getBlock();
+			if (!(block instanceof BlockArmorAssembler) || iblockstate.getValue(BlockArmorAssembler.ACTIVE) == active)
+				return;
+			IBlockState newState = block.getDefaultState()
+				.withProperty(BlockArmorAssembler.FACING, iblockstate.getValue(BlockArmorAssembler.FACING))
+				.withProperty(BlockArmorAssembler.ACTIVE, active);
+			world.setBlockState(pos, newState, 3);
 			return;
 		}
 		if (oldProductionMax != productionMax)
@@ -227,13 +242,13 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 	private boolean canCombine() {
 		ItemStack input1 = getStackInSlot(SLOT_INPUT1);
 		ItemStack input2 = getStackInSlot(SLOT_INPUT2);
-		if (input1 == null || input2 == null)
+		if (input1.isEmpty() || input2.isEmpty())
 			return false;
 		ItemStack result = ArmorAssemblerRecipes.getAssemblyResult(input1, input2);
-		if (result == null)
+		if (result.isEmpty())
 			return false;
 		ItemStack output = getStackInSlot(SLOT_OUTPUT);
-		if (output == null) 
+		if (output.isEmpty()) 
 			return true;
 		/*if (!output.isItemEqual(out)) // TODO
 			return false;
@@ -243,7 +258,7 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 	}
 
 	private void combineItem() {
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			return;
 		if (!canCombine())
 			return;
@@ -270,29 +285,29 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 		} else if (this.outputSlot.get().isItemEqual(output)) {
 			this.outputSlot.get().stackSize += output.stackSize;
 		}*/
-		input1.stackSize -= 1;
-		if (input1.stackSize <= 0)
-			setInventorySlotContents(SLOT_INPUT1, null);
-		input2.stackSize -= 1;
-		if (input2.stackSize <= 0)
-			setInventorySlotContents(SLOT_INPUT2, null);
+		input1.shrink(1);
+		if (input1.getCount() <= 0)
+			setInventorySlotContents(SLOT_INPUT1, ItemStack.EMPTY);
+		input2.shrink(1);
+		if (input2.getCount() <= 0)
+			setInventorySlotContents(SLOT_INPUT2, ItemStack.EMPTY);
 	}
 
 	private void updateMaxProgress() {
 		ItemStack input1 = getStackInSlot(SLOT_INPUT1);
 		ItemStack input2 = getStackInSlot(SLOT_INPUT2);
 		ItemStack result = ArmorAssemblerRecipes.getAssemblyResult(input1, input2);
-		if (result == null) {
+		if (result.isEmpty()) {
 			productionMax = 0;
 			return;
 		}
 
 		int upgradeSlot = -1;
-		if (input1.getItem() instanceof IItemUpgrade || input1.isItemEqual(Ic2Items.overclockerUpgrade)
-				|| input1.isItemEqual(Ic2Items.energyStorageUpgrade) || input1.isItemEqual(Ic2Items.transformerUpgrade))
+		if (input1.getItem() instanceof IItemUpgrade || input1.isItemEqual(ComboArmors.ic2.getItemStack("overclockerUpgrade"))
+				|| input1.isItemEqual(ComboArmors.ic2.getItemStack("energyStorageUpgrade")) || input1.isItemEqual(ComboArmors.ic2.getItemStack("transformerUpgrade")))
 			upgradeSlot = 1;
-		if (input2.getItem() instanceof IItemUpgrade || input2.isItemEqual(Ic2Items.overclockerUpgrade)
-				|| input2.isItemEqual(Ic2Items.energyStorageUpgrade) || input2.isItemEqual(Ic2Items.transformerUpgrade))
+		if (input2.getItem() instanceof IItemUpgrade || input2.isItemEqual(ComboArmors.ic2.getItemStack("overclockerUpgrade"))
+				|| input2.isItemEqual(ComboArmors.ic2.getItemStack("energyStorageUpgrade")) || input2.isItemEqual(ComboArmors.ic2.getItemStack("transformerUpgrade")))
 			upgradeSlot = 2;
 
 		if (upgradeSlot == -1) {
@@ -317,9 +332,9 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 				int eu = ticks * TIMEFACTOR;
 				int num = 0;
 				if (upgradeSlot == 1)
-					num = input1.stackSize * modifier;
+					num = input1.getCount() * modifier;
 				if (upgradeSlot == 2)
-					num = input2.stackSize * modifier;
+					num = input2.getCount() * modifier;
 				double min = num * 1.875D;
 				double sec = min * 60.0D;
 				double tick = sec * 20.0D;
@@ -331,7 +346,7 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 
 		ItemStack upgrade = getStackInSlot(SLOT_UPGRADE);
 		if (upgrade != null && upgrade.getItem() == ModItems.overclockerUpgrade)
-			productionMax = productionMax / (upgrade.stackSize + 1);
+			productionMax = productionMax / (upgrade.getCount() + 1);
 	}
 
 	// ------- Inventory -------
@@ -363,7 +378,7 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 
 	// IEnergySink
 	@Override
-	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
 		double old = energy;
 		energy += amount;
 		double left = 0.0;
@@ -372,44 +387,13 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IW
 			left = energy - capacity;
 			energy = capacity;
 		}
-		if (energy > 0 && old == 0 && !worldObj.isRemote)
+		if (energy > 0 && old == 0 && !world.isRemote)
 			updateState();
 		return left;
 	}
 
 	@Override
-	public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
-		return oldBlock != newBlock;
-	}
-
-	// IWrenchable
-	@Override
-	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
-		return facing.ordinal() != side;
-	}
-
-	@Override
-	public short getFacing() {
-		return (short) facing.ordinal();
-	}
-
-	@Override
-	public void setFacing(short facing) {
-		setFacing((int) facing);
-	}
-
-	@Override
-	public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
-		return true;
-	}
-
-	@Override
-	public float getWrenchDropRate() {
-		return 1;
-	}
-
-	@Override
-	public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
-		return new ItemStack(ModItems.armorAssembler);
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return oldState.getBlock() != newSate.getBlock();
 	}
 }

@@ -34,7 +34,6 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 public class ItemNanoBow extends Item implements IElectricItem, IItemUpgradeable {
-	public IIcon[] icons;
 
 	public ItemNanoBow()
 	{
@@ -43,7 +42,6 @@ public class ItemNanoBow extends Item implements IElectricItem, IItemUpgradeable
 		setMaxDamage(27);
 		setFull3D();
 		setCreativeTab(ComboArmors.creativeTab);
-		icons = new IIcon[4];
 	}
 
 	@Override
@@ -93,31 +91,6 @@ public class ItemNanoBow extends Item implements IElectricItem, IItemUpgradeable
 	@Override
 	public Item getEmptyItem(ItemStack is) {
 		return this;
-	}
-
-	@Override
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-		if (usingItem != null && usingItem.getItem() == ModItems.nanoBow) {
-			NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
-			int mode = nbt.getInteger("bowMode");
-			int i1 = 18;
-			int i2 = 13;
-			if (mode == 4 || mode == 6) {
-				i1 = 36;
-				i2 = 26;
-			} else if (mode == 2) {
-				i1 = 5;
-				i2 = 3;
-			}
-			int k = usingItem.getMaxItemUseDuration() - useRemaining;
-			if (k >= i1)
-				return this.icons[3];
-			if (k > i2)
-				return this.icons[2];
-			if (k > 0)
-				return this.icons[1];
-		}
-		return this.icons[0];
 	}
 
 	@Override
@@ -368,14 +341,5 @@ public class ItemNanoBow extends Item implements IElectricItem, IItemUpgradeable
 			if (j >= 5 && ElectricItem.manager.canUse(stack, 50))
 				player.stopUsingItem();
 		}
-	}
-
-	@Override
-	public void registerIcons(IIconRegister ir) {
-		icons[0] = Util.register(ir, this);
-		icons[1] = Util.register(ir, Util.getFileName(this) + "_1");
-		icons[2] = Util.register(ir, Util.getFileName(this) + "_2");
-		icons[3] = Util.register(ir, Util.getFileName(this) + "_3");
-		itemIcon = icons[0];
 	}
 }

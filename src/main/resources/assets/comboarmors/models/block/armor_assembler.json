@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "comboarmors:blocks/armor_assembler_side",
+        "down": "comboarmors:blocks/armor_assembler_bottom",
+        "up": "comboarmors:blocks/armor_assembler_top",
+        "north": "comboarmors:blocks/armor_assembler_front",
+        "east": "comboarmors:blocks/armor_assembler_side",
+        "south": "comboarmors:blocks/armor_assembler_side",
+        "west": "comboarmors:blocks/armor_assembler_side"
+    }
+}

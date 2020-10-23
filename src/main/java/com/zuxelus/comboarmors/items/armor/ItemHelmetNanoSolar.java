@@ -1,24 +1,25 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IMetalArmor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemHelmetNanoSolar extends ItemArmorElectricUtility implements IMetalArmor {
-	public ItemHelmetNanoSolar(int renderIndex) {
-		super(renderIndex, 0, 1000000, 1000, 3, false);
+
+	public ItemHelmetNanoSolar() {
+		super(EntityEquipmentSlot.HEAD, 1000000, 1000, 3, false);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return ComboArmors.MODID + ":textures/armor/solar_nano.png";
 	}
 
@@ -45,7 +46,7 @@ public class ItemHelmetNanoSolar extends ItemArmorElectricUtility implements IMe
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 
 	@Override

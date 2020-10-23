@@ -1,0 +1,39 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "PPP",
+        "CMC",
+        "IRI"
+    ],
+    "key": {
+        "P": {
+            "type": "forge:ore_dict",
+            "ore": "paneGlassLime"
+        },
+        "C": {
+            "type": "forge:ore_dict",
+            "ore": "circuitBasic"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "dyeBlack"
+        },
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "dustRedstone"
+        },
+        "M": {
+            "item": "ic2:resource",
+            "data": 12
+        }
+    },
+    "result": {
+        "item": "comboarmors:assembly_drill_bit"
+    },
+    "conditions": [
+        {
+            "type": "comboarmors:ca_config",
+            "config": "classic"
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-package com.zuxelus.comboarmors.entity;
+package com.zuxelus.comboarmors.entities;
 
 import java.util.List;
 

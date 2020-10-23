@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "active=false,facing=east":  { "model": "comboarmors:armor_assembler", "y": 90 },
+        "active=false,facing=west":  { "model": "comboarmors:armor_assembler", "y": 270 },
+        "active=false,facing=south": { "model": "comboarmors:armor_assembler", "y": 180 },
+        "active=false,facing=north": { "model": "comboarmors:armor_assembler" },
+        "active=true,facing=east":  { "model": "comboarmors:armor_assembler", "y": 90 },
+        "active=true,facing=west":  { "model": "comboarmors:armor_assembler", "y": 270 },
+        "active=true,facing=south": { "model": "comboarmors:armor_assembler", "y": 180 },
+        "active=true,facing=north": { "model": "comboarmors:armor_assembler" }
+    }
+} 

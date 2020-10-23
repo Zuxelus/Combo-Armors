@@ -3,17 +3,16 @@ package com.zuxelus.comboarmors.network;
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import ic2.api.item.ElectricItem;
 import ic2.core.util.StackUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<PacketOverchargeKeyPressed, IMessage> {
 	private double x;
@@ -44,8 +43,8 @@ public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<Pac
 
 	@Override
 	public IMessage onMessage(PacketOverchargeKeyPressed message, MessageContext ctx) {
-		EntityPlayer player = ctx.getServerHandler().playerEntity;
-		ItemStack armor = player.inventory.armorInventory[2];
+		EntityPlayer player = ctx.getServerHandler().player;
+		ItemStack armor = player.inventory.armorItemInSlot(2);
 		if (armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			overcharge(player, armor, message.x, message.y, message.z);
 		return null;
@@ -57,20 +56,19 @@ public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<Pac
 		int overchargenumber = maxcharge / 10;
 		int boltnumber = overchargenumber / 10000;
 		if (boltnumber < 1) {
-			player.addChatMessage(new ChatComponentTranslation("info.not_have_charge", stack.getDisplayName()));
+			player.sendMessage(new TextComponentTranslation("info.not_have_charge", stack.getDisplayName()));
 			return;
 		}
 		if (boltnumber >= 10)
 			boltnumber = 10;
 		if (charge >= boltnumber * 10000) {
 			for (int i = 1; i <= boltnumber; i++) {
-				EntityLightningBolt elb = new EntityLightningBolt(player.worldObj, x, y, z);
-				player.worldObj.spawnEntityInWorld(elb);
+				EntityLightningBolt elb = new EntityLightningBolt(player.world, x, y, z, false);
+				player.world.spawnEntity(elb);
 				ElectricItem.manager.discharge(stack, 10000, 4, true, false, false);
 			}
-			player.addChatMessage(new ChatComponentTranslation("info.discharged", boltnumber * 10000));
-			//ChannelHandler.network.sendTo(new PacketOvercharge(boltnumber * 10000, x, y, z), (EntityPlayerMP) player);
+			player.sendMessage(new TextComponentTranslation("info.discharged", boltnumber * 10000));
 		} else
-			player.addChatMessage(new ChatComponentTranslation("info.not_enough_energy_discharge"));
+			player.sendMessage(new TextComponentTranslation("info.not_enough_energy_discharge"));
 	}
 }

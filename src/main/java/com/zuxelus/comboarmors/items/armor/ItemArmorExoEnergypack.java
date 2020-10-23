@@ -2,19 +2,21 @@ package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorExoEnergypack extends ItemArmorElectricUtility {
-	public ItemArmorExoEnergypack(int renderIndex) {
-		super(renderIndex, 1, 2000000, 2500, 4, true);
+
+	public ItemArmorExoEnergypack() {
+		super(EntityEquipmentSlot.CHEST, 2000000, 2500, 4, true);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return ComboArmors.MODID + ":textures/armor/exo_energypack.png";
 	}
 
@@ -36,6 +38,6 @@ public class ItemArmorExoEnergypack extends ItemArmorElectricUtility {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 }

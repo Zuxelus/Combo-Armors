@@ -10,34 +10,41 @@ import com.zuxelus.comboarmors.items.IItemUpgradeable;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 import com.zuxelus.comboarmors.utils.Util;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
+import ic2.api.item.HudMode;
 import ic2.api.item.IElectricItem;
 import ic2.core.IC2;
 import ic2.core.IC2Potion;
-import ic2.core.Ic2Items;
 import ic2.core.audio.AudioSource;
 import ic2.core.audio.PositionSpec;
 import ic2.core.item.ItemTinCan;
 import ic2.core.util.StackUtil;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ItemArmorElectricUtility extends ItemArmorBase implements ISpecialArmor, IElectricItem, IItemUpgradeable {
 	public int defaultMaxCharge;
@@ -46,17 +53,17 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	public boolean shareEnergy;
 
 	private float jumpCharge;
-	private static final Map<Integer, Integer> potionRemovalCost;
+	private static final Map<Potion, Integer> potionRemovalCost;
 
 	static {
 		potionRemovalCost = new HashMap();
-		potionRemovalCost.put(Potion.poison.id, 10000);
-		potionRemovalCost.put(IC2Potion.radiation.id, 10000);
-		potionRemovalCost.put(Potion.wither.id, 25000);
+		potionRemovalCost.put(MobEffects.POISON, 10000);
+		potionRemovalCost.put(IC2Potion.radiation, 10000);
+		potionRemovalCost.put(MobEffects.WITHER, 25000);
 	}
 
-	public ItemArmorElectricUtility(int renderIndex, int piece, int maxCharge, int transferLimit, int tier, boolean shareEnergy) {
-		super(renderIndex, piece);
+	public ItemArmorElectricUtility(EntityEquipmentSlot slot, int maxCharge, int transferLimit, int tier, boolean shareEnergy) {
+		super(slot);
 		this.tier = tier;
 		this.defaultMaxCharge = maxCharge;
 		this.transferLimit = transferLimit;
@@ -66,7 +73,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
 		if (!nbt.getBoolean("loaded")) {
 			if (nbt.getInteger("tier") == 0)
@@ -77,42 +84,42 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 				nbt.setInteger("maxCharge", getDefaultMaxCharge());
 			nbt.setBoolean("loaded", true);
 		}
-		list.add(I18n.format("info.upgrade_module_installed"));
+		tooltip.add(I18n.format("info.upgrade_module_installed"));
 		if (nbt.getBoolean("flight"))
-			list.add(I18n.format("info.flight_turbine_installed"));
+			tooltip.add(I18n.format("info.flight_turbine_installed"));
 		if (nbt.getBoolean("cloaking"))
-			list.add(I18n.format("info.cloaking_module_installed"));
+			tooltip.add(I18n.format("info.cloaking_module_installed"));
 		if (nbt.getBoolean("isCloakActive"))
-			list.add(EnumChatFormatting.YELLOW + I18n.format("info.cloaking_module_active"));
+			tooltip.add(TextFormatting.YELLOW + I18n.format("info.cloaking_module_active"));
 		if (nbt.getBoolean("overcharge"))
-			list.add(I18n.format("info.discharge_module_installed"));
+			tooltip.add(I18n.format("info.discharge_module_installed"));
 		if (nbt.getInteger("solarProd") > 0)
-			list.add(I18n.format("info.solar_produces", nbt.getInteger("solarProd") + 1));
+			tooltip.add(I18n.format("info.solar_produces", nbt.getInteger("solarProd") + 1));
 		if (nbt.getInteger("staticProd") > 0)
-			list.add(I18n.format("info.static_produces", nbt.getInteger("staticProd") + 1));
+			tooltip.add(I18n.format("info.static_produces", nbt.getInteger("staticProd") + 1));
 		if (nbt.getInteger("transferLimit") != getDefaultTransferLimit())
-			list.add(I18n.format("info.transfer_speed", nbt.getInteger("transferLimit")));
-		list.add(I18n.format("info.power_tier", nbt.getInteger("tier")));
+			tooltip.add(I18n.format("info.transfer_speed", nbt.getInteger("transferLimit")));
+		tooltip.add(I18n.format("info.power_tier", nbt.getInteger("tier")));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, List list) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		ItemStack charged = new ItemStack(this, 1);
 		ElectricItem.manager.charge(charged, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
-		list.add(charged);
-		list.add(new ItemStack(this, 1, getMaxDamage()));
+		items.add(charged);
+		items.add(new ItemStack(this, 1, getMaxDamage()));
 	}
 
 	private double getBaseAbsorptionRatio() {
-		switch (this.armorType) {
-		case 0:
+		switch (armorType) {
+		case HEAD:
 			return 0.15D;
-		case 1:
+		case CHEST:
 			return 0.4D;
-		case 2:
+		case LEGS:
 			return 0.3D;
-		case 3:
+		case FEET:
 			return 0.15D;
 		default:
 			return 0.0D;
@@ -132,7 +139,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	}
 
 	private boolean useQuantumJetpack(EntityPlayer player, boolean hoverMode, boolean hoverModeQ, boolean boost) {
-		ItemStack jetpack = player.inventory.armorInventory[2];
+		ItemStack jetpack = player.inventory.armorItemInSlot(2);
 
 		if (getCharge(jetpack) == 0)
 			return false;
@@ -146,12 +153,12 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 			float forwardpower = power * retruster * 2.0F;
 			if (forwardpower > 0) {
 				if (boost)
-					player.moveFlying(0, 0.4F * forwardpower, 0.10F);
+					player.moveRelative(0.0F, 0, 0.4F * forwardpower, 0.10F);
 				else
-					player.moveFlying(0, 0.4F * forwardpower, 0.02F);
+					player.moveRelative(0.0F, 0, 0.4F * forwardpower, 0.02F);
 			}
 		}
-		int worldHeight = IC2.getWorldHeight(player.worldObj);
+		int worldHeight = IC2.getWorldHeight(player.getEntityWorld());
 
 		float y = (float) player.posY;
 		if (y > worldHeight - 25) {
@@ -186,13 +193,13 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	}
 
 	protected void onFall(LivingFallEvent event, boolean isQuantum) {
-		if (!IC2.platform.isSimulating() || !(event.entity instanceof EntityLivingBase))
+		if (!IC2.platform.isSimulating() || !(event.getEntity() instanceof EntityLivingBase))
 			return;
 		
-		EntityLivingBase entity = (EntityLivingBase) event.entity;
-		ItemStack armor = entity.getEquipmentInSlot(1); // boots
+		EntityLivingBase entity = (EntityLivingBase) event.getEntity();
+		ItemStack armor = entity.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 		if (armor != null && armor.getItem() == this) {
-			int distance = (int) event.distance;
+			int distance = (int) event.getDistance();
 			int fallDamage = isQuantum ? Math.max(distance - 10, 0) : distance - 3;
 			if (!isQuantum && fallDamage >= 8)
 				return;
@@ -220,7 +227,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 				hoverModeQ = !hoverModeQ;
 				if (IC2.platform.isSimulating()) {
 					nbtData.setBoolean("hoverModeQ", hoverModeQ);
-					player.addChatMessage(new ChatComponentTranslation("info.quantum_hover_mode_enabled"));
+					player.sendMessage(new TextComponentTranslation("info.quantum_hover_mode_enabled"));
 				}
 			} else if (!hoverMode && hoverModeQ) {
 				hoverMode = !hoverMode;
@@ -228,7 +235,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 				if (IC2.platform.isSimulating()) {
 					nbtData.setBoolean("hoverMode", hoverMode);
 					nbtData.setBoolean("hoverModeQ", hoverModeQ);
-					player.addChatMessage(new ChatComponentTranslation("info.hover_mode_enabled"));
+					player.sendMessage(new TextComponentTranslation("info.hover_mode_enabled"));
 				}
 			} else {
 				hoverMode = false;
@@ -236,7 +243,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 				if (IC2.platform.isSimulating()) {
 					nbtData.setBoolean("hoverMode", hoverMode);
 					nbtData.setBoolean("hoverModeQ", hoverModeQ);
-					player.addChatMessage(new ChatComponentTranslation("info.hover_mode_disabled"));
+					player.sendMessage(new TextComponentTranslation("info.hover_mode_disabled"));
 				}
 			}
 		}
@@ -246,9 +253,9 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 			if (IC2.platform.isSimulating()) {
 				nbtData.setBoolean("jetpack", jetpack);
 				if (jetpack)
-					player.addChatMessage(new ChatComponentTranslation("info.jetpack_enabled"));
+					player.sendMessage(new TextComponentTranslation("info.jetpack_enabled"));
 				else
-					player.addChatMessage(new ChatComponentTranslation("info.jetpack_disabled"));
+					player.sendMessage(new TextComponentTranslation("info.jetpack_disabled"));
 			}
 		}
 		if (jetpack && (IC2.keyboard.isJumpKeyDown(player) || hoverMode || (hoverModeQ && player.motionY < -0.02999999932944775D)))
@@ -303,86 +310,77 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 			IC2.achievements.issueAchievement(player, "starveWithQHelmet");
 		// Food
 		if (ElectricItem.manager.canUse(stack, 1000) && player.getFoodStats().needFood()) {
-			for (int i = 0; i < player.inventory.mainInventory.length; i++)
-				if (player.inventory.mainInventory[i] != null && player.inventory.mainInventory[i].getItem() == Ic2Items.filledTinCan.getItem()) {
-					ItemStack can = player.inventory.mainInventory[i];
-					can = ((ItemTinCan) can.getItem()).onEaten(player, can);
-					if (can.stackSize <= 0)
-						player.inventory.mainInventory[i] = null;
-					ElectricItem.manager.use(stack, 1000.0D, null);
+			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+				ItemStack can = player.inventory.mainInventory.get(i);
+				if (!can.isEmpty() && can.isItemEqual(ComboArmors.ic2.getItemStack("filledTinCan"))) {
+					ActionResult<ItemStack> res = ((ItemTinCan) can.getItem()).onEaten(player, can);
+					can = (ItemStack) res.getResult();
+					if (can.isEmpty())
+						player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+					if (res.getType() == EnumActionResult.SUCCESS)
+						ElectricItem.manager.use(stack, 1000.0D, null);
 					result = true;
 					break;
 				}
+			}
 		} else if (player.getFoodStats().getFoodLevel() <= 0)
 			IC2.achievements.issueAchievement(player, "starveWithQHelmet");
 		// Potion
 		for (PotionEffect effect : new LinkedList<PotionEffect>(player.getActivePotionEffects())) {
-			int id = effect.getPotionID();
-			Integer cost = (Integer) potionRemovalCost.get(Integer.valueOf(id));
+			Potion potion = effect.getPotion();
+			Integer cost = potionRemovalCost.get(potion);
 			if (cost != null) {
 				cost = Integer.valueOf(cost.intValue() * (effect.getAmplifier() + 1));
 				if (ElectricItem.manager.canUse(stack, cost.intValue())) {
 					ElectricItem.manager.use(stack, cost.intValue(), null);
-					IC2.platform.removePotion(player, id);
+					IC2.platform.removePotion(player, potion);
 				}
 			}
-		}
+		} 
 		return result;
 	}
 
 	protected static boolean onNightvisionTick(EntityPlayer player, ItemStack stack) {
-		if (player.isClientWorld())
-			return false;
-
 		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
 		byte toggleTimer = nbtData.getByte("toggleTimer");
 		boolean Nightvision = nbtData.getBoolean("Nightvision");
 		if (IC2.keyboard.isAltKeyDown(player) && IC2.keyboard.isModeSwitchKeyDown(player) && toggleTimer == 0) {
 			toggleTimer = 10;
 			Nightvision = !Nightvision;
-			nbtData.setBoolean("Nightvision", Nightvision);
-			if (Nightvision)
-				player.addChatMessage(new ChatComponentTranslation("info.nightvision_enabled"));
-			else
-				player.addChatMessage(new ChatComponentTranslation("info.nightvision_disabled"));
+			if (IC2.platform.isSimulating()) {
+				nbtData.setBoolean("Nightvision", Nightvision);
+				if (Nightvision)
+					player.sendMessage(new TextComponentTranslation("info.nightvision_enabled"));
+				else
+					player.sendMessage(new TextComponentTranslation("info.nightvision_disabled"));
+			}
 		}
 		int hubmode = nbtData.getInteger("HudMode");
 		if (IC2.keyboard.isAltKeyDown(player) && IC2.keyboard.isHudModeKeyDown(player) && toggleTimer == 0) {
 			toggleTimer = 10;
-			hubmode = hubmode == 2 ? 0 : hubmode + 1;
+			hubmode = hubmode == HudMode.getMaxMode() ? 0 : hubmode + 1;
+			if (IC2.platform.isSimulating()) {
 				nbtData.setInteger("HudMode", hubmode);
-				switch (hubmode) {
-				case 0:
-					player.addChatMessage(new ChatComponentTranslation("HUD disabled."));
-					break;
-				case 1:
-					player.addChatMessage(new ChatComponentTranslation("HUD (basic) enabled."));
-					break;
-				case 2:
-					player.addChatMessage(new ChatComponentTranslation("HUD (extended) enabled"));
-				}
+				player.sendMessage(new TextComponentTranslation(HudMode.getFromID(hubmode).getTranslationKey()));
+			}
 		}
-		if (toggleTimer > 0) {
+		if (IC2.platform.isSimulating() && toggleTimer > 0) {
 			toggleTimer--;
 			nbtData.setByte("toggleTimer", toggleTimer);
 		}
 		boolean result = false;
-		if (Nightvision)
-			if (ElectricItem.manager.use(stack, 1.0D, player)) {
-				int x = MathHelper.floor_double(player.posX);
-				int z = MathHelper.floor_double(player.posZ);
-				int y = MathHelper.floor_double(player.posY);
-
-				int skylight = player.worldObj.getBlockLightValue(x, y, z);
-				if (skylight > 8) {
-					IC2.platform.removePotion(player, Potion.nightVision.id);
-					player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100, 0, true));
-				} else {
-					IC2.platform.removePotion(player, Potion.blindness.id);
-					player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
-				}
-				result = true;
+		if (Nightvision && IC2.platform.isSimulating() && ElectricItem.manager.use(stack, 1.0D, player)) {
+			BlockPos pos = new BlockPos((int) Math.floor(player.posX), (int) Math.floor(player.posY), (int) Math.floor(player.posZ));
+			int skylight = player.getEntityWorld().getLightFromNeighbors(pos);
+			if (skylight > 8) {
+				IC2.platform.removePotion(player, MobEffects.NIGHT_VISION);
+				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0, true, true));
+			} else {
+				IC2.platform.removePotion(player, MobEffects.BLINDNESS);
+				player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 300, 0, true, true));
 			}
+			result = true;
+		}
 		return result;
 	}
 
@@ -415,16 +413,6 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	@Override
 	public boolean canProvideEnergy(ItemStack stack) {
 		return shareEnergy;
-	}
-
-	@Override
-	public Item getChargedItem(ItemStack stack) {
-		return this; // TODO
-	}
-
-	@Override
-	public Item getEmptyItem(ItemStack stack) {
-		return this; // TODO
 	}
 
 	@Override

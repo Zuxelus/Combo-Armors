@@ -4,16 +4,15 @@ import com.zuxelus.comboarmors.containers.ISlotItemFilter;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
-import ic2.api.energy.tile.IEnergySource;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityEnergySink extends TileEntityInventory implements IEnergySink, ISlotItemFilter, ITilePacketHandler {
 	protected boolean addedToEnet;
@@ -71,8 +70,9 @@ public abstract class TileEntityEnergySink extends TileEntityInventory implement
 		return tag;
 	}
 
+	@Override
 	public void onLoad() {
-		if (!addedToEnet && worldObj != null && !worldObj.isRemote && Info.isIc2Available()) {
+		if (!addedToEnet && world != null && !world.isRemote && Info.isIc2Available()) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			addedToEnet = true;
 		}
@@ -86,7 +86,7 @@ public abstract class TileEntityEnergySink extends TileEntityInventory implement
 
 	@Override
 	public void onChunkUnload() {
-		if (addedToEnet && worldObj != null && !worldObj.isRemote && Info.isIc2Available()) {
+		if (addedToEnet && world != null && !world.isRemote && Info.isIc2Available()) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
 			addedToEnet = false;
 		}
@@ -103,8 +103,8 @@ public abstract class TileEntityEnergySink extends TileEntityInventory implement
 
 	// IEnergySink
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection dir) {
-		return dir != getFacingForge();
+	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side) {
+		return side != getFacing();
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public abstract class TileEntityEnergySink extends TileEntityInventory implement
 	}
 
 	@Override
-	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
 		if (energy >= capacity)
 			return amount;
 		energy += amount;

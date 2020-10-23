@@ -1,17 +1,15 @@
 package com.zuxelus.comboarmors.items;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.Util;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemIc2ca extends Item {
-	EnumRarity rarity = EnumRarity.common;
+	EnumRarity rarity = EnumRarity.COMMON;
 
 	public ItemIc2ca() {
 		super();
@@ -32,10 +30,5 @@ public class ItemIc2ca extends Item {
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
 		return rarity;
-	}
-
-	@Override
-	public void registerIcons(IIconRegister ir) {
-		itemIcon = Util.register(ir, this);
 	}
 }

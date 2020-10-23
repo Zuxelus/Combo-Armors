@@ -2,17 +2,19 @@ package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IMetalArmor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBodyNanoJetpack extends ItemArmorBaseJetpack implements IMetalArmor {
-	public ItemBodyNanoJetpack(int renderIndex) {
-		super(renderIndex, 1, 1500000, 160, 3, false);
+
+	public ItemBodyNanoJetpack() {
+		super(EntityEquipmentSlot.CHEST, 1500000, 160, 3, false);
 	}
 
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
@@ -37,7 +39,7 @@ public class ItemBodyNanoJetpack extends ItemArmorBaseJetpack implements IMetalA
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack var1) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 
 	@Override

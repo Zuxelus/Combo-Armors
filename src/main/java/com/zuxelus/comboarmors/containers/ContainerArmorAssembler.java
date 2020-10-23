@@ -4,7 +4,6 @@ import com.zuxelus.comboarmors.network.NetworkHelper;
 import com.zuxelus.comboarmors.tileentities.TileEntityArmorAssembler;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerArmorAssembler extends ContainerBase<TileEntityArmorAssembler> {
@@ -26,13 +25,13 @@ public class ContainerArmorAssembler extends ContainerBase<TileEntityArmorAssemb
 		super.detectAndSendChanges();
 		double energy = te.getEnergy();
 		int production = te.getProduction();
-		for (int i = 0; i < crafters.size(); i++)
+		for (int i = 0; i < listeners.size(); i++)
 			if (lastEnergy != energy || lastProduction != production) {
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("type", 1);
 				tag.setDouble("energy", energy);
 				tag.setInteger("production", production);
-				NetworkHelper.updateClientTileEntity((ICrafting)crafters.get(i), te.xCoord, te.yCoord, te.zCoord, tag);
+				NetworkHelper.updateClientTileEntity(listeners.get(i), te.getPos(), tag);
 			}
 		lastEnergy = energy;
 		lastProduction = production;

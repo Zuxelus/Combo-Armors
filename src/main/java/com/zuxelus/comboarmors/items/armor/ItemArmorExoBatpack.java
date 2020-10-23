@@ -3,15 +3,17 @@ package com.zuxelus.comboarmors.items.armor;
 import com.zuxelus.comboarmors.ComboArmors;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
 public class ItemArmorExoBatpack extends ItemArmorElectricUtility {
-	public ItemArmorExoBatpack(int renderIndex) {
-		super(renderIndex, 1, 60000, 100, 1, true);
+
+	public ItemArmorExoBatpack() {
+		super(EntityEquipmentSlot.CHEST, 60000, 100, 1, true);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return ComboArmors.MODID + ":textures/armor/exo_batpack.png";
 	}
 

@@ -2,31 +2,39 @@ package com.zuxelus.comboarmors.items.armor;
 
 import java.util.List;
 
-import com.zuxelus.comboarmors.ComboArmors;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.zuxelus.comboarmors.utils.TankFluidHandlerItemStack;
+
 import ic2.core.util.StackUtil;
 import ic2.core.util.Util;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpecialArmor, IFluidContainerItem {
+public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpecialArmor {
 	protected final int capacity;
 	protected final Fluid allowfluid;
 
-	public ItemArmorTankUtility(int renderIndex, int piece, Fluid allowfluid, int capacity) {
-		super(renderIndex, piece);
+	public ItemArmorTankUtility(EntityEquipmentSlot slot, Fluid allowfluid, int capacity) {
+		super(slot);
 		this.capacity = capacity;
 		this.allowfluid = allowfluid;
 		setMaxDamage(27);
@@ -34,12 +42,12 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-		FluidStack fs = getFluid(stack);
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
+		FluidStack fs = FluidUtil.getFluidContained(stack);
 		if (fs != null)
-			list.add("< " + FluidRegistry.getFluidName(fs) + ", " + fs.amount + "/" + getCapacity(stack) + " mB >");
+			tooltip.add("< " + FluidRegistry.getFluidName(fs) + ", " + fs.amount + "/" + getCapacity(stack) + " mB >");
 		else
-			list.add("< 0/" + getCapacity(stack) + " mB >");
+			tooltip.add("< 0/" + getCapacity(stack) + " mB >");
 	}
 
 	// ISpecialArmor
@@ -64,21 +72,19 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 		tag.setTag("Fluid", fluidTag);
 	}
 
-	protected int getCharge(ItemStack stack) {
-		if (getFluid(stack) == null)
-			return 0;
-		int ret = getFluid(stack).amount;
-		return ret > 0 ? ret : 0;
+	@Override
+	public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+		return new TankFluidHandlerItemStack(stack, capacity);
 	}
 
-	// IFluidContainerItem
-	@Override
-	public FluidStack getFluid(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
-		return FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("Fluid"));
+	protected double getCharge(ItemStack stack) {
+		FluidStack fs = FluidUtil.getFluidContained(stack);
+		if (fs == null)
+			return 0.0D;
+		double ret = fs.amount;
+		return ret > 0.0D ? ret : 0.0D;
 	}
 
-	@Override
 	public int getCapacity(ItemStack stack) {
 		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
 		if (tag.hasKey("addCapacity"))
@@ -87,8 +93,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 		return capacity;
 	}
 
-	@Override
-	public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
+	/*public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
 		if (stack.stackSize != 1)
 			return 0;
 		if (resource == null)
@@ -113,7 +118,6 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 		return amount;
 	}
 
-	@Override
 	public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
 		if (stack.stackSize != 1)
 			return null;
@@ -136,9 +140,10 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 		}
 		updateDamage(stack);
 		return new FluidStack(fs, maxDrain);
-	}
+	}*/
 
 	public void updateDamage(ItemStack stack) {
-		stack.setItemDamage(stack.getMaxDamage() - 1 - (int) Util.map(getCharge(stack), getCapacity(stack), stack.getMaxDamage() - 2));
+		stack.setItemDamage(stack.getMaxDamage() - 1
+				- (int) Util.map(getCharge(stack), getCapacity(stack), stack.getMaxDamage() - 2));
 	}
 }

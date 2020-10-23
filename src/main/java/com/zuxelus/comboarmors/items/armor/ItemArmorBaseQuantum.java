@@ -1,24 +1,20 @@
 package com.zuxelus.comboarmors.items.armor;
 
-import com.zuxelus.comboarmors.ComboArmors;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IMetalArmor;
-import ic2.core.IC2;
-import ic2.core.audio.AudioSource;
-import ic2.core.audio.PositionSpec;
 import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ItemArmorBaseQuantum extends ItemArmorElectricUtility implements IJetpack, IMetalArmor {
 
-	public ItemArmorBaseQuantum(int renderIndex, int piece, int maxCharge, int transferLimit, int tier, boolean share) {
-		super(renderIndex, piece, maxCharge, transferLimit, tier, share);
+	public ItemArmorBaseQuantum(EntityEquipmentSlot slot, int maxCharge, int transferLimit, int tier, boolean share) {
+		super(slot, maxCharge, transferLimit, tier, share);
 	}
 
 	@Override
@@ -34,7 +30,7 @@ public abstract class ItemArmorBaseQuantum extends ItemArmorElectricUtility impl
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.rare;
+		return EnumRarity.RARE;
 	}
 
 	@Override
@@ -44,7 +40,7 @@ public abstract class ItemArmorBaseQuantum extends ItemArmorElectricUtility impl
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (player.inventory.armorInventory[2] != stack)
+		if (player.inventory.armorItemInSlot(2) != stack)
 			return;
 
 		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);

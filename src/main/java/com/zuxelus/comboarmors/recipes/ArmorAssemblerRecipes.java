@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ArmorAssemblerRecipes {
+
 	public static class Input {
 		public final ItemStack i1;
 		public final ItemStack i2;
@@ -54,11 +55,11 @@ public class ArmorAssemblerRecipes {
 	}
 
 	private static void addRecipe(ItemStack result, ItemStack input1, ItemStack input2) {
-		if (result == null)
+		if (result.isEmpty())
 			throw new NullPointerException("The recipe output is null");
-		if (input1 == null)
+		if (input1.isEmpty())
 			throw new NullPointerException("The I1 recipe input is null");
-		if (input2 == null)
+		if (input2.isEmpty())
 			throw new NullPointerException("The I2 recipe input is null");
 
 		InventoryBasic inv = new InventoryBasic(null, false, 2);
@@ -75,8 +76,8 @@ public class ArmorAssemblerRecipes {
 	}
 
 	public static ItemStack getAssemblyResult(ItemStack input1, ItemStack input2) {
-		if (input1 == null || input2 == null)
-			return null;
+		if (input1.isEmpty() || input2.isEmpty())
+			return ItemStack.EMPTY;
 		for (Map.Entry<Input, ItemStack> entry : recipes.entrySet()) {
 			Input input = (Input) entry.getKey();
 			if (input.matches(input1, input2))

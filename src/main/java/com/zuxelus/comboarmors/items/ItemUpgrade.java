@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.zuxelus.comboarmors.init.ModItems;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemUpgrade extends ItemIc2ca implements IItemUpgrade {
 	private EnumUpgradeType type;
@@ -25,9 +27,9 @@ public class ItemUpgrade extends ItemIc2ca implements IItemUpgrade {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack is, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
 		if (type != null)
-			list.add(I18n.format("info.compatable_all", I18n.format(type.name)));
+			tooltip.add(I18n.format("info.compatable_all", I18n.format(type.name)));
 	}
 
 	public int getStackModifier(ItemStack stack) {

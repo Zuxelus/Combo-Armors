@@ -2,11 +2,11 @@ package com.zuxelus.comboarmors.network;
 
 import com.zuxelus.comboarmors.ServerTickHandler;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketFlyKeyPressed implements IMessage, IMessageHandler<PacketFlyKeyPressed, IMessage> {
 
@@ -20,7 +20,7 @@ public class PacketFlyKeyPressed implements IMessage, IMessageHandler<PacketFlyK
 
 	@Override
 	public IMessage onMessage(PacketFlyKeyPressed message, MessageContext ctx) {
-		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+		EntityPlayerMP player = ctx.getServerHandler().player;
 		ServerTickHandler.switchFlyMode(player);
 		return null;
 	}

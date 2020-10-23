@@ -4,7 +4,7 @@
 	"name": "Combo Armors",
 	"description": "Adds combination armors for IndustrialCraft 2, such as a NanoSuit Jetpack, a QuantumSuit Lappack, and an Ultimate QuantumSuit Bodyarmor.",
 	"version": "${version}",
-	"mcversion": "1.7.10",
+	"mcversion": "1.12.2",
 	"logoFile": "/assets/comboarmors/logo.png",
 	"url": "",
 	"authorList": ["UnixRano","Zuxelus"],

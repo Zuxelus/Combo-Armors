@@ -1,17 +1,15 @@
 package com.zuxelus.comboarmors.gui;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.containers.ContainerArmorAssembler;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiArmorAssembler extends GuiContainer {
@@ -19,8 +17,7 @@ public class GuiArmorAssembler extends GuiContainer {
 	private String name;
 	private ContainerArmorAssembler container;
 
-	public GuiArmorAssembler(ContainerArmorAssembler container)
-	{
+	public GuiArmorAssembler(ContainerArmorAssembler container) {
 		super(container);
 		this.container = container;
 		name = I18n.format("tile.armor_assembler.name");
@@ -44,10 +41,10 @@ public class GuiArmorAssembler extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRendererObj.drawString(name, (xSize - fontRendererObj.getStringWidth(name)) / 2, 6, 0x404040);
-		fontRendererObj.drawString(I18n.format("info.inventory"), 8, this.ySize - 96 + 2, 0x404040);
-		fontRendererObj.drawString(container.te.getEnergyString(), 56 - fontRendererObj.getStringWidth(container.te.getEnergyString()), 39, 0x404040);
+		fontRenderer.drawString(name, (xSize - fontRenderer.getStringWidth(name)) / 2, 6, 0x404040);
+		fontRenderer.drawString(I18n.format("info.inventory"), 8, this.ySize - 96 + 2, 0x404040);
+		fontRenderer.drawString(container.te.getEnergyString(), 56 - fontRenderer.getStringWidth(container.te.getEnergyString()), 39, 0x404040);
 		//fontRendererObj.drawString(container.te.getProgressString(), xSize - fontRendererObj.getStringWidth(container.te.getProgressString()) - 8, ySize - 96 - 8, 0x404040);
-		fontRendererObj.drawString(container.te.getTimeString(), xSize - fontRendererObj.getStringWidth(container.te.getTimeString()) - 8, ySize - 96 + 2, 0x404040);
+		fontRenderer.drawString(container.te.getTimeString(), xSize - fontRenderer.getStringWidth(container.te.getTimeString()) - 8, ySize - 96 + 2, 0x404040);
 	}
 }

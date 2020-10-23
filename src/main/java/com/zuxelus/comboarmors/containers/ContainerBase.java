@@ -38,7 +38,7 @@ public abstract class ContainerBase<T extends IInventory> extends Container {
 	protected void addPlayerInventoryTopSlots(EntityPlayer player, int width, int height, Item filter) {
 		for (int col = 0; col < 9; col++) {
 			ItemStack stack = player.inventory.getStackInSlot(col);
-			if (stack != null && stack.getItem() == filter)
+			if (!stack.isEmpty() && stack.getItem() == filter)
 				addSlotToContainer(new Slot(player.inventory, col, width + col * 18, height - 24) {
 					@Override
 					public boolean isItemValid(ItemStack stack) {
@@ -57,25 +57,25 @@ public abstract class ContainerBase<T extends IInventory> extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return te.isUseableByPlayer(player);
+		return te.isUsableByPlayer(player);
 	}
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
 		Slot slot = (Slot) this.inventorySlots.get(slotId);
 		if (slot == null || !slot.getHasStack())
-			return null;
+			return ItemStack.EMPTY;
 
 		ItemStack items = slot.getStack();
 		ItemStack stack = items.copy();
 		if (slotId < te.getSizeInventory()) { // moving from panel to inventory
 			if (!mergeItemStack(items, te.getSizeInventory(), inventorySlots.size(), true))
-				return null;
+				return ItemStack.EMPTY;
 		} else // moving from inventory to panel
 			if (!mergeItemStack(items, 0, te.getSizeInventory(), false))
-				return null;
-		if (items.stackSize == 0)
-			slot.putStack(null);
+				return ItemStack.EMPTY;
+		if (items.isEmpty())
+			slot.putStack(ItemStack.EMPTY);
 		else 
 			slot.onSlotChanged();
 		return stack;
@@ -89,23 +89,23 @@ public abstract class ContainerBase<T extends IInventory> extends Container {
 			i = endIndex - 1;
 
 		if (stack.isStackable()) {
-			while (stack.stackSize > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex)) {
-				Slot slot = (Slot) inventorySlots.get(i);
+			while (!stack.isEmpty() && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex)) {
+				Slot slot = inventorySlots.get(i);
 				ItemStack itemstack = slot.getStack();
 
-				if (itemstack != null && itemstack.getItem() == stack.getItem()
-						&& (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack.getItemDamage())
+				if (!itemstack.isEmpty() && itemstack.getItem() == stack.getItem()
+						&& (!stack.getHasSubtypes() || stack.getMetadata() == itemstack.getMetadata())
 						&& ItemStack.areItemStackTagsEqual(stack, itemstack) && slot.isItemValid(stack)) {
-					int j = itemstack.stackSize + stack.stackSize;
+					int j = itemstack.getCount() + stack.getCount();
 					int maxSize = Math.min(slot.getSlotStackLimit(), stack.getMaxStackSize());
 					if (j <= maxSize) {
-						stack.stackSize = 0;
-						itemstack.stackSize = j;
+						stack.setCount(0);
+						itemstack.setCount(j);
 						slot.onSlotChanged();
 						flag = true;
-					} else if (itemstack.stackSize < maxSize) {
-						stack.stackSize -= maxSize - itemstack.stackSize;
-						itemstack.stackSize = maxSize;
+					} else if (itemstack.getCount() < maxSize) {
+						stack.shrink(maxSize - itemstack.getCount());
+						itemstack.setCount(maxSize);
 						slot.onSlotChanged();
 						flag = true;
 					}
@@ -118,21 +118,21 @@ public abstract class ContainerBase<T extends IInventory> extends Container {
 			}
 		}
 
-		if (stack.stackSize > 0) {
+		if (!stack.isEmpty()) {
 			if (reverseDirection)
 				i = endIndex - 1;
 			else
 				i = startIndex;
 
 			while (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex) {
-				Slot slot = (Slot) inventorySlots.get(i);
+				Slot slot = inventorySlots.get(i);
 				ItemStack itemstack = slot.getStack();
 
-				if (itemstack == null && slot.isItemValid(stack)) {
-					if (stack.stackSize > slot.getSlotStackLimit())
+				if (itemstack.isEmpty() && slot.isItemValid(stack)) {
+					if (stack.getCount() > slot.getSlotStackLimit())
 						slot.putStack(stack.splitStack(slot.getSlotStackLimit()));
 					else
-						slot.putStack(stack.splitStack(stack.stackSize));
+						slot.putStack(stack.splitStack(stack.getCount()));
 					slot.onSlotChanged();
 					flag = true;
 					break;

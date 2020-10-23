@@ -4,27 +4,23 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
 
-import com.zuxelus.comboarmors.client.ClientProxy;
-import com.zuxelus.comboarmors.client.ClientTickHandler;
 import com.zuxelus.comboarmors.config.ConfigHandler;
+import com.zuxelus.comboarmors.ic2.CrossIC2;
 import com.zuxelus.comboarmors.init.ModItems;
 import com.zuxelus.comboarmors.network.ChannelHandler;
-import com.zuxelus.comboarmors.utils.ModIntegrationHandler;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import ic2.api.item.ElectricItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(name = ComboArmors.NAME, modid = ComboArmors.MODID, version = ComboArmors.VERSION, dependencies = "required-after:IC2@[2.2.767-experimental,)", guiFactory = "com.zuxelus.comboarmors.config.GuiFactory", acceptedMinecraftVersions = "[1.7.10]")
+@Mod(name = ComboArmors.NAME, modid = ComboArmors.MODID, version = ComboArmors.VERSION, dependencies = "required-after:ic2", guiFactory = "com.zuxelus.comboarmors.config.GuiFactory", acceptedMinecraftVersions = "[1.12.2]")
 public class ComboArmors {
 	public static final String MODID = "comboarmors";
 	public static final String NAME = "Combo Armors";
@@ -40,6 +36,7 @@ public class ComboArmors {
 	public static Logger logger;
 	public static ConfigHandler config;
 
+	public static CrossIC2 ic2;
 	public static ArrayList<String> solars = new ArrayList();
 	public static ArrayList<String> statics = new ArrayList();
 	public static ArrayList<String> chests = new ArrayList();
@@ -52,8 +49,6 @@ public class ComboArmors {
 
 		ChannelHandler.init();
 
-		ModItems.onBlockRegistry();
-		ModItems.onItemRegistry();
 		ModItems.registerTileEntities();
 	}
 
@@ -67,8 +62,6 @@ public class ComboArmors {
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		ModIntegrationHandler.loadIntegrationModules();
-		ModItems.registerLists();
-		ModItems.registerCraftingRecipes();
+		//ModIntegrationHandler.loadIntegrationModules();
 	}
 }

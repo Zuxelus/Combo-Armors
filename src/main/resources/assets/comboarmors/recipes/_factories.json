@@ -1,0 +1,5 @@
+{
+    "conditions": {
+        "ca_config": "com.zuxelus.comboarmors.recipes.ConditionFactory"
+    }
+}

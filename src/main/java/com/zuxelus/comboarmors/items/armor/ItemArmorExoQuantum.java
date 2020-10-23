@@ -1,47 +1,39 @@
 package com.zuxelus.comboarmors.items.armor;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
 import ic2.core.IC2;
-import ic2.core.IC2Potion;
-import ic2.core.audio.AudioSource;
-import ic2.core.audio.PositionSpec;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
 import ic2.core.util.StackUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMetalArmor, IJetpack {
 
-	public ItemArmorExoQuantum(int renderIndex, int piece) {
-		super(renderIndex, piece, 10000000, 12000, 4, false);
-		if (piece == 3)
+	public ItemArmorExoQuantum(EntityEquipmentSlot slot) {
+		super(slot, 10000000, 12000, 4, false);
+		if (slot == EntityEquipmentSlot.FEET)
 			MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		if (stack.getItem() == ModItems.exoQuantumHelm || stack.getItem() == ModItems.exoQuantumChest || stack.getItem() == ModItems.exoQuantumBoots)
 			return ComboArmors.MODID + ":textures/armor/exo_quantum_1.png";
 		return ComboArmors.MODID + ":textures/armor/exo_quantum_2.png";
@@ -49,7 +41,7 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 
 	@Override
 	public double getDamageAbsorptionRatio() {
-		return this.armorType == 1 ? 1.1D : 1.0D;
+		return armorType == EntityEquipmentSlot.CHEST ? 1.2D : 1.0D;
 	}
 
 	@Override
@@ -64,7 +56,7 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase entity, ItemStack armor, DamageSource source, double damage, int slot) {
-		if (source == DamageSource.fall && armorType == 3) {
+		if (source == DamageSource.FALL && armorType == EntityEquipmentSlot.FEET) {
 			int energyPerDamage = getEnergyPerDamage();
 			int damageLimit = Integer.MAX_VALUE;
 			if (energyPerDamage > 0)
@@ -77,7 +69,7 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.rare;
+		return EnumRarity.RARE;
 	}
 
 	@Override
@@ -90,19 +82,19 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
 		boolean updated = false;
 		switch (armorType) {
-		case 0:
+		case HEAD:
 			if (onHelmetTick(player, stack))
 				updated = true;
 			if (onNightvisionTick(player, stack))
 				updated = true;
 			break;
-		case 1:
+		case CHEST:
 			updated = onQuantumJetpackTick(player, nbtData);
 			break;
-		case 2:
+		case LEGS:
 			updated = onQuantumLeggingsTick(player, stack, nbtData);
 			break;
-		case 3:
+		case FEET:
 			updated = onQuantumBootsTick(player, stack);
 			break;
 		}
@@ -137,7 +129,7 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 					player.motionY += 0.10000000149011612D;
 			}
 			if (speed > 0.0F)
-				player.moveFlying(0.0F, 1.0F, speed);
+				player.moveRelative(0.0F, 0.0F, 1.0F, speed);
 		}
 		return result;
 	}

@@ -5,43 +5,50 @@ import java.util.List;
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorExoCFPack extends ItemArmorTankUtility {
-	public ItemArmorExoCFPack(int renderIndex) {
-		super(renderIndex, 1, BlocksItems.getFluid(InternalName.fluidConstructionFoam), 80000);
+
+	public ItemArmorExoCFPack() {
+		super(EntityEquipmentSlot.CHEST, FluidRegistry.getFluid("ic2construction_foam"), 80000);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return ComboArmors.MODID + ":textures/armor/exo_cfpack.png";
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean par4) {
-		info.add(I18n.format("info.upgrade_module_installed"));
-		super.addInformation(stack, player, info, par4);
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
+		tooltip.add(I18n.format("info.upgrade_module_installed"));
+		super.addInformation(stack, world, tooltip, advanced);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubItems(Item item, CreativeTabs tabs, List list) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (!isInCreativeTab(tab))
+			return;
 		ItemStack stack = new ItemStack(ModItems.exoCFPack, 1);
 		fillTank(stack);
 		stack.setItemDamage(1);
-		list.add(stack);
+		items.add(stack);
 
 		stack = new ItemStack(ModItems.exoCFPack, 1);
 		stack.setItemDamage(getMaxDamage());
-		list.add(stack);
+		items.add(stack);
 	}
 }

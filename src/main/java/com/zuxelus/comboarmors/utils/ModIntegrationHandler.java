@@ -9,17 +9,13 @@ import com.zuxelus.comboarmors.items.ItemUpgrade;
 import com.zuxelus.comboarmors.recipes.ArmorAssemblerRecipes;
 import com.zuxelus.comboarmors.recipes.RecipeHandler;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.server.FMLServerHandler;
 import ic2.api.recipe.Recipes;
-import ic2.core.Ic2Items;
 import ic2.core.util.StackUtil;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 
 public class ModIntegrationHandler {
 	public static final int COMPACT_SOLARS = 0;
@@ -48,9 +44,9 @@ public class ModIntegrationHandler {
 		ModItems.hsh = new ItemStack(GameRegistry.findItem(modids[1], "hybrid_solar_helmet"));
 		ModItems.uhsh = new ItemStack(GameRegistry.findItem(modids[1], "ultimate_solar_helmet"));
 		if (!loaded[0]) {
-			ModItems.lvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.common, EnumUpgradeType.SOLARS), "lv_solar_module");
-			ModItems.mvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.common, EnumUpgradeType.SOLARS), "mv_solar_module");
-			ModItems.hvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.common, EnumUpgradeType.SOLARS), "hv_solar_module");
+			ModItems.lvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.COMMON, EnumUpgradeType.SOLARS), "lv_solar_module");
+			ModItems.mvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.COMMON, EnumUpgradeType.SOLARS), "mv_solar_module");
+			ModItems.hvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.COMMON, EnumUpgradeType.SOLARS), "hv_solar_module");
 
 			RecipeHandler.instance().addSolarRecipes(ModItems.lvSolarModule);
 			RecipeHandler.instance().addSolarRecipes(ModItems.mvSolarModule);
@@ -73,9 +69,9 @@ public class ModIntegrationHandler {
 		ArmorAssemblerRecipes.addAssemblyRecipe(hybrid, ModItems.hsh, ModItems.exoModule);
 		ArmorAssemblerRecipes.addAssemblyRecipe(ultimate, ModItems.uhsh, ModItems.exoModule);
 
-		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.lvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.insulatedCopperCableItem, Character.valueOf('S'), ModItems.asp });
+		/*Recipes.advRecipes.addRecipe(new ItemStack(ModItems.lvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.insulatedCopperCableItem, Character.valueOf('S'), ModItems.asp });
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.mvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.insulatedGoldCableItem, Character.valueOf('S'), ModItems.hybridsp });
-		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.hvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.glassFiberCableItem, Character.valueOf('S'), ModItems.ulthybsp });
+		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.hvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.glassFiberCableItem, Character.valueOf('S'), ModItems.ulthybsp });*/
 	}
 
 	private static void integrateCompactSolars() {
@@ -97,17 +93,17 @@ public class ModIntegrationHandler {
 		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.exoQuantumHelm, ModItems.mvHat);
 		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.exoQuantumHelm, ModItems.hvHat);
 
-		ModItems.lvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.common, EnumUpgradeType.SOLARS), "lv_solar_module");
-		ModItems.mvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.common, EnumUpgradeType.SOLARS), "mv_solar_module");
-		ModItems.hvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.common, EnumUpgradeType.SOLARS), "hv_solar_module");
+		ModItems.lvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.COMMON, EnumUpgradeType.SOLARS), "lv_solar_module");
+		ModItems.mvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.COMMON, EnumUpgradeType.SOLARS), "mv_solar_module");
+		ModItems.hvSolarModule = ModItems.register(new ItemUpgrade(EnumRarity.COMMON, EnumUpgradeType.SOLARS), "hv_solar_module");
 
 		RecipeHandler.instance().addSolarRecipes(ModItems.lvSolarModule);
 		RecipeHandler.instance().addSolarRecipes(ModItems.mvSolarModule);
 		RecipeHandler.instance().addSolarRecipes(ModItems.hvSolarModule);
 
-		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.lvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.insulatedCopperCableItem, Character.valueOf('S'), ModItems.lvArray });
+		/*Recipes.advRecipes.addRecipe(new ItemStack(ModItems.lvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.insulatedCopperCableItem, Character.valueOf('S'), ModItems.lvArray });
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.mvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.insulatedGoldCableItem, Character.valueOf('S'), ModItems.mvArray });
-		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.hvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.glassFiberCableItem, Character.valueOf('S'), ModItems.hvArray });
+		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.hvSolarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.glassFiberCableItem, Character.valueOf('S'), ModItems.hvArray });*/
 	}
 
 	public static void integrateMod(int i) {

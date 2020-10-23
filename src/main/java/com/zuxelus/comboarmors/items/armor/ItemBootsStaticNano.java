@@ -1,32 +1,33 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
 import ic2.core.IC2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBootsStaticNano extends ItemArmorElectricUtility implements IMetalArmor {
-	public ItemBootsStaticNano(int renderIndex) {
-		super(renderIndex, 3, 1000000, 1000, 3, false);
+
+	public ItemBootsStaticNano() {
+		super(EntityEquipmentSlot.FEET, 1000000, 1000, 3, false);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return ComboArmors.MODID + ":textures/armor/nano_static.png";
 	}
 
@@ -47,7 +48,7 @@ public class ItemBootsStaticNano extends ItemArmorElectricUtility implements IMe
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase entity, ItemStack armor, DamageSource source, double damage, int slot) {
-		if (source == DamageSource.fall) {
+		if (source == DamageSource.FALL) {
 			int energyPerDamage = getEnergyPerDamage();
 			int damageLimit = Integer.MAX_VALUE;
 			if (energyPerDamage > 0)
@@ -60,7 +61,7 @@ public class ItemBootsStaticNano extends ItemArmorElectricUtility implements IMe
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class ItemBootsStaticNano extends ItemArmorElectricUtility implements IMe
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-		if (ArmorUtils.doStatic(player, itemStack))
+		if (doStatic(player, itemStack))
 			player.inventoryContainer.detectAndSendChanges();
 	}
 

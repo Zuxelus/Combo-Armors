@@ -9,12 +9,11 @@ import com.zuxelus.comboarmors.init.ModItems;
 import com.zuxelus.comboarmors.items.IItemUpgradeable;
 import com.zuxelus.comboarmors.items.armor.IJetpack;
 import com.zuxelus.comboarmors.items.armor.ItemArmorTankUtility;
-import com.zuxelus.comboarmors.utils.ModIntegrationHandler;
+//import com.zuxelus.comboarmors.utils.ModIntegrationHandler;
 
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.recipe.Recipes;
-import ic2.core.Ic2Items;
 import ic2.core.util.StackUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -49,75 +48,75 @@ public class RecipeHandler {
 	}
 
 	public void addComboRecipes() {
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarNanoHelm, ModItems.exoNanoHelm, Ic2Items.solarHelmet);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarNanoHelm, ModItems.exoSolar, Ic2Items.nanoHelmet);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarNanoHelm, ModItems.exoNanoHelm, ComboArmors.ic2.getItemStack("solarHelmet"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarNanoHelm, ModItems.exoSolar, ComboArmors.ic2.getItemStack("nanoHelmet"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.exoQuantumHelm, Ic2Items.solarHelmet);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.exoSolar, Ic2Items.quantumHelmet);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.solarNanoHelm, Ic2Items.quantumHelmet);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.exoQuantumHelm, ComboArmors.ic2.getItemStack("solarHelmet"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.exoSolar, ComboArmors.ic2.getItemStack("quantumHelmet"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.solarQuantumHelm, ModItems.solarNanoHelm, ComboArmors.ic2.getItemStack("quantumHelmet"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoBatpack, ModItems.exoNanoChest, Ic2Items.batPack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoBatpack, ModItems.exoBatpack, Ic2Items.nanoBodyarmor);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoBatpack, ModItems.exoNanoChest, ComboArmors.ic2.getItemStack("batPack"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoBatpack, ModItems.exoBatpack, ComboArmors.ic2.getItemStack("nanoBodyarmor"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoAdvBatpack, ModItems.exoNanoChest, Ic2Items.advbatPack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoAdvBatpack, ModItems.exoAdvBatpack, Ic2Items.nanoBodyarmor);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoAdvBatpack, ModItems.nanoBatpack, Ic2Items.advbatPack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoAdvBatpack, ModItems.exoNanoChest, ComboArmors.ic2.getItemStack("advbatPack"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoAdvBatpack, ModItems.exoAdvBatpack, ComboArmors.ic2.getItemStack("nanoBodyarmor"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoAdvBatpack, ModItems.nanoBatpack, ComboArmors.ic2.getItemStack("advbatPack"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoEnergypack, ModItems.exoNanoChest, Ic2Items.energyPack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoEnergypack, ModItems.exoEnergypack, Ic2Items.nanoBodyarmor);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoEnergypack, ModItems.nanoAdvBatpack, Ic2Items.energyPack);	  
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoEnergypack, ModItems.exoNanoChest, ComboArmors.ic2.getItemStack("energyPack"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoEnergypack, ModItems.exoEnergypack, ComboArmors.ic2.getItemStack("nanoBodyarmor"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoEnergypack, ModItems.nanoAdvBatpack, ComboArmors.ic2.getItemStack("energyPack"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoJetpack, ModItems.exoNanoChest, Ic2Items.electricJetpack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoJetpack, ModItems.exoJetpack, Ic2Items.nanoBodyarmor);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoJetpack, ModItems.exoNanoChest, ComboArmors.ic2.getItemStack("electricJetpack"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoJetpack, ModItems.exoJetpack, ComboArmors.ic2.getItemStack("nanoBodyarmor"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoUltimate, Ic2Items.nanoBodyarmor, ModItems.jetpackEnergypack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoUltimate, Ic2Items.electricJetpack, ModItems.nanoEnergypack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoUltimate, Ic2Items.energyPack, ModItems.nanoJetpack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoUltimate, ComboArmors.ic2.getItemStack("nanoBodyarmor"), ModItems.jetpackEnergypack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoUltimate, ComboArmors.ic2.getItemStack("electricJetpack"), ModItems.nanoEnergypack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoUltimate, ComboArmors.ic2.getItemStack("energyPack"), ModItems.nanoJetpack);
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumBatpack, Ic2Items.batPack, ModItems.exoQuantumChest);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumBatpack, Ic2Items.quantumBodyarmor, ModItems.exoBatpack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumBatpack, ModItems.nanoBatpack, Ic2Items.quantumBodyarmor);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumBatpack, ComboArmors.ic2.getItemStack("batPack"), ModItems.exoQuantumChest);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumBatpack, ComboArmors.ic2.getItemStack("quantumBodyarmor"), ModItems.exoBatpack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumBatpack, ModItems.nanoBatpack, ComboArmors.ic2.getItemStack("quantumBodyarmor"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, Ic2Items.advbatPack, ModItems.exoQuantumChest);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, Ic2Items.quantumBodyarmor, ModItems.exoAdvBatpack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, ModItems.nanoAdvBatpack, Ic2Items.quantumBodyarmor);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, ModItems.quantumBatpack, Ic2Items.advbatPack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, ComboArmors.ic2.getItemStack("advbatPack"), ModItems.exoQuantumChest);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, ComboArmors.ic2.getItemStack("quantumBodyarmor"), ModItems.exoAdvBatpack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, ModItems.nanoAdvBatpack, ComboArmors.ic2.getItemStack("quantumBodyarmor"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumAdvBatpack, ModItems.quantumBatpack, ComboArmors.ic2.getItemStack("advbatPack"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, Ic2Items.energyPack, ModItems.exoQuantumChest);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, Ic2Items.quantumBodyarmor, ModItems.exoEnergypack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, ModItems.nanoEnergypack, Ic2Items.quantumBodyarmor);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, ModItems.quantumAdvBatpack, Ic2Items.energyPack);	  
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, ComboArmors.ic2.getItemStack("energyPack"), ModItems.exoQuantumChest);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, ComboArmors.ic2.getItemStack("quantumBodyarmor"), ModItems.exoEnergypack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, ModItems.nanoEnergypack, ComboArmors.ic2.getItemStack("quantumBodyarmor"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumEnergypack, ModItems.quantumAdvBatpack, ComboArmors.ic2.getItemStack("energyPack"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumUltimate, Ic2Items.electricJetpack, ModItems.quantumEnergypack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumUltimate, Ic2Items.quantumBodyarmor, ModItems.jetpackEnergypack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumUltimate, ModItems.nanoUltimate, Ic2Items.quantumBodyarmor);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumUltimate, ComboArmors.ic2.getItemStack("electricJetpack"), ModItems.quantumEnergypack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumUltimate, ComboArmors.ic2.getItemStack("quantumBodyarmor"), ModItems.jetpackEnergypack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumUltimate, ModItems.nanoUltimate, ComboArmors.ic2.getItemStack("quantumBodyarmor"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackBatpack, Ic2Items.electricJetpack, ModItems.exoBatpack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackBatpack, ModItems.exoJetpack, Ic2Items.batPack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackBatpack, ComboArmors.ic2.getItemStack("electricJetpack"), ModItems.exoBatpack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackBatpack, ModItems.exoJetpack, ComboArmors.ic2.getItemStack("batPack"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackAdvBatpack, Ic2Items.electricJetpack, ModItems.exoAdvBatpack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackAdvBatpack, ModItems.exoJetpack, Ic2Items.advbatPack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackAdvBatpack, ModItems.jetpackBatpack, Ic2Items.advbatPack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackAdvBatpack, ComboArmors.ic2.getItemStack("electricJetpack"), ModItems.exoAdvBatpack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackAdvBatpack, ModItems.exoJetpack, ComboArmors.ic2.getItemStack("advbatPack"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackAdvBatpack, ModItems.jetpackBatpack, ComboArmors.ic2.getItemStack("advbatPack"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackEnergypack, Ic2Items.electricJetpack, ModItems.exoEnergypack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackEnergypack, ModItems.exoJetpack, Ic2Items.energyPack);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackEnergypack, ModItems.jetpackAdvBatpack, Ic2Items.energyPack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackEnergypack, ComboArmors.ic2.getItemStack("electricJetpack"), ModItems.exoEnergypack);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackEnergypack, ModItems.exoJetpack, ComboArmors.ic2.getItemStack("energyPack"));
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.jetpackEnergypack, ModItems.jetpackAdvBatpack, ComboArmors.ic2.getItemStack("energyPack"));
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoStatic, Ic2Items.staticBoots, ModItems.exoNanoBoots);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoStatic, Ic2Items.nanoBoots, ModItems.exoStatic);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoStatic, ComboArmors.ic2.getItemStack("staticBoots"), ModItems.exoNanoBoots);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.nanoStatic, ComboArmors.ic2.getItemStack("nanoBoots"), ModItems.exoStatic);
 
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumStatic, Ic2Items.staticBoots, ModItems.exoQuantumBoots);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumStatic, Ic2Items.quantumBoots, ModItems.exoStatic);
-		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumStatic, ModItems.nanoStatic, Ic2Items.quantumBoots);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumStatic, ComboArmors.ic2.getItemStack("staticBoots"), ModItems.exoQuantumBoots);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumStatic, ComboArmors.ic2.getItemStack("quantumBoots"), ModItems.exoStatic);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.quantumStatic, ModItems.nanoStatic, ComboArmors.ic2.getItemStack("quantumBoots"));
 	}
 
 	public void addCraftingRecipes() {
-		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.drillBit), new Object[] { "RRA", Character.valueOf('R'), "plateIron", Character.valueOf('A'), Ic2Items.advancedAlloy });
+		/*Recipes.advRecipes.addRecipe(new ItemStack(ModItems.drillBit), new Object[] { "RRA", Character.valueOf('R'), "plateIron", Character.valueOf('A'), Ic2Items.advancedAlloy });
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.drill), new Object[] { "BRE", "  P", "  R", Character.valueOf('R'), "plateIron", Character.valueOf('B'), ModItems.drillBit, Character.valueOf('E'), Ic2Items.electronicCircuit, Character.valueOf('P'), StackUtil.copyWithWildCard(Ic2Items.reBattery) });
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.drill), new Object[] { "BRE", "  P", "  R", Character.valueOf('R'), "plateIron", Character.valueOf('B'), ModItems.drillBit, Character.valueOf('E'), Ic2Items.electronicCircuit, Character.valueOf('P'), StackUtil.copyWithWildCard(Ic2Items.chargedReBattery) });
-		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.armorAssembler), new Object[] { "GDG", "ALA", "GCG", Character.valueOf('G'), Items.glowstone_dust, Character.valueOf('D'), ModItems.drill, Character.valueOf('C'), Ic2Items.advancedCircuit, Character.valueOf('L'), StackUtil.copyWithWildCard(Ic2Items.lapotronCrystal), Character.valueOf('A'), Ic2Items.advancedMachine });
+		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.armorAssembler), new Object[] { "GDG", "ALA", "GCG", Character.valueOf('G'), Items.GLOWSTONE_DUST, Character.valueOf('D'), ModItems.drill, Character.valueOf('C'), Ic2Items.advancedCircuit, Character.valueOf('L'), StackUtil.copyWithWildCard(Ic2Items.lapotronCrystal), Character.valueOf('A'), Ic2Items.advancedMachine });
 		if (ComboArmors.config.craftNanoBow)
-			Recipes.advRecipes.addRecipe(new ItemStack(ModItems.nanoBow), new Object[] { " CS", "E S", " CS", Character.valueOf('G'), Items.glowstone_dust, Character.valueOf('C'), Ic2Items.carbonPlate, Character.valueOf('S'), Ic2Items.glassFiberCableItem, Character.valueOf('A'), Ic2Items.advancedAlloy, Character.valueOf('E'), StackUtil.copyWithWildCard(Ic2Items.energyCrystal) });
+			Recipes.advRecipes.addRecipe(new ItemStack(ModItems.nanoBow), new Object[] { " CS", "E S", " CS", Character.valueOf('G'), Items.GLOWSTONE_DUST, Character.valueOf('C'), Ic2Items.carbonPlate, Character.valueOf('S'), Ic2Items.glassFiberCableItem, Character.valueOf('A'), Ic2Items.advancedAlloy, Character.valueOf('E'), StackUtil.copyWithWildCard(Ic2Items.energyCrystal) });
 		Recipes.advRecipes.addRecipe(StackUtil.copyWithSize(new ItemStack(ModItems.exoModule), 4), new Object[] { "RRR", "RCR", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.electronicCircuit });
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.exoNanoHelm), new Object[] { "EEE", "EHE", Character.valueOf('E'), ModItems.exoModule, Character.valueOf('H'), StackUtil.copyWithWildCard(Ic2Items.nanoHelmet) });
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.exoNanoChest), new Object[] { "ENE", "EEE", "EEE", Character.valueOf('E'), ModItems.exoModule, Character.valueOf('N'), StackUtil.copyWithWildCard(Ic2Items.nanoBodyarmor) });
@@ -139,7 +138,7 @@ public class RecipeHandler {
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.exoEnergypack), new Object[] { "ELE", "EEE", "EEE", Character.valueOf('E'), ModItems.exoModule, Character.valueOf('L'), StackUtil.copyWithWildCard(Ic2Items.energyPack) });    
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.overclockerUpgrade), new Object[] { "IOI", "OAO", "IOI", Character.valueOf('I'), Ic2Items.iridiumPlate, Character.valueOf('O'), Ic2Items.overclockerUpgrade, Character.valueOf('A'), Ic2Items.advancedCircuit });
 		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.exoJet), new Object[] { "EBE", "EEE", "EEE", Character.valueOf('E'), ModItems.exoModule, Character.valueOf('B'), StackUtil.copyWithWildCard(Ic2Items.jetpack) });
-		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.exoCFPack), new Object[] { "EBE", "EEE", "EEE", Character.valueOf('E'), ModItems.exoModule, Character.valueOf('B'), StackUtil.copyWithWildCard(Ic2Items.cfPack) });    
+		Recipes.advRecipes.addRecipe(new ItemStack(ModItems.exoCFPack), new Object[] { "EBE", "EEE", "EEE", Character.valueOf('E'), ModItems.exoModule, Character.valueOf('B'), StackUtil.copyWithWildCard(Ic2Items.cfPack) });*/
 	}
 
 	public void addElectricRecipes(ItemStack upgrade) {
@@ -219,7 +218,6 @@ public class RecipeHandler {
 		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
 			ItemStack input = inventory.getStackInSlot(i);
 			if (input != null) {
-
 				NBTTagCompound nbtin = StackUtil.getOrCreateNbtData(input);
 				if (input.getItem() == ModItems.flightModule && output.getItem() instanceof IJetpack)
 					nbtout.setBoolean("flight", true);
@@ -229,59 +227,59 @@ public class RecipeHandler {
 					nbtout.setBoolean("overcharge", true);
 				if (input.getItem() == ModItems.solarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
-					prod += input.stackSize;
-					input.stackSize = 0;
+					prod += input.getCount();
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
 				}
 				if (ModItems.lvSolarModule != null && input.getItem() == ModItems.lvSolarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
-					prod += input.stackSize * 8;
-					input.stackSize = 0;
+					prod += input.getCount() * 8;
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
 				}
 				if (ModItems.mvSolarModule != null && input.getItem() == ModItems.mvSolarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
-					prod += input.stackSize * 64;
-					input.stackSize = 0;
+					prod += input.getCount() * 64;
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
 				}
 				if (ModItems.hvSolarModule != null && input.getItem() == ModItems.hvSolarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
-					prod += input.stackSize * 512;
-					input.stackSize = 0;
+					prod += input.getCount() * 512;
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
 				}
 				if (input.getItem() == ModItems.staticModule && ComboArmors.statics.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("staticProd");
-					prod += input.stackSize;
-					input.stackSize = 0;
+					prod += input.getCount();
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("staticProd", prod);
 				}
 				if (input.getItem() == ModItems.cellModule && output.getItem() instanceof ItemArmorTankUtility) {
 					int prod = nbtout.getInteger("addCapacity");
-					prod += input.stackSize;
-					input.stackSize = 0;
+					prod += input.getCount();
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("addCapacity", prod * 10000);
 				}
-				if (input.isItemEqual(Ic2Items.energyStorageUpgrade) && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
+				if (input.isItemEqual(ComboArmors.ic2.getItemStack("energyStorageUpgrade")) && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
 					IItemUpgradeable outputItem = (IItemUpgradeable) output.getItem();
 					int charge = nbtout.getInteger("upgradedCharge");
-					charge += input.stackSize * 10000;
+					charge += input.getCount() * 10000;
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 					updateElectricDamageBars(output);
@@ -289,10 +287,10 @@ public class RecipeHandler {
 				if (input.getItem() == ModItems.energyMk2 && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
 					IItemUpgradeable outputItem = (IItemUpgradeable) output.getItem();
 					int charge = nbtout.getInteger("upgradedCharge");
-					charge += input.stackSize * 100000;
+					charge += input.getCount() * 100000;
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 					updateElectricDamageBars(output);
@@ -300,32 +298,32 @@ public class RecipeHandler {
 				if (input.getItem() == ModItems.energyMk3 && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
 					IItemUpgradeable outputItem = (IItemUpgradeable) output.getItem();
 					int charge = nbtout.getInteger("upgradedCharge");
-					charge += input.stackSize * 1000000;
+					charge += input.getCount() * 1000000;
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 					updateElectricDamageBars(output);
 				}
-				if (input.isItemEqual(Ic2Items.overclockerUpgrade) && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
+				if (input.isItemEqual(ComboArmors.ic2.getItemStack("overclockerUpgrade")) && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
 					IItemUpgradeable outputItem = (IItemUpgradeable) output.getItem();
 					int transfer = nbtout.getInteger("upgradedTransfer");
-					transfer += input.stackSize * 100;
+					transfer += input.getCount() * 100;
 					if (transfer > outputItem.getMaxUpgradeableTransfer())
 						transfer = outputItem.getMaxUpgradeableTransfer();
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedTransfer", transfer);
 					nbtout.setInteger("transferLimit", outputItem.getDefaultTransferLimit() + transfer);
 					updateElectricDamageBars(output);
 				}
-				if (input.isItemEqual(Ic2Items.transformerUpgrade) && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
+				if (input.isItemEqual(ComboArmors.ic2.getItemStack("transformerUpgrade")) && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
 					IItemUpgradeable outputItem = (IItemUpgradeable) output.getItem();
 					int tier = nbtout.getInteger("upgradedTier");
-					tier += input.stackSize;
+					tier += input.getCount();
 					if (outputItem.getDefaultTier() - tier < 1)
 						tier = outputItem.getDefaultTier() - 1;
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedTier", tier);
 					nbtout.setInteger("tier", outputItem.getDefaultTier() - tier);
 					if (nbtout.getInteger("tier") < 1)
@@ -341,7 +339,7 @@ public class RecipeHandler {
 					charge += nbtin.getInteger("upgradedCharge");
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 
@@ -349,7 +347,7 @@ public class RecipeHandler {
 					transfer += nbtin.getInteger("upgradedTransfer");
 					if (transfer > outputItem.getMaxUpgradeableTransfer())
 						transfer = outputItem.getMaxUpgradeableTransfer();
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedTransfer", transfer);
 					nbtout.setInteger("transferLimit", outputItem.getDefaultTransferLimit() + transfer);
 
@@ -357,7 +355,7 @@ public class RecipeHandler {
 					out += nbtin.getInteger("upgradedTier");
 					if (outputItem.getDefaultTier() - out < 1)
 						out = outputItem.getDefaultTier() - 1;
-					input.stackSize = 0;
+					input.setCount(0);
 					nbtout.setInteger("upgradedTier", out);
 					nbtout.setInteger("tier", outputItem.getDefaultTier() - out);
 					if (nbtout.getInteger("tier") < 1)
@@ -367,15 +365,15 @@ public class RecipeHandler {
 				if (ComboArmors.solars.contains(input.getUnlocalizedName()) && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
 					prod += nbtin.getInteger("solarProd");
-					if (ModIntegrationHandler.isModLoaded(0)) {
+					/*if (ModIntegrationHandler.isModLoaded(0)) { //TODO
 						if (input.getItem() == ModItems.lvHat)
 							prod += 7;
 						else if (input.getItem() == ModItems.mvHat)
 							prod += 63;
 						else if (input.getItem() == ModItems.hvHat)
 							prod += 511;
-					}
-					input.stackSize = 0;
+					}*/
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
@@ -383,7 +381,7 @@ public class RecipeHandler {
 				if (ComboArmors.statics.contains(input.getUnlocalizedName()) && ComboArmors.statics.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("staticProd");
 					prod += nbtin.getInteger("staticProd");
-					input.stackSize = 0;
+					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("staticProd", prod);

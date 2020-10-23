@@ -2,33 +2,33 @@ package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
-import ic2.core.IC2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorExoNano extends ItemArmorElectricUtility implements IMetalArmor {
-	public ItemArmorExoNano(int renderIndex, int piece) {
-		super(renderIndex, piece, 1000000, 1600, 3, false);
-		if (piece == 3) // boots
+
+	public ItemArmorExoNano(EntityEquipmentSlot slot) {
+		super(slot, 1000000, 1600, 3, false);
+		if (slot == EntityEquipmentSlot.FEET) // boots
 			MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		if (stack.getItem() == ModItems.exoNanoHelm || stack.getItem() == ModItems.exoNanoChest || stack.getItem() == ModItems.exoNanoBoots)
 			return ComboArmors.MODID + ":textures/armor/exo_nano_1.png";
 		return ComboArmors.MODID + ":textures/armor/exo_nano_2.png";
@@ -51,7 +51,7 @@ public class ItemArmorExoNano extends ItemArmorElectricUtility implements IMetal
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase entity, ItemStack armor, DamageSource source, double damage, int slot) {
-		if (source == DamageSource.fall && armorType == 3) {
+		if (source == DamageSource.FALL && armorType == EntityEquipmentSlot.FEET) {
 			int energyPerDamage = getEnergyPerDamage();
 			int damageLimit = Integer.MAX_VALUE;
 			if (energyPerDamage > 0)
@@ -64,7 +64,7 @@ public class ItemArmorExoNano extends ItemArmorElectricUtility implements IMetal
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ItemArmorExoNano extends ItemArmorElectricUtility implements IMetal
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (armorType == 0)
+		if (armorType == EntityEquipmentSlot.HEAD)
 			if (onNightvisionTick(player, stack))
 				player.inventoryContainer.detectAndSendChanges();
 	}

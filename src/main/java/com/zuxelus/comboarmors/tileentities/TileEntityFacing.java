@@ -3,63 +3,52 @@ package com.zuxelus.comboarmors.tileentities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityFacing extends TileEntity {
-	protected ForgeDirection facing;
-	protected ForgeDirection rotation;
+	protected EnumFacing facing;
+	protected EnumFacing rotation;
 
-	public ForgeDirection getFacingForge() {
+	public EnumFacing getFacing() {
 		return facing;
 	}
 
 	public void setFacing(int meta) {
-		ForgeDirection newFacing = ForgeDirection.getOrientation(meta);
-		if (worldObj != null && !worldObj.isRemote && newFacing != facing)
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		facing = ForgeDirection.getOrientation(meta);
-	}
-
-	public void setFacing(ForgeDirection meta) {
-		facing = meta;
+		facing = EnumFacing.getFront(meta);
 	}
 
 	protected boolean hasRotation() {
 		return false;
 	}
 
-	public ForgeDirection getRotation() {
+	public EnumFacing getRotation() {
 		return rotation;
 	}
 
 	public void setRotation(int meta) {
-		rotation = ForgeDirection.getOrientation(meta);
+		rotation = EnumFacing.getFront(meta);
 	}
 
-	public void setRotation(ForgeDirection meta) {
+	public void setRotation(EnumFacing meta) {
 		rotation = meta;
 	}
 
 	protected void readProperties(NBTTagCompound tag) {
-		ForgeDirection oldFacing = facing;
 		if (tag.hasKey("facing"))
-			facing = ForgeDirection.getOrientation(tag.getInteger("facing"));
+			facing = EnumFacing.getFront(tag.getInteger("facing"));
 		else
-			facing = ForgeDirection.NORTH;
-		if (worldObj != null && worldObj.isRemote && oldFacing != facing)
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			facing = EnumFacing.NORTH;
 		if (hasRotation()) {
 			if (tag.hasKey("rotation"))
-				rotation = ForgeDirection.getOrientation(tag.getInteger("rotation"));
+				rotation = EnumFacing.getFront(tag.getInteger("rotation"));
 			else
-				rotation = ForgeDirection.NORTH;
+				rotation = EnumFacing.NORTH;
 		}
 	}
 
 	protected NBTTagCompound writeProperties(NBTTagCompound tag) {
-		tag.setInteger("facing", facing.ordinal());
+		tag.setInteger("facing", facing.getIndex());
 		if (hasRotation() && rotation != null)
-			tag.setInteger("rotation", rotation.ordinal());
+			tag.setInteger("rotation", rotation.getIndex());
 		return tag;
 	}
 }
