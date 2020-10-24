@@ -11,6 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 public class ItemBodyNanoJetpack extends ItemArmorBaseJetpack implements IMetalArmor {
+
 	public ItemBodyNanoJetpack(int renderIndex) {
 		super(renderIndex, 1, 1500000, 160, 3, false);
 	}

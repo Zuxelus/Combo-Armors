@@ -1,10 +1,5 @@
 package com.zuxelus.comboarmors.gui;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
 
 import com.zuxelus.comboarmors.ComboArmors;
@@ -12,6 +7,9 @@ import com.zuxelus.comboarmors.containers.ContainerArmorAssembler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class GuiArmorAssembler extends GuiContainer {
@@ -19,8 +17,7 @@ public class GuiArmorAssembler extends GuiContainer {
 	private String name;
 	private ContainerArmorAssembler container;
 
-	public GuiArmorAssembler(ContainerArmorAssembler container)
-	{
+	public GuiArmorAssembler(ContainerArmorAssembler container) {
 		super(container);
 		this.container = container;
 		name = I18n.format("tile.armor_assembler.name");

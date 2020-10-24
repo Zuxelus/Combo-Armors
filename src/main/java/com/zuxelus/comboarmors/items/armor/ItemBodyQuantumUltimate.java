@@ -9,6 +9,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 public class ItemBodyQuantumUltimate extends ItemArmorBaseQuantum {
+
 	public ItemBodyQuantumUltimate(int renderIndex) {
 		super(renderIndex, 1, 18000000, 12000, 4, true);
 	}

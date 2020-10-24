@@ -1,7 +1,6 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemArmorExoSolar extends ItemArmorExoUtility {
+
 	public ItemArmorExoSolar(int renderIndex) {
 		super(renderIndex, 0);
 	}

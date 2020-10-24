@@ -1,21 +1,17 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
-import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
-import ic2.core.IC2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -74,7 +70,7 @@ public class ItemBootsStaticQuantum extends ItemArmorElectricUtility implements 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		boolean updated = false;
-		if (ArmorUtils.doStatic(player, stack))
+		if (doStatic(player, stack))
 			updated = true;
 		if (onQuantumBootsTick(player, stack))
 			updated = true;

@@ -7,9 +7,9 @@ import org.apache.logging.log4j.Logger;
 import com.zuxelus.comboarmors.client.ClientProxy;
 import com.zuxelus.comboarmors.client.ClientTickHandler;
 import com.zuxelus.comboarmors.config.ConfigHandler;
+import com.zuxelus.comboarmors.init.ModIntegrationHandler;
 import com.zuxelus.comboarmors.init.ModItems;
 import com.zuxelus.comboarmors.network.ChannelHandler;
-import com.zuxelus.comboarmors.utils.ModIntegrationHandler;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -24,7 +24,7 @@ import ic2.api.item.ElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(name = ComboArmors.NAME, modid = ComboArmors.MODID, version = ComboArmors.VERSION, dependencies = "required-after:IC2@[2.2.767-experimental,)", guiFactory = "com.zuxelus.comboarmors.config.GuiFactory", acceptedMinecraftVersions = "[1.7.10]")
+@Mod(name = ComboArmors.NAME, modid = ComboArmors.MODID, version = ComboArmors.VERSION, dependencies = "required-after:IC2@[2.2.767-experimental,);after:CompactSolars;after:AdvancedSolarPanel", guiFactory = "com.zuxelus.comboarmors.config.GuiFactory", acceptedMinecraftVersions = "[1.7.10]")
 public class ComboArmors {
 	public static final String MODID = "comboarmors";
 	public static final String NAME = "Combo Armors";
@@ -55,6 +55,7 @@ public class ComboArmors {
 		ModItems.onBlockRegistry();
 		ModItems.onItemRegistry();
 		ModItems.registerTileEntities();
+		ModIntegrationHandler.loadIntegrationModules();
 	}
 
 	@EventHandler
@@ -67,7 +68,6 @@ public class ComboArmors {
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		ModIntegrationHandler.loadIntegrationModules();
 		ModItems.registerLists();
 		ModItems.registerCraftingRecipes();
 	}

@@ -1,12 +1,9 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
-import ic2.api.item.ElectricItem;
 import ic2.core.IC2;
-import ic2.core.audio.AudioSource;
-import ic2.core.audio.PositionSpec;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,10 +28,10 @@ public abstract class ItemArmorBaseJetpack extends ItemArmorElectricUtility impl
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (player.inventory.armorInventory[2] != stack)
+		if (player.inventory.armorItemInSlot(2) != stack)
 			return;
 
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbtData.getBoolean("isFlyActive"))
 			return;
 		if (!nbtData.hasKey("jetpack"))
@@ -78,15 +75,15 @@ public abstract class ItemArmorBaseJetpack extends ItemArmorElectricUtility impl
 	}
 
 	private boolean useJetpack(EntityPlayer player, boolean hoverMode, boolean electric, boolean boost) {
-		ItemStack jetpack = player.inventory.armorInventory[2];
+		ItemStack jetpack = player.inventory.armorItemInSlot(2);
 
 		if (getCharge(jetpack) <= 0)
 			return false;
 
 		float power = electric? 0.7F : 1.0F;
 		float dropPercentage = electric? 0.05F : 0.2F;
-		if (getCharge(jetpack) / getDefaultMaxCharge() <= dropPercentage)
-			power *= getCharge(jetpack) / getDefaultMaxCharge() * dropPercentage;
+		if (getCharge(jetpack) / getMaxCharge(jetpack) <= dropPercentage)
+			power *= getCharge(jetpack) / getMaxCharge(jetpack) * dropPercentage;
 		
 		if (IC2.keyboard.isForwardKeyDown(player)) {
 			float retruster = hoverMode ? 1.0F : 0.15F;
@@ -100,7 +97,7 @@ public abstract class ItemArmorBaseJetpack extends ItemArmorElectricUtility impl
 					player.moveFlying(0.0F, 0.4F * forwardpower, 0.02F);
 			}
 		}
-		int worldHeight = IC2.getWorldHeight(player.worldObj);
+		int worldHeight = IC2.getWorldHeight(player.getEntityWorld());
 		int maxFlightHeight = electric ? (int) (worldHeight / 1.28F) : worldHeight;
 
 		float y = (float) player.posY;

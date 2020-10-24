@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
 public class ItemBodyQuantumEnergypack extends ItemArmorBaseQuantum {
+
 	public ItemBodyQuantumEnergypack(int renderIndex) {
 		super(renderIndex, 1, 15000000, 12000, 4, true);
 	}

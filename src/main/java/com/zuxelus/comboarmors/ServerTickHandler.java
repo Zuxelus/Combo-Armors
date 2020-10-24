@@ -11,7 +11,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import ic2.api.item.ElectricItem;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -33,13 +32,13 @@ public class ServerTickHandler {
 			return;
 		EntityPlayer player = (EntityPlayer) event.player;
 
-		ItemStack armor = player.inventory.armorInventory[2];
+		ItemStack armor = player.inventory.armorItemInSlot(2);
 		if (flyList.contains(player))
 			if (armor != null && armor.getItem() instanceof IJetpack) {
-				NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+				NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 				if (tag.getBoolean("flight") && tag.getBoolean("isFlyActive")) {
 					if (!player.capabilities.isCreativeMode) {
-						if (ItemNBTHelper.getCharge(armor) < 10) {
+						if (tag.getInteger("charge") < 10) {
 							player.addChatMessage(new ChatComponentTranslation("Out of energy!"));
 							disableFlyMode(player, tag);
 						} else if (player.capabilities.isFlying)
@@ -54,10 +53,10 @@ public class ServerTickHandler {
 
 		if (cloakingList.contains(player)) {
 			if (armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
-				NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+				NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 				if (tag.getBoolean("cloaking") && tag.getBoolean("isCloakActive")) {
 					if (!player.capabilities.isCreativeMode)
-						if (ItemNBTHelper.getCharge(armor) < 10) {
+						if (tag.getInteger("charge") < 10) {
 							player.addChatMessage(new ChatComponentTranslation("info.out_of_energy"));
 							disableCloakMode(player, tag);
 						} else
@@ -69,11 +68,11 @@ public class ServerTickHandler {
 	}
 
 	public static void onPlayerLogin(EntityPlayer player) {
-		ItemStack armor = player.inventory.armorInventory[2];
+		ItemStack armor = player.inventory.armorItemInSlot(2);
 		if (armor == null)
 			return;
 
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 		if (!player.isInvisible() && armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			if (tag.getBoolean("cloaking") && tag.getBoolean("isCloakActive"))
 				enableCloakMode(player, tag);
@@ -83,11 +82,11 @@ public class ServerTickHandler {
 	}
 
 	public static boolean switchCloakMode(EntityPlayer player) {
-		ItemStack armor = player.inventory.armorInventory[2];
+		ItemStack armor = player.inventory.armorItemInSlot(2);
 		if (armor == null || !ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			return false;
 		
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 		if (!tag.getBoolean("cloaking"))
 			return false;
 		
@@ -96,7 +95,7 @@ public class ServerTickHandler {
 			return false;
 		}
 
-		if (ItemNBTHelper.getCharge(armor) < 10 && !player.capabilities.isCreativeMode) {
+		if (tag.getInteger("charge") < 10 && !player.capabilities.isCreativeMode) {
 			player.addChatMessage(new ChatComponentTranslation("info.not_enough_energy_cloaking"));
 			return false;
 		}
@@ -125,16 +124,16 @@ public class ServerTickHandler {
 	}
 
 	public static void switchFlyMode(EntityPlayer player) {
-		ItemStack armor = player.inventory.armorInventory[2];
+		ItemStack armor = player.inventory.armorItemInSlot(2);
 		if (armor == null || !(armor.getItem() instanceof IJetpack))
 			return;
 		
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 		if (tag.getBoolean("flight")) {
 			if (tag.getBoolean("isFlyActive"))
 				disableFlyMode(player, tag);
 			else {
-				if (ItemNBTHelper.getCharge(armor) < 10 && !player.capabilities.isCreativeMode)
+				if (tag.getInteger("charge") < 10 && !player.capabilities.isCreativeMode)
 					player.addChatMessage(new ChatComponentTranslation("info.not_enough_energy_flight"));
 				else
 					enableFlyMode(player, tag);

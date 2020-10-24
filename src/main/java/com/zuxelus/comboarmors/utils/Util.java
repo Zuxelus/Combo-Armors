@@ -24,10 +24,6 @@ public class Util {
 		return item.getUnlocalizedName().substring(item.getUnlocalizedName().indexOf(".") + 1);
 	}
 
-	public static IIcon register(IIconRegister ir, Block b) {
-		return register(ir, getFileName(b));
-	}
-
 	public static IIcon register(IIconRegister ir, Item i) {
 		return register(ir, getFileName(i));
 	}
@@ -43,31 +39,5 @@ public class Util {
 		icon[2] = register(ir, getFileName(block) + "_front");
 		icon[3] = register(ir, getFileName(block) + "_side");
 		return icon;
-	}
-
-	public static void dropItems(World world, int x, int y, int z) {
-		Random rand = new Random();
-		TileEntity te = world.getTileEntity(x, y, z);
-		if (!(te instanceof IInventory))
-			return;
-
-		IInventory inventory = (IInventory) te;
-		for (int i = 0; i < inventory.getSizeInventory(); i++) {
-			ItemStack stack = inventory.getStackInSlot(i);
-			if (stack != null && stack.stackSize > 0) {
-				float rx = rand.nextFloat() * 0.8F + 0.1F;
-				float ry = rand.nextFloat() * 0.8F + 0.1F;
-				float rz = rand.nextFloat() * 0.8F + 0.1F;
-				EntityItem item = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(stack.getItem(), stack.stackSize, stack.getItemDamage()));
-				if (stack.hasTagCompound())
-					item.getEntityItem().setTagCompound((NBTTagCompound) stack.getTagCompound().copy());
-				float factor = 0.05F;
-				item.motionX = rand.nextGaussian() * factor;
-				item.motionY = rand.nextGaussian() * factor + 0.2F;
-				item.motionZ = rand.nextGaussian() * factor;
-				world.spawnEntityInWorld(item);
-				stack.stackSize = 0;
-			}
-		}
 	}
 }

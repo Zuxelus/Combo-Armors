@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ArmorAssemblerRecipes {
+
 	public static class Input {
 		public final ItemStack i1;
 		public final ItemStack i2;

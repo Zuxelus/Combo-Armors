@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
 public class ItemBodyQuantumBatpack extends ItemArmorBaseQuantum {
+
 	public ItemBodyQuantumBatpack(int renderIndex) {
 		super(renderIndex, 1, 11000000, 12000, 4, true);
 	}

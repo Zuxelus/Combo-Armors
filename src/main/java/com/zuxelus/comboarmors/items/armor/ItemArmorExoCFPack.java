@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemArmorExoCFPack extends ItemArmorTankUtility {
+
 	public ItemArmorExoCFPack(int renderIndex) {
 		super(renderIndex, 1, BlocksItems.getFluid(InternalName.fluidConstructionFoam), 80000);
 	}
@@ -27,13 +28,14 @@ public class ItemArmorExoCFPack extends ItemArmorTankUtility {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean par4) {
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean advanced) {
 		info.add(I18n.format("info.upgrade_module_installed"));
-		super.addInformation(stack, player, info, par4);
+		super.addInformation(stack, player, info, advanced);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tabs, List list) {
 		ItemStack stack = new ItemStack(ModItems.exoCFPack, 1);
 		fillTank(stack);

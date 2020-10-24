@@ -1,11 +1,8 @@
 package com.zuxelus.comboarmors.items.armor;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -13,20 +10,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
 import ic2.core.IC2;
-import ic2.core.IC2Potion;
-import ic2.core.audio.AudioSource;
-import ic2.core.audio.PositionSpec;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -87,7 +78,7 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		boolean updated = false;
 		switch (armorType) {
 		case 0:

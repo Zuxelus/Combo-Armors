@@ -8,7 +8,6 @@ import java.util.Map;
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.items.IItemUpgradeable;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
-import com.zuxelus.comboarmors.utils.Util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,17 +16,13 @@ import ic2.api.item.IElectricItem;
 import ic2.core.IC2;
 import ic2.core.IC2Potion;
 import ic2.core.Ic2Items;
-import ic2.core.audio.AudioSource;
-import ic2.core.audio.PositionSpec;
 import ic2.core.item.ItemTinCan;
 import ic2.core.util.StackUtil;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -67,7 +62,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (!nbt.getBoolean("loaded")) {
 			if (nbt.getInteger("tier") == 0)
 				nbt.setInteger("tier", getDefaultTier());
@@ -105,7 +100,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	}
 
 	private double getBaseAbsorptionRatio() {
-		switch (this.armorType) {
+		switch (armorType) {
 		case 0:
 			return 0.15D;
 		case 1:
@@ -132,7 +127,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	}
 
 	private boolean useQuantumJetpack(EntityPlayer player, boolean hoverMode, boolean hoverModeQ, boolean boost) {
-		ItemStack jetpack = player.inventory.armorInventory[2];
+		ItemStack jetpack = player.inventory.armorItemInSlot(2);
 
 		if (getCharge(jetpack) == 0)
 			return false;
@@ -151,7 +146,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 					player.moveFlying(0, 0.4F * forwardpower, 0.02F);
 			}
 		}
-		int worldHeight = IC2.getWorldHeight(player.worldObj);
+		int worldHeight = IC2.getWorldHeight(player.getEntityWorld());
 
 		float y = (float) player.posY;
 		if (y > worldHeight - 25) {
@@ -303,9 +298,9 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 			IC2.achievements.issueAchievement(player, "starveWithQHelmet");
 		// Food
 		if (ElectricItem.manager.canUse(stack, 1000) && player.getFoodStats().needFood()) {
-			for (int i = 0; i < player.inventory.mainInventory.length; i++)
-				if (player.inventory.mainInventory[i] != null && player.inventory.mainInventory[i].getItem() == Ic2Items.filledTinCan.getItem()) {
-					ItemStack can = player.inventory.mainInventory[i];
+			for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+				ItemStack can = player.inventory.mainInventory[i];
+				if (can != null && can.getItem() == Ic2Items.filledTinCan.getItem()) {
 					can = ((ItemTinCan) can.getItem()).onEaten(player, can);
 					if (can.stackSize <= 0)
 						player.inventory.mainInventory[i] = null;
@@ -313,6 +308,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 					result = true;
 					break;
 				}
+			}
 		} else if (player.getFoodStats().getFoodLevel() <= 0)
 			IC2.achievements.issueAchievement(player, "starveWithQHelmet");
 		// Potion
@@ -331,25 +327,25 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	}
 
 	protected static boolean onNightvisionTick(EntityPlayer player, ItemStack stack) {
-		if (player.isClientWorld())
-			return false;
-
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		byte toggleTimer = nbtData.getByte("toggleTimer");
 		boolean Nightvision = nbtData.getBoolean("Nightvision");
 		if (IC2.keyboard.isAltKeyDown(player) && IC2.keyboard.isModeSwitchKeyDown(player) && toggleTimer == 0) {
 			toggleTimer = 10;
 			Nightvision = !Nightvision;
-			nbtData.setBoolean("Nightvision", Nightvision);
-			if (Nightvision)
-				player.addChatMessage(new ChatComponentTranslation("info.nightvision_enabled"));
-			else
-				player.addChatMessage(new ChatComponentTranslation("info.nightvision_disabled"));
+			if (IC2.platform.isSimulating()) {
+				nbtData.setBoolean("Nightvision", Nightvision);
+				if (Nightvision)
+					player.addChatMessage(new ChatComponentTranslation("info.nightvision_enabled"));
+				else
+					player.addChatMessage(new ChatComponentTranslation("info.nightvision_disabled"));
+			}
 		}
 		int hubmode = nbtData.getInteger("HudMode");
 		if (IC2.keyboard.isAltKeyDown(player) && IC2.keyboard.isHudModeKeyDown(player) && toggleTimer == 0) {
 			toggleTimer = 10;
 			hubmode = hubmode == 2 ? 0 : hubmode + 1;
+			if (IC2.platform.isSimulating()) {
 				nbtData.setInteger("HudMode", hubmode);
 				switch (hubmode) {
 				case 0:
@@ -361,28 +357,28 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 				case 2:
 					player.addChatMessage(new ChatComponentTranslation("HUD (extended) enabled"));
 				}
+			}
 		}
-		if (toggleTimer > 0) {
+		if (IC2.platform.isSimulating() && toggleTimer > 0) {
 			toggleTimer--;
 			nbtData.setByte("toggleTimer", toggleTimer);
 		}
 		boolean result = false;
-		if (Nightvision)
-			if (ElectricItem.manager.use(stack, 1.0D, player)) {
-				int x = MathHelper.floor_double(player.posX);
-				int z = MathHelper.floor_double(player.posZ);
-				int y = MathHelper.floor_double(player.posY);
+		if (Nightvision && IC2.platform.isSimulating() && ElectricItem.manager.use(stack, 1.0D, player)) {
+			int x = MathHelper.floor_double(player.posX);
+			int z = MathHelper.floor_double(player.posZ);
+			int y = MathHelper.floor_double(player.posY);
 
-				int skylight = player.worldObj.getBlockLightValue(x, y, z);
-				if (skylight > 8) {
-					IC2.platform.removePotion(player, Potion.nightVision.id);
-					player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100, 0, true));
-				} else {
-					IC2.platform.removePotion(player, Potion.blindness.id);
-					player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
-				}
-				result = true;
+			int skylight = player.worldObj.getBlockLightValue(x, y, z);
+			if (skylight > 8) {
+				IC2.platform.removePotion(player, Potion.nightVision.id);
+				player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100, 0, true));
+			} else {
+				IC2.platform.removePotion(player, Potion.blindness.id);
+				player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
 			}
+			result = true;
+		}
 		return result;
 	}
 
@@ -429,7 +425,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 
 	@Override
 	public double getMaxCharge(ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getInteger("maxCharge") == 0)
 			nbt.setInteger("maxCharge", getDefaultMaxCharge());
 		return nbt.getInteger("maxCharge");
@@ -437,7 +433,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 
 	@Override
 	public int getTier(ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getInteger("tier") == 0)
 			nbt.setInteger("tier", getDefaultTier());
 		return nbt.getInteger("tier");
@@ -445,7 +441,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 
 	@Override
 	public double getTransferLimit(ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getInteger("transferLimit") == 0)
 			nbt.setInteger("transferLimit", getDefaultTransferLimit());
 		return nbt.getInteger("transferLimit");

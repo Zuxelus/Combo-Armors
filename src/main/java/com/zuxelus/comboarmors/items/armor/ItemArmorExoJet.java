@@ -4,12 +4,11 @@ import java.util.List;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
-import ic2.core.audio.AudioSource;
-import ic2.core.audio.PositionSpec;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import ic2.core.util.StackUtil;
@@ -21,9 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 
@@ -38,12 +35,12 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 		list.add(I18n.format("info.upgrade_module_installed"));
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getBoolean("flight"))
 			list.add(I18n.format("info.flight_turbine_installed"));
-		super.addInformation(stack, player, list, par4);
+		super.addInformation(stack, player, list, advanced);
 	}
 
 	@Override
@@ -61,9 +58,9 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (player.inventory.armorInventory[2] != stack)
+		if (player.inventory.armorItemInSlot(2) != stack)
 			return;
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbtData.getBoolean("isFlyActive"))
 			return;
 		boolean hoverMode = nbtData.getBoolean("hoverMode");
@@ -81,7 +78,7 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 			}
 		}
 		if (IC2.keyboard.isJumpKeyDown(player) || hoverMode)
-			jetpackUsed = useJetpack(player, hoverMode, nbtData.getBoolean("isFlyActive"));
+			jetpackUsed = useJetpack(player, stack, hoverMode, nbtData.getBoolean("isFlyActive"));
 		if (IC2.platform.isSimulating() && toggleTimer > 0) {
 			--toggleTimer;
 			nbtData.setByte("toggleTimer", toggleTimer);
@@ -91,8 +88,7 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 			player.inventoryContainer.detectAndSendChanges();
 	}
 
-	public boolean useJetpack(EntityPlayer player, boolean hoverMode, boolean boost) {
-		ItemStack jetpack = player.inventory.armorInventory[2];
+	public boolean useJetpack(EntityPlayer player, ItemStack jetpack, boolean hoverMode, boolean boost) {
 		if (getCharge(jetpack) <= 0.0D)
 			return false;
 
@@ -110,7 +106,7 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 					player.moveFlying(0.0F, 0.4F * forwardpower, 0.02F);
 			}
 		}
-		int worldHeight = IC2.getWorldHeight(player.worldObj);
+		int worldHeight = IC2.getWorldHeight(player.getEntityWorld());
 
 		float y = (float) player.posY;
 		if (y > worldHeight - 25) {

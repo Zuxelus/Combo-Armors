@@ -18,10 +18,6 @@ public class ServerProxy implements IGuiHandler {
 		ComboArmors.config.init(event.getSuggestedConfigurationFile());
 	}
 
-	public static void sendPlayerMessage(EntityPlayer player, String message) {
-		player.addChatMessage(new ChatComponentText(message));
-	}
-
 	public int addArmor(String name) {
 		return 0;
 	}

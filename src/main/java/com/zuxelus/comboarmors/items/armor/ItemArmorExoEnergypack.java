@@ -9,6 +9,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 public class ItemArmorExoEnergypack extends ItemArmorElectricUtility {
+
 	public ItemArmorExoEnergypack(int renderIndex) {
 		super(renderIndex, 1, 2000000, 2500, 4, true);
 	}

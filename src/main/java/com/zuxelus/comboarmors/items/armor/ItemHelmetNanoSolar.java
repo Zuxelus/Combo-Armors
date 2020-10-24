@@ -1,7 +1,6 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemHelmetNanoSolar extends ItemArmorElectricUtility implements IMetalArmor {
+
 	public ItemHelmetNanoSolar(int renderIndex) {
 		super(renderIndex, 0, 1000000, 1000, 3, false);
 	}

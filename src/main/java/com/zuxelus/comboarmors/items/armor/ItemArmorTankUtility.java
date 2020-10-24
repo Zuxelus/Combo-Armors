@@ -2,16 +2,13 @@ package com.zuxelus.comboarmors.items.armor;
 
 import java.util.List;
 
-import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ic2.core.util.StackUtil;
 import ic2.core.util.Util;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -34,7 +31,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 		FluidStack fs = getFluid(stack);
 		if (fs != null)
 			list.add("< " + FluidRegistry.getFluidName(fs) + ", " + fs.amount + "/" + getCapacity(stack) + " mB >");
@@ -57,7 +54,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) { }
 
 	protected void fillTank(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
 		NBTTagCompound fluidTag = tag.getCompoundTag("Fluid");
 		FluidStack fs = new FluidStack(allowfluid, getCapacity(stack));
 		fs.writeToNBT(fluidTag);
@@ -74,13 +71,13 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 	// IFluidContainerItem
 	@Override
 	public FluidStack getFluid(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
 		return FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("Fluid"));
 	}
 
 	@Override
 	public int getCapacity(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (tag.hasKey("addCapacity"))
 			return capacity + tag.getInteger("addCapacity");
 		tag.setInteger("addCapacity", 0);
@@ -95,7 +92,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 			return 0;
 		if (resource.getFluid() != allowfluid)
 			return 0;
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
 		NBTTagCompound fluidTag = tag.getCompoundTag("Fluid");
 
 		FluidStack fs = FluidStack.loadFluidStackFromNBT(fluidTag);
@@ -118,7 +115,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 		if (stack.stackSize != 1)
 			return null;
 
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
 		NBTTagCompound fluidTag = tag.getCompoundTag("Fluid");
 		FluidStack fs = FluidStack.loadFluidStackFromNBT(fluidTag);
 		if (fs == null)

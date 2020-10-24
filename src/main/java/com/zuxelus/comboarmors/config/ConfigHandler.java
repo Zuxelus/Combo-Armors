@@ -3,7 +3,7 @@ package com.zuxelus.comboarmors.config;
 import java.io.File;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.ModIntegrationHandler;
+import com.zuxelus.comboarmors.init.ModIntegrationHandler;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

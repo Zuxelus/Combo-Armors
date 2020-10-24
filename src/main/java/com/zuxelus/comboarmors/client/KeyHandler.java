@@ -25,7 +25,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
 public class KeyHandler {
-	public static KeyBinding flyKey = new KeyBinding("key.ic2ca_upgrades_key", Keyboard.KEY_GRAVE, "IC2CA");
+	public static KeyBinding flyKey = new KeyBinding("key.ca_upgrades_key", Keyboard.KEY_GRAVE, "IC2CA");
 	public Minecraft mc = Minecraft.getMinecraft();
 
 	public KeyHandler() {
@@ -43,9 +43,9 @@ public class KeyHandler {
 
 		// Overcharge
 		if (!IC2.keyboard.isModeSwitchKeyDown(mc.thePlayer) && mc.gameSettings.keyBindAttack.getIsKeyPressed()) {
-			ItemStack armor = mc.thePlayer.inventory.armorInventory[2];
+			ItemStack armor = mc.thePlayer.inventory.armorItemInSlot(2);
 			if (armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
-				NBTTagCompound nbt = StackUtil.getOrCreateNbtData(armor);
+				NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(armor);
 				if (nbt.getBoolean("overcharge")) {
 					double x = 0;
 					double y = 0;

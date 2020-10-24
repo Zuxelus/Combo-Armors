@@ -14,14 +14,4 @@ public class ItemNBTHelper {
 		}
 		return tag;
 	}
-
-	public static int getCharge(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
-		return tag.getInteger("charge");
-	}
-
-	public static void setCharge(ItemStack stack, int value) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
-		tag.setInteger("charge", value);
-	}
 }

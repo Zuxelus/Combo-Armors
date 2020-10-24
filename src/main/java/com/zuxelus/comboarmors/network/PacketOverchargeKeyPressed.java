@@ -13,6 +13,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<PacketOverchargeKeyPressed, IMessage> {
@@ -45,15 +46,16 @@ public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<Pac
 	@Override
 	public IMessage onMessage(PacketOverchargeKeyPressed message, MessageContext ctx) {
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
-		ItemStack armor = player.inventory.armorInventory[2];
+		ItemStack armor = player.inventory.armorItemInSlot(2);
 		if (armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			overcharge(player, armor, message.x, message.y, message.z);
 		return null;
 	}
 
 	private static void overcharge(EntityPlayer player, ItemStack stack, double x, double y, double z) {
-		int charge = ItemNBTHelper.getCharge(stack);
-		int maxcharge = StackUtil.getOrCreateNbtData(stack).getInteger("maxCharge");
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
+		int charge = tag.getInteger("charge");
+		int maxcharge = tag.getInteger("maxCharge");
 		int overchargenumber = maxcharge / 10;
 		int boltnumber = overchargenumber / 10000;
 		if (boltnumber < 1) {
@@ -69,7 +71,6 @@ public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<Pac
 				ElectricItem.manager.discharge(stack, 10000, 4, true, false, false);
 			}
 			player.addChatMessage(new ChatComponentTranslation("info.discharged", boltnumber * 10000));
-			//ChannelHandler.network.sendTo(new PacketOvercharge(boltnumber * 10000, x, y, z), (EntityPlayerMP) player);
 		} else
 			player.addChatMessage(new ChatComponentTranslation("info.not_enough_energy_discharge"));
 	}

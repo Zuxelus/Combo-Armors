@@ -2,14 +2,12 @@ package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
-import ic2.core.IC2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +19,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 public class ItemArmorExoNano extends ItemArmorElectricUtility implements IMetalArmor {
+
 	public ItemArmorExoNano(int renderIndex, int piece) {
 		super(renderIndex, piece, 1000000, 1600, 3, false);
 		if (piece == 3) // boots

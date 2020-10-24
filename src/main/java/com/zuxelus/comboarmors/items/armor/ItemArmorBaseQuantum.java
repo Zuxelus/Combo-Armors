@@ -1,14 +1,10 @@
 package com.zuxelus.comboarmors.items.armor;
 
-import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IMetalArmor;
-import ic2.core.IC2;
-import ic2.core.audio.AudioSource;
-import ic2.core.audio.PositionSpec;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -44,10 +40,10 @@ public abstract class ItemArmorBaseQuantum extends ItemArmorElectricUtility impl
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (player.inventory.armorInventory[2] != stack)
+		if (player.inventory.armorItemInSlot(2) != stack)
 			return;
 
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (onQuantumJetpackTick(player, nbtData))
 			player.inventoryContainer.detectAndSendChanges();
 	}

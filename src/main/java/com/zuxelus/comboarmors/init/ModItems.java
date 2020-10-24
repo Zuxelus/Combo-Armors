@@ -2,7 +2,7 @@ package com.zuxelus.comboarmors.init;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.blocks.*;
-import com.zuxelus.comboarmors.entity.*;
+import com.zuxelus.comboarmors.entities.*;
 import com.zuxelus.comboarmors.items.*;
 import com.zuxelus.comboarmors.items.armor.*;
 import com.zuxelus.comboarmors.recipes.RecipeHandler;
@@ -23,8 +23,8 @@ import net.minecraft.item.ItemStack;
 public class ModItems {
 	public static Block armorAssembler;
 	public static Item nanoBow;
-	public static Item drill;
-	public static Item drillBit;
+	public static Item assemblyDrill;
+	public static Item assemblyDrillBit;
 	public static Item solarNanoHelm;
 	public static Item solarQuantumHelm;
 	public static Item nanoBatpack;
@@ -138,10 +138,10 @@ public class ModItems {
 
 		energyMk2 = register(new ItemUpgrade(EnumRarity.common, EnumUpgradeType.ELECTRICS), "energy_mk2");
 		energyMk3 = register(new ItemUpgrade(EnumRarity.uncommon, EnumUpgradeType.ELECTRICS), "energy_mk3");
-		drill = register(new ItemIc2ca(EnumRarity.common, 1), "assembly_drill");
-		drillBit = register(new ItemIc2ca(), "assembly_drill_bit");
+		assemblyDrill = register(new ItemIc2ca(EnumRarity.common, 1), "assembly_drill");
+		assemblyDrillBit = register(new ItemIc2ca(), "assembly_drill_bit");
 
-		nanoBow = register(new ItemNanoBow(), "nanoBow");
+		nanoBow = register(new ItemNanoBow(), "nano_bow");
 
 		overclockerUpgrade = register(new ItemAssemblerUpgrade(EnumRarity.rare, 64), "overclocker_upgrade");
 		creativeUpgrade = register(new ItemAssemblerUpgrade(EnumRarity.epic, 1), "creative_upgrade");
@@ -170,6 +170,11 @@ public class ModItems {
 		ComboArmors.solars.add(solarNanoHelm.getUnlocalizedName());
 		ComboArmors.solars.add(solarQuantumHelm.getUnlocalizedName());
 		ComboArmors.solars.add(exoSolar.getUnlocalizedName());
+		if (lvHat != null) {
+			ComboArmors.solars.add(lvHat.getUnlocalizedName());
+			ComboArmors.solars.add(mvHat.getUnlocalizedName());
+			ComboArmors.solars.add(hvHat.getUnlocalizedName());
+		}
 
 		ComboArmors.statics.add(nanoStatic.getUnlocalizedName());
 		ComboArmors.statics.add(quantumStatic.getUnlocalizedName());
@@ -199,25 +204,17 @@ public class ModItems {
 	{
 		RecipeHandler.instance().addComboRecipes();
 		RecipeHandler.instance().addCraftingRecipes();
-		if (ComboArmors.config.craftFlightTurbine) {
-			Recipes.advRecipes.addRecipe(new ItemStack(jetBooster), new Object[] { "RAR", "RIR", "G G", Character.valueOf('R'), "plateIron", Character.valueOf('A'), Ic2Items.advancedCircuit, Character.valueOf('I'), Ic2Items.iridiumPlate, Character.valueOf('G'), Items.glowstone_dust });
-			Recipes.advRecipes.addRecipe(new ItemStack(flightModule), new Object[] { "RAR", "BLB", "RAR", Character.valueOf('R'), "plateIron", Character.valueOf('A'), Ic2Items.advancedCircuit, Character.valueOf('L'), StackUtil.copyWithWildCard(Ic2Items.lapotronCrystal), Character.valueOf('B'), jetBooster });
-		}
+
 		RecipeHandler.instance().addJetpackRecipes(flightModule);
-		if (ComboArmors.config.craftSolarProd)
-			Recipes.advRecipes.addRecipe(new ItemStack(solarModule), new Object[] { "RRR", "CSC", "RRR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Ic2Items.insulatedCopperCableItem, Character.valueOf('S'), Ic2Items.solarPanel });
 		RecipeHandler.instance().addSolarRecipes(solarModule);
-		if (ComboArmors.config.craftStaticProd)
-			Recipes.advRecipes.addRecipe(new ItemStack(staticModule), new Object[] { "RWR", "CEC", "RWR", Character.valueOf('R'), "plateIron", Character.valueOf('W'), Blocks.wool, Character.valueOf('C'), Ic2Items.insulatedCopperCableItem, Character.valueOf('E'), Ic2Items.electronicCircuit });
+		if (ModItems.lvSolarModule != null) {
+			RecipeHandler.instance().addSolarRecipes(ModItems.lvSolarModule);
+			RecipeHandler.instance().addSolarRecipes(ModItems.mvSolarModule);
+			RecipeHandler.instance().addSolarRecipes(ModItems.hvSolarModule);
+		}
 		RecipeHandler.instance().addStaticRecipes(staticModule);
-		if (ComboArmors.config.craftCloakingModule)
-			Recipes.advRecipes.addRecipe(new ItemStack(cloakingModule), new Object[] { "RAR", "CIC", "RAR", Character.valueOf('R'), "plateIron", Character.valueOf('C'), Items.golden_carrot, Character.valueOf('A'), Ic2Items.advancedCircuit, Character.valueOf('I'), Ic2Items.iridiumPlate });
 		RecipeHandler.instance().addChestpieceRecipes(cloakingModule);
-		if (ComboArmors.config.craftDischargeModule)
-			Recipes.advRecipes.addRecipe(new ItemStack(overchargeModule), new Object[] { "RAR", "TIT", "RAR", Character.valueOf('R'), "plateIron", Character.valueOf('T'), Ic2Items.teslaCoil, Character.valueOf('A'), Ic2Items.advancedCircuit, Character.valueOf('I'), Ic2Items.iridiumPlate });
 		RecipeHandler.instance().addChestpieceRecipes(overchargeModule);
-		if (ComboArmors.config.craftCellModule)
-			Recipes.advRecipes.addRecipe(new ItemStack(cellModule), new Object[] { "RTR", "AIA", "RTR", Character.valueOf('R'), "plateIron", Character.valueOf('T'), Ic2Items.casingtin, Character.valueOf('A'), Ic2Items.advancedCircuit, Character.valueOf('I'), Ic2Items.FluidCell });
 		RecipeHandler.instance().addCellRecipes(cellModule);
 		if (ComboArmors.config.useOverclocker)
 			RecipeHandler.instance().addElectricRecipes(Ic2Items.overclockerUpgrade);
@@ -225,11 +222,7 @@ public class ModItems {
 			RecipeHandler.instance().addElectricRecipes(Ic2Items.energyStorageUpgrade);
 		if (ComboArmors.config.useTransformer)
 			RecipeHandler.instance().addElectricRecipes(Ic2Items.transformerUpgrade);
-		if (ComboArmors.config.craftEnergyMk2)
-			Recipes.advRecipes.addRecipe(new ItemStack(energyMk2), new Object[] { "WWW", "GEG", "WCW", Character.valueOf('W'), Blocks.planks, Character.valueOf('G'), Ic2Items.insulatedGoldCableItem, Character.valueOf('E'), StackUtil.copyWithWildCard(Ic2Items.energyCrystal), Character.valueOf('C'), Ic2Items.electronicCircuit });
 		RecipeHandler.instance().addElectricRecipes(new ItemStack(energyMk2));
-		if (ComboArmors.config.craftEnergyMk3)
-			Recipes.advRecipes.addRecipe(new ItemStack(energyMk3), new Object[] { "WWW", "GEG", "WCW", Character.valueOf('W'), Blocks.planks, Character.valueOf('G'), Ic2Items.glassFiberCableItem, Character.valueOf('E'), StackUtil.copyWithWildCard(Ic2Items.lapotronCrystal), Character.valueOf('C'), Ic2Items.advancedCircuit });
 		RecipeHandler.instance().addElectricRecipes(new ItemStack(energyMk3));
 	}
 }

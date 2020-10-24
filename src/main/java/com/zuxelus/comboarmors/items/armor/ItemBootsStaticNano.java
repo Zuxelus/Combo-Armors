@@ -1,14 +1,12 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.utils.ArmorUtils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
-import ic2.core.IC2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 public class ItemBootsStaticNano extends ItemArmorElectricUtility implements IMetalArmor {
+
 	public ItemBootsStaticNano(int renderIndex) {
 		super(renderIndex, 3, 1000000, 1000, 3, false);
 		MinecraftForge.EVENT_BUS.register(this);
@@ -69,8 +68,8 @@ public class ItemBootsStaticNano extends ItemArmorElectricUtility implements IMe
 	}
 
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-		if (ArmorUtils.doStatic(player, itemStack))
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+		if (doStatic(player, stack))
 			player.inventoryContainer.detectAndSendChanges();
 	}
 

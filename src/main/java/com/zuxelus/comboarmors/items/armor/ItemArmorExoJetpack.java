@@ -9,6 +9,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 public class ItemArmorExoJetpack extends ItemArmorBaseJetpack {
+
 	public ItemArmorExoJetpack(int renderIndex) {
 		super(renderIndex, 1, 30000, 60, 1, false);
 	}

@@ -9,6 +9,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 public class ItemArmorExoAdvBatpack extends ItemArmorElectricUtility {
+
 	public ItemArmorExoAdvBatpack(int renderIndex) {
 		super(renderIndex, 1, 600000, 1000, 2, true);
 	}

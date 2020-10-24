@@ -1,4 +1,4 @@
-package com.zuxelus.comboarmors.entity;
+package com.zuxelus.comboarmors.entities;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;

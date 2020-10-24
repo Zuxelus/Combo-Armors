@@ -25,7 +25,7 @@ public class ItemUpgrade extends ItemIc2ca implements IItemUpgrade {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack is, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack is, EntityPlayer player, List list, boolean advanced) {
 		if (type != null)
 			list.add(I18n.format("info.compatable_all", I18n.format(type.name)));
 	}

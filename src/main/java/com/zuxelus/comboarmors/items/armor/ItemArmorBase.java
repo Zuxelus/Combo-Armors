@@ -1,11 +1,13 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 import com.zuxelus.comboarmors.utils.Util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
 import ic2.core.IC2;
 import ic2.core.audio.AudioSource;
 import ic2.core.audio.PositionSpec;
@@ -13,11 +15,10 @@ import ic2.core.util.StackUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraft.item.ItemStack;
 
 public class ItemArmorBase extends ItemArmor {
 	private static boolean lastJetpackUsed = false;
@@ -72,7 +73,7 @@ public class ItemArmorBase extends ItemArmor {
 	protected static boolean onHelmetSolarTick(EntityPlayer player, ItemStack stack) {
 		if (player.isClientWorld() || !isSunVisible(player.worldObj, (int) player.posX, (int) player.posY + 1, (int) player.posZ))
 			return false;
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		int prod = nbt.getInteger("solarProd") > 0 ? nbt.getInteger("solarProd") + 1 : 1;
 		boolean result = false;
 		if (tryChargeSolar(player, ComboArmors.config.soPriority[0], prod))
@@ -96,7 +97,7 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	protected void flyKeyPressed(EntityPlayer player, ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (!nbt.hasKey("jetpack"))
 			nbt.setBoolean("jetpack", true);
 		nbt.setBoolean("jetpack", !nbt.getBoolean("jetpack"));
@@ -106,5 +107,39 @@ public class ItemArmorBase extends ItemArmor {
 			else
 				player.addChatMessage(new ChatComponentTranslation("info.jetpack_disabled"));
 
+	}
+
+	protected static boolean doStatic(EntityPlayer player, ItemStack stack) {
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
+		int prod = nbt.getInteger("staticProd");
+		boolean isNotWalking = player.ridingEntity != null || player.isInWater();
+		if (!nbt.hasKey("x") || isNotWalking)
+			nbt.setInteger("x", (int) player.posX);
+		if (!nbt.hasKey("z") || isNotWalking)
+			nbt.setInteger("z", (int) player.posZ);
+		double distance = Math.sqrt((nbt.getInteger("x") - player.posX) * (nbt.getInteger("x") - player.posX) + (nbt.getInteger("z") - player.posZ) * (nbt.getInteger("z") - player.posZ));
+		if (distance < 5.0D)
+			return false;
+
+		nbt.setInteger("x", (int) player.posX);
+		nbt.setInteger("z", (int) player.posZ);
+
+		boolean result = false;
+		ItemStack[] armor = player.inventory.armorInventory;
+		if (tryChargeStatic(armor, ComboArmors.config.stPriority[0], distance, prod))
+			result = true;
+		else if (tryChargeStatic(armor, ComboArmors.config.stPriority[1], distance, prod))
+			result = true;
+		else if (tryChargeStatic(armor, ComboArmors.config.stPriority[2], distance, prod))
+			result = true;
+		else if (tryChargeStatic(armor, ComboArmors.config.stPriority[3], distance, prod))
+			result = true;
+		return result;
+	}
+
+	private static boolean tryChargeStatic(ItemStack[] armor, int slot, double distance, int prod) {
+		if (armor[slot] == null || !(armor[slot].getItem() instanceof IElectricItem))
+			return false;
+		return ElectricItem.manager.charge(armor[slot], Math.min(3, (int) distance / 5) + prod, Integer.MAX_VALUE, true, false) > 0;
 	}
 }

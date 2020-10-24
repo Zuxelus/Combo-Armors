@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
 public class ItemArmorExoBatpack extends ItemArmorElectricUtility {
+
 	public ItemArmorExoBatpack(int renderIndex) {
 		super(renderIndex, 1, 60000, 100, 1, true);
 	}

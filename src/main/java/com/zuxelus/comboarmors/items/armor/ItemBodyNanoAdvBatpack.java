@@ -11,6 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 public class ItemBodyNanoAdvBatpack extends ItemArmorElectricUtility implements IMetalArmor {
+
 	public ItemBodyNanoAdvBatpack(int renderIndex) {
 		super(renderIndex, 1, 4000000, 1000, 4, true);
 	}

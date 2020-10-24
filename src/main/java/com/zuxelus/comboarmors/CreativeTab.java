@@ -12,7 +12,7 @@ public class CreativeTab extends CreativeTabs {
 	private static ItemStack stack;
 
 	public CreativeTab() {
-		super("Combo Armors");
+		super(ComboArmors.NAME);
 	}
 
 	@Override
@@ -32,6 +32,6 @@ public class CreativeTab extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getTranslatedTabLabel() {
-		return "Combo Armors";
+		return ComboArmors.NAME;
 	}
 }
