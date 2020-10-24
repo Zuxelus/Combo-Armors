@@ -4,17 +4,15 @@ import java.util.List;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import ic2.core.IC2;
-import ic2.core.init.BlocksItems;
-import ic2.core.util.StackUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -42,7 +40,7 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add(I18n.format("info.upgrade_module_installed"));
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getBoolean("flight"))
 			tooltip.add(I18n.format("info.flight_turbine_installed"));
 		super.addInformation(stack, world, tooltip, advanced);
@@ -66,7 +64,7 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		if (player.inventory.armorItemInSlot(2) != stack)
 			return;
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbtData.getBoolean("isFlyActive"))
 			return;
 		boolean hoverMode = nbtData.getBoolean("hoverMode");

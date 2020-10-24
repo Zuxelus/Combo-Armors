@@ -1,0 +1,6 @@
+{
+    "parent": "item/bow",
+    "textures": {
+        "layer0": "comboarmors:items/nano_bow_pulling_0"
+    }
+}

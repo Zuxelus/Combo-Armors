@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ELE",
+        "EEE",
+        "EEE"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "L": {
+            "item": "ic2:energy_pack"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_energypack"
+    }
+}

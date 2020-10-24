@@ -1,0 +1,38 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "RRR",
+        "CSC",
+        "RRR"
+    ],
+    "key": {
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "plateIron"
+        },
+        "C": {
+            "type": "minecraft:item_nbt",
+            "item": "ic2:cable",
+            "data": 1,
+            "nbt": "{\"type\": 1b, \"insulation\": 0b}"
+        },
+        "S": {
+            "item": "compactsolars:compact_solar_block",
+            "data": 2
+        }
+    },
+    "result": {
+        "item": "comboarmors:hv_solar_module"
+    },
+    "conditions": [
+        {
+            "type": "forge:and",
+            "values": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "compactsolars"
+                }
+            ]
+        }
+    ]
+}

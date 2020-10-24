@@ -9,6 +9,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -45,14 +46,15 @@ public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<Pac
 	public IMessage onMessage(PacketOverchargeKeyPressed message, MessageContext ctx) {
 		EntityPlayer player = ctx.getServerHandler().player;
 		ItemStack armor = player.inventory.armorItemInSlot(2);
-		if (armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName()))
+		if (!armor.isEmpty() && ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			overcharge(player, armor, message.x, message.y, message.z);
 		return null;
 	}
 
 	private static void overcharge(EntityPlayer player, ItemStack stack, double x, double y, double z) {
-		int charge = ItemNBTHelper.getCharge(stack);
-		int maxcharge = StackUtil.getOrCreateNbtData(stack).getInteger("maxCharge");
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
+		int charge = tag.getInteger("charge");
+		int maxcharge = tag.getInteger("maxCharge");
 		int overchargenumber = maxcharge / 10;
 		int boltnumber = overchargenumber / 10000;
 		if (boltnumber < 1) {

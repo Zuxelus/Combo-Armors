@@ -1,6 +1,7 @@
 package com.zuxelus.comboarmors.utils;
 
 import ic2.core.util.StackUtil;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -15,13 +16,11 @@ public class ItemNBTHelper {
 		return tag;
 	}
 
-	public static int getCharge(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
-		return tag.getInteger("charge");
-	}
-
-	public static void setCharge(ItemStack stack, int value) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
-		tag.setInteger("charge", value);
+	public static ItemStack getStackWithEnergy(Item item, String name, double energy) {
+		ItemStack stack = new ItemStack(item);
+		NBTTagCompound tag = new NBTTagCompound();
+		stack.setTagCompound(tag);
+		tag.setDouble(name, energy);
+		return stack;
 	}
 }

@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ENE",
+        "E E"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "N": {
+            "item": "ic2:quantum_boots"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_quantum_boots"
+    }
+}

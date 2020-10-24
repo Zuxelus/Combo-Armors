@@ -1,0 +1,37 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "WWW",
+        "GEG",
+        "WCW"
+    ],
+    "key": {
+        "W": {
+            "type": "forge:ore_dict",
+             "ore": "plankWood"
+        },
+        "G": {
+            "type": "minecraft:item_nbt",
+            "item": "ic2:cable",
+            "data": 1,
+            "nbt": "{\"type\": 1b, \"insulation\": 0b}"
+        },
+        "E": {
+            "item": "ic2:lapotron_crystal",
+            "data": 32767
+        },
+        "C": {
+            "type": "forge:ore_dict",
+            "ore": "circuitAdvanced"
+        }
+    },
+    "result": {
+        "item": "comboarmors:energy_mk3"
+    },
+    "conditions": [
+        {
+            "type": "comboarmors:ca_config",
+            "config": "craftEnergyMk3"
+        }
+    ]
+}

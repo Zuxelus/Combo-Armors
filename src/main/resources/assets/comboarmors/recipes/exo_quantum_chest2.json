@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ANA",
+        "ILI",
+        "IAI"
+    ],
+    "key": {
+        "N": {
+            "item": "exo_nano_chest"
+        },
+        "I": {
+            "item": "ic2:crafting",
+            "data": 4
+        },
+        "L": {
+            "item": "ic2:lapotron_crystal",
+            "data": 32767
+        },
+        "A": {
+            "item": "ic2:crafting",
+            "data": 3
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_quantum_chest"
+    }
+}

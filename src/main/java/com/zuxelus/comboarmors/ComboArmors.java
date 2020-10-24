@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(name = ComboArmors.NAME, modid = ComboArmors.MODID, version = ComboArmors.VERSION, dependencies = "required-after:ic2", guiFactory = "com.zuxelus.comboarmors.config.GuiFactory", acceptedMinecraftVersions = "[1.12.2]")
+@Mod(name = ComboArmors.NAME, modid = ComboArmors.MODID, version = ComboArmors.VERSION, dependencies = "required-after:ic2;after:CompactSolars;after:advanced_solar_panels", guiFactory = "com.zuxelus.comboarmors.config.GuiFactory", acceptedMinecraftVersions = "[1.12.2]")
 public class ComboArmors {
 	public static final String MODID = "comboarmors";
 	public static final String NAME = "Combo Armors";
@@ -46,6 +46,7 @@ public class ComboArmors {
 		logger = event.getModLog();
 
 		proxy.loadConfig(event);
+		//proxy.registerEntities();
 
 		ChannelHandler.init();
 
@@ -62,6 +63,5 @@ public class ComboArmors {
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		//ModIntegrationHandler.loadIntegrationModules();
 	}
 }

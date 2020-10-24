@@ -7,9 +7,9 @@ import com.zuxelus.comboarmors.network.ChannelHandler;
 import com.zuxelus.comboarmors.network.PacketCloakKeyPressed;
 import com.zuxelus.comboarmors.network.PacketFlyKeyPressed;
 import com.zuxelus.comboarmors.network.PacketOverchargeKeyPressed;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import ic2.core.IC2;
-import ic2.core.util.StackUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 
 public class KeyHandler {
-	public static KeyBinding flyKey = new KeyBinding("key.ic2ca_upgrades_key", Keyboard.KEY_GRAVE, "IC2CA");
+	public static KeyBinding flyKey = new KeyBinding("key.ca_upgrades_key", Keyboard.KEY_GRAVE, "IC2CA");
 	public Minecraft mc = Minecraft.getMinecraft();
 
 	public KeyHandler() {
@@ -40,8 +40,8 @@ public class KeyHandler {
 		// Overcharge
 		if (!IC2.keyboard.isModeSwitchKeyDown(mc.player) && mc.gameSettings.keyBindAttack.isPressed()) {
 			ItemStack armor = mc.player.inventory.armorItemInSlot(2);
-			if (armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
-				NBTTagCompound nbt = StackUtil.getOrCreateNbtData(armor);
+			if (!armor.isEmpty() && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
+				NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(armor);
 				if (nbt.getBoolean("overcharge")) {
 					double x = 0;
 					double y = 0;

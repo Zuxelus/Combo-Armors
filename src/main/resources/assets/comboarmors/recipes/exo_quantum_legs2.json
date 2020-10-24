@@ -1,0 +1,31 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "MLM",
+        "INI",
+        "G G"
+    ],
+    "key": {
+        "N": {
+            "item": "comboarmors:exo_nano_legs"
+        },
+        "I": {
+            "item": "ic2:crafting",
+            "data": 4
+        },
+        "L": {
+            "item": "ic2:lapotron_crystal",
+            "data": 32767
+        },
+        "G": {
+            "item": "minecraft:glowstone_dust"
+        },
+        "M": {
+            "item": "ic2:resource",
+            "data": 12
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_quantum_legs"
+    }
+}

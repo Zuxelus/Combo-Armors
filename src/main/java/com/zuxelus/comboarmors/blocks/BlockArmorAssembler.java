@@ -74,7 +74,7 @@ public class BlockArmorAssembler extends BlockHorizontal implements ITileEntityP
 			return false;
 
 		ItemStack stack = player.getHeldItem(hand);
-		if (stack != null && stack.getItem() instanceof ItemToolWrench)
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemToolWrench)
 			return false;
 		if (!world.isRemote)
 			player.openGui(ComboArmors.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());

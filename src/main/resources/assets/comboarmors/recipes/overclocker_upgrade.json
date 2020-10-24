@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "IOI",
+        "OAO",
+        "IOI"
+    ],
+    "key": {
+        "I": {
+            "item": "ic2:crafting",
+            "data": 4
+        },
+        "O": {
+            "item": "ic2:upgrade",
+            "data": 0
+        },
+        "A": {
+            "type": "forge:ore_dict",
+            "ore": "circuitAdvanced"
+        }
+    },
+    "result": {
+        "item": "comboarmors:overclocker_upgrade"
+    }
+}

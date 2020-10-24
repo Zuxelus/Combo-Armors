@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ESE",
+        "E E"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "S": {
+            "item": "ic2:static_boots"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_static"
+    }
+}

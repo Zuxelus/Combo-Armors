@@ -1,0 +1,32 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " N ",
+        "ILI",
+        "CGC"
+    ],
+    "key": {
+        "N": {
+            "item": "comboarmors:exo_nano_helm"
+        },
+        "I": {
+            "item": "ic2:crafting",
+            "data": 4
+        },
+        "L": {
+            "item": "ic2:lapotron_crystal",
+            "data": 32767
+        },
+        "G": {
+            "item": "ic2:glass",
+            "data": 0
+        },
+        "C": {
+            "type": "forge:ore_dict",
+            "ore": "circuitAdvanced"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_quantum_helm"
+    }
+}

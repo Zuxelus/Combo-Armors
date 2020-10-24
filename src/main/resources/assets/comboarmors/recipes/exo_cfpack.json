@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "EBE",
+        "EEE",
+        "EEE"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "B": {
+            "item": "ic2:cf_pack"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_cfpack"
+    }
+}

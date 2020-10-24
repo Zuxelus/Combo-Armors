@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "EJE",
+        "EEE",
+        "EEE"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "J": {
+            "item": "ic2:jetpack_electric"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_jetpack"
+    }
+}

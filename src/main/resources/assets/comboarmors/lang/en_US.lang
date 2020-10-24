@@ -1,6 +1,6 @@
 tile.armor_assembler.name=Armor Assembler
 tile.armor_charger.name=Armor Charger
-item.nanoBow.name=Nano Bow
+item.nano_bow.name=Nano Bow
 item.solar_nano_helm.name=Solar NanoSuit Helmet
 item.solar_quantum_helm.name=Solar QuantumSuit Helmet
 item.nano_batpack.name=NanoSuit Batpack
@@ -51,17 +51,17 @@ item.assembly_drill_bit.name=Drill Bit
 item.overclocker_upgrade.name=Assembler Overclocker Upgrade
 item.creative_upgrade.name=Creative Mode Assembler Upgrade
 
-item.lvSolarModule.name=LV Solar Production Upgrade Module
-item.mvSolarModule.name=MV Solar Production Upgrade Module
-item.hvSolarModule.name=HV Solar Production Upgrade Module
+item.lv_solar_module.name=LV Solar Production Upgrade Module
+item.mv_solar_module.name=MV Solar Production Upgrade Module
+item.hv_solar_module.name=HV Solar Production Upgrade Module
 
-key.ic2ca_upgrades_key=IC2CA Upgrades Key
+key.ca_upgrades_key=IC2CA Upgrades Key
 
 info.armor_assembler=Armor Assembler
 info.charging_tier=Charging Tier: %d
 info.cloaking_module_active=Cloaking Module Active
-info.cloaking_module_enabled=Cloaking Module enabled.
 info.cloaking_module_disabled=Cloaking Module disabled.
+info.cloaking_module_enabled=Cloaking Module enabled.
 info.cloaking_module_installed=Cloaking Module Installed
 info.compatable_all=Compatable with all %s
 info.compatable_all_assemblers=Compatable with all Armor Assemblers
@@ -104,9 +104,9 @@ info.helmets=helmets
 info.electrical_items=electrical items
 info.tanks=tanks
 
-info.normal=Normal
-info.rapidfire=Rapid fire
-info.spread=Spread
-info.sniper=Sniper
-info.flame=Flame
-info.explosive=Explosive
+info.nanobow.normal=Normal mode enabled.
+info.nanobow.rapidfire=Rapid fire mode enabled.
+info.nanobow.spread=Spread mode enabled.
+info.nanobow.sniper=Sniper mode enabled.
+info.nanobow.flame=Flame mode enabled.
+info.nanobow.explosive=Explosive mode enabled.

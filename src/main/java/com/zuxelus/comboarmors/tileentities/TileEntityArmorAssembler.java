@@ -9,20 +9,17 @@ import com.zuxelus.comboarmors.items.ItemUpgrade;
 import com.zuxelus.comboarmors.items.armor.ItemArmorTankUtility;
 import com.zuxelus.comboarmors.recipes.ArmorAssemblerRecipes;
 import com.zuxelus.comboarmors.recipes.RecipeHandler;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
-import ic2.api.tile.IWrenchable;
-import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -270,9 +267,9 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IT
 		RecipeHandler.onCrafting(output, this);
 
 		int charge = 0;
-		NBTTagCompound nbtout = StackUtil.getOrCreateNbtData(output);
-		NBTTagCompound nbtin1 = StackUtil.getOrCreateNbtData(input1);
-		NBTTagCompound nbtin2 = StackUtil.getOrCreateNbtData(input2);
+		NBTTagCompound nbtout = ItemNBTHelper.getOrCreateNbtData(output);
+		NBTTagCompound nbtin1 = ItemNBTHelper.getOrCreateNbtData(input1);
+		NBTTagCompound nbtin2 = ItemNBTHelper.getOrCreateNbtData(input2);
 		charge += nbtin1.getInteger("charge");
 		charge += nbtin2.getInteger("charge");
 		if (charge > nbtout.getInteger("maxCharge"))
@@ -345,7 +342,7 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IT
 		}
 
 		ItemStack upgrade = getStackInSlot(SLOT_UPGRADE);
-		if (upgrade != null && upgrade.getItem() == ModItems.overclockerUpgrade)
+		if (!upgrade.isEmpty() && upgrade.getItem() == ModItems.overclockerUpgrade)
 			productionMax = productionMax / (upgrade.getCount() + 1);
 	}
 

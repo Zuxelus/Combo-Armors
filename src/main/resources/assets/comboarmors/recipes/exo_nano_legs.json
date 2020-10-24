@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "EEE",
+        "ENE",
+        "E E"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "N": {
+            "item": "ic2:nano_leggings"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_nano_legs"
+    }
+}

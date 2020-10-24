@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "comboarmors:items/hv_solar_module"
+  }
+}

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public class ClientTickHandler {
 	public static boolean firstLoad = false;
-
+	
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
 		firstLoad = true;
@@ -28,11 +28,18 @@ public class ClientTickHandler {
 	}
 
 	@SubscribeEvent
-	public void onSetArmorModel(RenderPlayerEvent.SetArmorModel event) {
+	public void onPreRender(RenderPlayerEvent.Pre event) {
 		if (!(event.getEntityPlayer() instanceof EntityPlayer))
 			return;
-		/*EntityPlayer player = event.getEntityPlayer(); // TODO
+		EntityPlayer player = event.getEntityPlayer();
 		if (player.isInvisible())
-			event.result = 0;*/
+			event.setCanceled(true);
 	}
+
+	/*@SubscribeEvent
+	public void onPostRender(RenderPlayerEvent.Post event) {
+		if (!(event.getEntityPlayer() instanceof EntityPlayer))
+			return;
+		EntityPlayer player = event.getEntityPlayer();
+	}*/
 }

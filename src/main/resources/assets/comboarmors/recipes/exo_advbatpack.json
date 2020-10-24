@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "EAE",
+        "EEE",
+        "EEE"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "A": {
+            "item": "ic2:advanced_batpack"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_advbatpack"
+    }
+}

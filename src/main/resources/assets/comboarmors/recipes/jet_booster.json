@@ -15,8 +15,8 @@
             "ore": "circuitAdvanced"
         },
         "I": {
-            "type": "forge:ore_dict",
-            "ore": "iridiumPlate"
+            "item": "ic2:crafting",
+            "data": 4
         },
         "G": {
             "item": "minecraft:glowstone_dust"

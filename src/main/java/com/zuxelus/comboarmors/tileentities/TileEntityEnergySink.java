@@ -94,7 +94,7 @@ public abstract class TileEntityEnergySink extends TileEntityInventory implement
 
 	protected void handleDischarger(int slot) {
 		ItemStack stack = getStackInSlot(slot);
-		if (stack != null && energy < capacity && stack.getItem() instanceof IElectricItem) {
+		if (!stack.isEmpty() && energy < capacity && stack.getItem() instanceof IElectricItem) {
 			IElectricItem ielectricitem = (IElectricItem) stack.getItem();
 			if (ielectricitem.canProvideEnergy(stack))
 				energy += ElectricItem.manager.discharge(stack, capacity - energy, tier, false, false, false);

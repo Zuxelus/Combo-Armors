@@ -8,7 +8,6 @@ import com.zuxelus.comboarmors.utils.InvisiblePotionEffect;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import ic2.api.item.ElectricItem;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -35,11 +34,11 @@ public class ServerTickHandler {
 
 		ItemStack armor = player.inventory.armorItemInSlot(2);
 		if (flyList.contains(player))
-			if (armor != null && armor.getItem() instanceof IJetpack) {
-				NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+			if (!armor.isEmpty() && armor.getItem() instanceof IJetpack) {
+				NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 				if (tag.getBoolean("flight") && tag.getBoolean("isFlyActive")) {
 					if (!player.capabilities.isCreativeMode) {
-						if (ItemNBTHelper.getCharge(armor) < 10) {
+						if (tag.getInteger("charge") < 10) {
 							player.sendMessage(new TextComponentTranslation("Out of energy!"));
 							disableFlyMode(player, tag);
 						} else if (player.capabilities.isFlying)
@@ -53,11 +52,11 @@ public class ServerTickHandler {
 				disableFlyMode(player, new NBTTagCompound());
 
 		if (cloakingList.contains(player)) {
-			if (armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
-				NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+			if (!armor.isEmpty() && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
+				NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 				if (tag.getBoolean("cloaking") && tag.getBoolean("isCloakActive")) {
 					if (!player.capabilities.isCreativeMode)
-						if (ItemNBTHelper.getCharge(armor) < 10) {
+						if (tag.getInteger("charge") < 10) {
 							player.sendMessage(new TextComponentTranslation("info.out_of_energy"));
 							disableCloakMode(player, tag);
 						} else
@@ -70,24 +69,24 @@ public class ServerTickHandler {
 
 	public static void onPlayerLogin(EntityPlayer player) {
 		ItemStack armor = player.inventory.armorItemInSlot(2);
-		if (armor == null)
+		if (armor.isEmpty())
 			return;
 
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 		if (!player.isInvisible() && armor != null && ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			if (tag.getBoolean("cloaking") && tag.getBoolean("isCloakActive"))
 				enableCloakMode(player, tag);
-		if (armor != null && armor.getItem() instanceof IJetpack)
+		if (armor.getItem() instanceof IJetpack)
 			if (tag.getBoolean("flight") && tag.getBoolean("isFlyActive"))
 				enableFlyMode(player, tag);
 	}
 
 	public static boolean switchCloakMode(EntityPlayer player) {
 		ItemStack armor = player.inventory.armorItemInSlot(2);
-		if (armor == null || !ComboArmors.chests.contains(armor.getUnlocalizedName()))
+		if (armor.isEmpty() || !ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			return false;
 		
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 		if (!tag.getBoolean("cloaking"))
 			return false;
 		
@@ -96,7 +95,7 @@ public class ServerTickHandler {
 			return false;
 		}
 
-		if (ItemNBTHelper.getCharge(armor) < 10 && !player.capabilities.isCreativeMode) {
+		if (tag.getInteger("charge") < 10 && !player.capabilities.isCreativeMode) {
 			player.sendMessage(new TextComponentTranslation("info.not_enough_energy_cloaking"));
 			return false;
 		}
@@ -126,15 +125,15 @@ public class ServerTickHandler {
 
 	public static void switchFlyMode(EntityPlayer player) {
 		ItemStack armor = player.inventory.armorItemInSlot(2);
-		if (armor == null || !(armor.getItem() instanceof IJetpack))
+		if (armor.isEmpty() || !(armor.getItem() instanceof IJetpack))
 			return;
 		
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(armor);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
 		if (tag.getBoolean("flight")) {
 			if (tag.getBoolean("isFlyActive"))
 				disableFlyMode(player, tag);
 			else {
-				if (ItemNBTHelper.getCharge(armor) < 10 && !player.capabilities.isCreativeMode)
+				if (tag.getInteger("charge") < 10 && !player.capabilities.isCreativeMode)
 					player.sendMessage(new TextComponentTranslation("info.not_enough_energy_flight"));
 				else
 					enableFlyMode(player, tag);

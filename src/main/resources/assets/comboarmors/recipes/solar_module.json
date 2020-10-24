@@ -1,0 +1,33 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "RRR",
+        "CSC",
+        "RRR"
+    ],
+    "key": {
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "plateIron"
+        },
+        "C": {
+            "type": "minecraft:item_nbt",
+            "item": "ic2:cable",
+            "data": 0,
+            "nbt": "{\"type\": 0b, \"insulation\": 1b}"
+        },
+        "S": {
+            "item": "ic2:te",
+            "data": 8
+        }
+    },
+    "result": {
+        "item": "comboarmors:solar_module"
+    },
+    "conditions": [
+        {
+            "type": "comboarmors:ca_config",
+            "config": "craftSolarProd"
+        }
+    ]
+}

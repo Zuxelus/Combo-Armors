@@ -5,9 +5,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 import com.zuxelus.comboarmors.utils.TankFluidHandlerItemStack;
 
-import ic2.core.util.StackUtil;
 import ic2.core.util.Util;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,9 +23,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -65,7 +62,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) { }
 
 	protected void fillTank(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
 		NBTTagCompound fluidTag = tag.getCompoundTag("Fluid");
 		FluidStack fs = new FluidStack(allowfluid, getCapacity(stack));
 		fs.writeToNBT(fluidTag);
@@ -86,7 +83,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 	}
 
 	public int getCapacity(ItemStack stack) {
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (tag.hasKey("addCapacity"))
 			return capacity + tag.getInteger("addCapacity");
 		tag.setInteger("addCapacity", 0);

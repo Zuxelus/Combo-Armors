@@ -3,15 +3,13 @@ package com.zuxelus.comboarmors.items.armor;
 import java.util.List;
 
 import com.zuxelus.comboarmors.items.IItemUpgradeable;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
-import ic2.core.util.StackUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -29,7 +27,7 @@ public abstract class ItemArmorExoUtility extends ItemArmorBase implements IItem
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		tooltip.add(I18n.format("info.upgrade_module_installed"));
 		if (nbt.getBoolean("flight"))
 			tooltip.add(I18n.format("info.flight_turbine_installed"));

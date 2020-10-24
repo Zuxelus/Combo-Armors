@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "EEE",
+        "EHE"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "H": {
+            "item": "ic2:quantum_helmet"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_quantum_helm"
+    }
+}

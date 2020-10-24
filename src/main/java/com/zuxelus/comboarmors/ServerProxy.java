@@ -32,4 +32,6 @@ public class ServerProxy implements IGuiHandler {
 	}
 
 	public void registerEventHandlers() { }
+
+	public void registerEntities() { }
 }

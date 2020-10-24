@@ -1,0 +1,37 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "RWR",
+        "CEC",
+        "RWR"
+    ],
+    "key": {
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "plateIron"
+        },
+        "W": {
+            "item": "minecraft:wool",
+            "data": 32767
+        },
+        "C": {
+            "type": "minecraft:item_nbt",
+            "item": "ic2:cable",
+            "data": 0,
+            "nbt": "{\"type\": 0b, \"insulation\": 1b}"
+        },
+        "E": {
+            "type": "forge:ore_dict",
+            "ore": "circuitBasic"
+        }
+    },
+    "result": {
+        "item": "comboarmors:static_module"
+    },
+    "conditions": [
+        {
+            "type": "comboarmors:ca_config",
+            "config": "craftStaticProd"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "INI",
+        "RLR"
+    ],
+    "key": {
+        "N": {
+            "item": "comboarmors:exo_nano_boots"
+        },
+        "I": {
+            "item": "ic2:crafting",
+            "data": 4
+        },
+        "L": {
+            "item": "ic2:lapotron_crystal",
+            "data": 32767
+        },
+        "R": {
+            "item": "ic2:static_boots"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_quantum_boots"
+    }
+}

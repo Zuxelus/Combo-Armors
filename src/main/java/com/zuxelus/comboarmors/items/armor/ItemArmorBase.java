@@ -1,6 +1,7 @@
 package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -13,7 +14,7 @@ import ic2.core.util.Util;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +22,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraft.item.ItemStack;
 
 public class ItemArmorBase extends ItemArmor {
 	private static boolean lastJetpackUsed = false;
@@ -30,12 +30,8 @@ public class ItemArmorBase extends ItemArmor {
 	public ItemArmorBase(EntityEquipmentSlot slot) {
 		super(ArmorMaterial.DIAMOND, -1, slot);
 		setMaxStackSize(1);
+		setNoRepair();
 		setCreativeTab(ComboArmors.creativeTab);
-	}
-
-	@Override
-	public boolean isRepairable() {
-		return false;
 	}
 
 	@Override
@@ -46,6 +42,11 @@ public class ItemArmorBase extends ItemArmor {
 	@Override
 	public int getItemEnchantability() {
 		return 0;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
 	}
 
 	protected void playAudioSource(EntityPlayer player, boolean jetpackUsed) {
@@ -103,7 +104,7 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	protected void flyKeyPressed(EntityPlayer player, ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (!nbt.hasKey("jetpack"))
 			nbt.setBoolean("jetpack", true);
 		nbt.setBoolean("jetpack", !nbt.getBoolean("jetpack"));
@@ -116,7 +117,7 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	protected static boolean doStatic(EntityPlayer player, ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		int prod = nbt.getInteger("staticProd");
 		boolean isNotWalking = player.getRidingEntity() != null || player.isInWater();
 		if (!nbt.hasKey("x") || isNotWalking)

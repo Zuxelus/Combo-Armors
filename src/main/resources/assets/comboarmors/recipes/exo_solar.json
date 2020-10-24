@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "EEE",
+        "ESE"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "S": {
+            "item": "ic2:solar_helmet"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_solar"
+    }
+}

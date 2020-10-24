@@ -2,13 +2,13 @@ package com.zuxelus.comboarmors.items.armor;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
 import ic2.core.IC2;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -79,7 +79,7 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		boolean updated = false;
 		switch (armorType) {
 		case HEAD:

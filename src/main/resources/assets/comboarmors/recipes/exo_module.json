@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "RRR",
+        "RCR",
+        "RRR"
+    ],
+    "key": {
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "plateIron"
+        },
+        "C": {
+            "type": "forge:ore_dict",
+            "ore": "circuitBasic"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_module",
+        "count": 4
+    }
+}

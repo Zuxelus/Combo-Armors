@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "BRE",
+        "  P",
+        "  R"
+    ],
+    "key": {
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "plateIron"
+        },
+        "B": {
+            "item": "comboarmors:assembly_drill_bit"
+        },
+        "E": {
+            "type": "forge:ore_dict",
+            "ore": "circuitBasic"
+        },
+        "P": {
+            "item": "ic2:re_battery",
+            "data": 32768
+        }
+    },
+    "result": {
+        "item": "comboarmors:assembly_drill"
+    }
+}

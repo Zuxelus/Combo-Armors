@@ -1,7 +1,8 @@
 package com.zuxelus.comboarmors.items.armor;
 
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
+
 import ic2.api.item.IMetalArmor;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
@@ -43,7 +44,7 @@ public abstract class ItemArmorBaseQuantum extends ItemArmorElectricUtility impl
 		if (player.inventory.armorItemInSlot(2) != stack)
 			return;
 
-		NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (onQuantumJetpackTick(player, nbtData))
 			player.inventoryContainer.detectAndSendChanges();
 	}

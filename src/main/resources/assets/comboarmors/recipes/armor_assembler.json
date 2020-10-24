@@ -1,0 +1,31 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "GDG",
+        "ALA",
+        "GCG"
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:glowstone_dust"
+        },
+        "D": {
+            "item": "comboarmors:assembly_drill"
+        },
+        "C": {
+            "type": "forge:ore_dict",
+            "ore": "circuitAdvanced"
+        },
+        "L": {
+            "item": "ic2:lapotron_crystal",
+            "data": 32767
+        },
+        "A": {
+            "item": "ic2:resource",
+            "data": 13
+        }
+    },
+    "result": {
+        "item": "comboarmors:armor_assembler"
+    }
+}

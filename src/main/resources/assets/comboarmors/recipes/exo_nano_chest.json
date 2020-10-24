@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ENE",
+        "EEE",
+        "EEE"
+    ],
+    "key": {
+        "E": {
+            "item": "comboarmors:exo_module"
+        },
+        "N": {
+            "item": "ic2:nano_chestplate"
+        }
+    },
+    "result": {
+        "item": "comboarmors:exo_nano_chest"
+    }
+}

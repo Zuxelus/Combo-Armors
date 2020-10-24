@@ -1,9 +1,7 @@
 package com.zuxelus.comboarmors.recipes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
@@ -11,35 +9,38 @@ import net.minecraft.item.ItemStack;
 
 public class ArmorAssemblerRecipes {
 
-	public static class Input {
-		public final ItemStack i1;
-		public final ItemStack i2;
-		public Input(ItemStack input1, ItemStack input2) {
-			i1 = input1;
-			i2 = input2;
+	public static class Recipe {
+		public final ItemStack input1;
+		public final ItemStack input2;
+		public final ItemStack output;
+		public Recipe(ItemStack input1, ItemStack input2, ItemStack output) {
+			this.input1 = input1;
+			this.input2 = input2;
+			this.output = output;
 		}
-		public boolean matches(ItemStack input1, ItemStack input2) {
-			return i1.getItem() == input1.getItem() && i2.getItem() == input2.getItem();
+
+		public boolean matches(ItemStack i1, ItemStack i2) {
+			return input1.getItem() == i1.getItem() && input2.getItem() == i2.getItem();
 		}
 	}
 
-	private static Map<Input, ItemStack> recipes = new HashMap();
+	private static List<Recipe> recipes = new ArrayList<Recipe>();
 	private static List<Item> items = new ArrayList();
 
-	public static Map<Input, ItemStack> getRecipeList() {
+	public static List<Recipe> getRecipeList() {
 		return recipes;
 	}
 
 	public static void addAssemblyRecipe(ItemStack result, ItemStack input1, Item input2) {
-		addAssemblyRecipe(result, input1, new ItemStack(input2));
+		addAssemblyRecipe(result.copy(), input1.copy(), new ItemStack(input2));
 	}
 
 	public static void addAssemblyRecipe(Item result, Item input1, ItemStack input2) {
-		addAssemblyRecipe(new ItemStack(result), new ItemStack(input1), input2);
+		addAssemblyRecipe(new ItemStack(result), new ItemStack(input1), input2.copy());
 	}
 
 	public static void addAssemblyRecipe(Item result, ItemStack input1, Item input2) {
-		addAssemblyRecipe(new ItemStack(result), input1, new ItemStack(input2));
+		addAssemblyRecipe(new ItemStack(result), input1.copy(), new ItemStack(input2));
 	}
 
 	public static void addAssemblyRecipe(Item result, Item input1, Item input2) {
@@ -58,17 +59,17 @@ public class ArmorAssemblerRecipes {
 		if (result.isEmpty())
 			throw new NullPointerException("The recipe output is null");
 		if (input1.isEmpty())
-			throw new NullPointerException("The I1 recipe input is null");
+			throw new NullPointerException("The recipe input 1 is null");
 		if (input2.isEmpty())
-			throw new NullPointerException("The I2 recipe input is null");
+			throw new NullPointerException("The recipe input 2 is null");
 
 		InventoryBasic inv = new InventoryBasic(null, false, 2);
 		ItemStack output = result.copy();
-		inv.setInventorySlotContents(0, input1);
-		inv.setInventorySlotContents(1, input2);
+		inv.setInventorySlotContents(0, input1.copy());
+		inv.setInventorySlotContents(1, input2.copy());
 		RecipeHandler.onCrafting(output, inv);
-		recipes.put(new Input(input1, input2), output);
-		recipes.put(new Input(input2, input1), output);
+		recipes.add(new Recipe(input1, input2, output));
+		recipes.add(new Recipe(input2, input1, output));
 	}
 
 	public static List<Item> getItemList() {
@@ -78,11 +79,9 @@ public class ArmorAssemblerRecipes {
 	public static ItemStack getAssemblyResult(ItemStack input1, ItemStack input2) {
 		if (input1.isEmpty() || input2.isEmpty())
 			return ItemStack.EMPTY;
-		for (Map.Entry<Input, ItemStack> entry : recipes.entrySet()) {
-			Input input = (Input) entry.getKey();
-			if (input.matches(input1, input2))
-				return (ItemStack) entry.getValue();
-		}
-		return null;
+		for (Recipe recipe : recipes)
+			if (recipe.matches(input1, input2))
+				return recipe.output;
+		return ItemStack.EMPTY;
 	}
 }

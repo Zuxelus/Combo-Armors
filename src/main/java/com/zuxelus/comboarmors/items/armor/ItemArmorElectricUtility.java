@@ -74,7 +74,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (!nbt.getBoolean("loaded")) {
 			if (nbt.getInteger("tier") == 0)
 				nbt.setInteger("tier", getDefaultTier());
@@ -198,7 +198,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 		
 		EntityLivingBase entity = (EntityLivingBase) event.getEntity();
 		ItemStack armor = entity.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-		if (armor != null && armor.getItem() == this) {
+		if (!armor.isEmpty() && armor.getItem() == this) {
 			int distance = (int) event.getDistance();
 			int fallDamage = isQuantum ? Math.max(distance - 10, 0) : distance - 3;
 			if (!isQuantum && fallDamage >= 8)
@@ -336,7 +336,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 					IC2.platform.removePotion(player, potion);
 				}
 			}
-		} 
+		}
 		return result;
 	}
 
@@ -417,7 +417,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 
 	@Override
 	public double getMaxCharge(ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getInteger("maxCharge") == 0)
 			nbt.setInteger("maxCharge", getDefaultMaxCharge());
 		return nbt.getInteger("maxCharge");
@@ -425,7 +425,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 
 	@Override
 	public int getTier(ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getInteger("tier") == 0)
 			nbt.setInteger("tier", getDefaultTier());
 		return nbt.getInteger("tier");
@@ -433,7 +433,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 
 	@Override
 	public double getTransferLimit(ItemStack stack) {
-		NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
+		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbt.getInteger("transferLimit") == 0)
 			nbt.setInteger("transferLimit", getDefaultTransferLimit());
 		return nbt.getInteger("transferLimit");

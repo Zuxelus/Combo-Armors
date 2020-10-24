@@ -4,7 +4,6 @@ import com.zuxelus.comboarmors.ComboArmors;
 
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IMetalArmor;
-import ic2.core.IC2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,8 +69,8 @@ public class ItemBootsStaticNano extends ItemArmorElectricUtility implements IMe
 	}
 
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-		if (doStatic(player, itemStack))
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+		if (doStatic(player, stack))
 			player.inventoryContainer.detectAndSendChanges();
 	}
 

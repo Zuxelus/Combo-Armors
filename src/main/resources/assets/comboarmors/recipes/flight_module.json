@@ -1,0 +1,33 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "RAR",
+        "BLB",
+        "RAR"
+    ],
+    "key": {
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "plateIron"
+        },
+        "A": {
+            "type": "forge:ore_dict",
+            "ore": "circuitAdvanced"
+        },
+        "L": {
+            "item": "ic2:lapotron_crystal"
+        },
+        "B": {
+            "item": "comboarmors:jet_booster"
+        }
+    },
+    "result": {
+        "item": "comboarmors:flight_module"
+    },
+    "conditions": [
+        {
+            "type": "comboarmors:ca_config",
+            "config": "craftFlightTurbine"
+        }
+    ]
+}

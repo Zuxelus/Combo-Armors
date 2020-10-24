@@ -1,0 +1,35 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "RTR",
+        "AIA",
+        "RTR"
+    ],
+    "key": {
+        "R": {
+            "type": "forge:ore_dict",
+            "ore": "plateIron"
+        },
+        "T": {
+            "item": "ic2:casing",
+            "data": 6
+        },
+        "A": {
+            "type": "forge:ore_dict",
+            "ore": "circuitAdvanced"
+        },
+        "I": {
+            "item": "ic2:fluid_cell",
+            "data": 0
+        }
+    },
+    "result": {
+        "item": "comboarmors:cell_module"
+    },
+    "conditions": [
+        {
+            "type": "comboarmors:ca_config",
+            "config": "craftCellModule"
+        }
+    ]
+}

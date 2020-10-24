@@ -3,7 +3,8 @@ package com.zuxelus.comboarmors.entities;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityLaser extends EntityThrowable {
@@ -21,14 +22,14 @@ public class EntityLaser extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition position) {
-		if (position.entityHit != null) {
-			position.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 1);
-			position.entityHit.setFire(100);
+	protected void onImpact(RayTraceResult result) {
+		if (result.entityHit != null) {
+			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 1);
+			result.entityHit.setFire(100);
 		}
 		for (int i = 0; i < 8; ++i)
-			worldObj.spawnParticle("largesmoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-		if (!worldObj.isRemote)
+			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+		if (!world.isRemote)
 			setDead();
 	}
 }
