@@ -177,13 +177,20 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IT
 			return;
 		onLoad();
 		handleDischarger(SLOT_DISCHARGER);
+		ItemStack stack = getStackInSlot(SLOT_UPGRADE);
+		if (!stack.isEmpty() && stack.getItem() == ModItems.creativeUpgrade && productionMax > 0) {
+			combineItem();
+			production = 0;
+			updateState();
+			return;
+		}
 		if (!active)
 			return;
 		if (energy >= CONSUMPTION) {
 			energy -= CONSUMPTION;
 			production += TIMEFACTOR;
-			ItemStack stack = getStackInSlot(SLOT_UPGRADE);
-			if (production >= productionMax || (!stack.isEmpty() && stack.getItem() == ModItems.creativeUpgrade)) {
+
+			if (production >= productionMax) {
 				combineItem();
 				production = 0;
 				updateState();

@@ -17,7 +17,8 @@ public class ItemBodyNanoJetpack extends ItemArmorBaseJetpack implements IMetalA
 		super(EntityEquipmentSlot.CHEST, 1500000, 160, 3, false);
 	}
 
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return ComboArmors.MODID + ":textures/armor/nano_jet.png";
 	}
 

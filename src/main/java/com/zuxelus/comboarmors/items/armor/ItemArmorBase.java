@@ -100,6 +100,8 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	private static boolean tryChargeSolar(EntityPlayer player, int slot, double prod) {
+		if (player.inventory.armorItemInSlot(slot).isEmpty())
+			return false;
 		return ElectricItem.manager.charge(player.inventory.armorItemInSlot(slot), prod, Integer.MAX_VALUE, true, false) > 0;
 	}
 

@@ -55,7 +55,7 @@ item.lv_solar_module.name=Модуль "Солнечная батарея НН"
 item.mv_solar_module.name=Модуль "Солнечная батарея СН"
 item.hv_solar_module.name=Модуль "Солнечная батарея ВН"
 
-key.ca_upgrades_key=IC2CA Upgrades Key
+key.ca_upgrades_key=CA Upgrades Key
 
 info.armor_assembler=Сборщик брони
 info.charging_tier=Напряжение зарядки: Т%d
@@ -89,7 +89,7 @@ info.mode_enabled=Режим: %s
 info.out_of_energy=Out of energy!
 info.quantum_hover_mode_disabled=Quantum Hover Mode disabled.
 info.quantum_hover_mode_enabled=Quantum Hover Mode enabled.
-info.reduces_processing_time=Уменьшает время сборки на 50%
+info.reduces_processing_time=Уменьшает время сборки на 50%%
 info.remaining=%s осталось
 info.solar_produces=Генерирует: %d EU/t
 info.static_produces=Генерирует: %d EU

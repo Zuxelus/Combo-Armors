@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 
 public class KeyHandler {
-	public static KeyBinding flyKey = new KeyBinding("key.ca_upgrades_key", Keyboard.KEY_GRAVE, "IC2CA");
+	public static KeyBinding flyKey = new KeyBinding("key.ca_upgrades_key", Keyboard.KEY_GRAVE, ComboArmors.NAME);
 	public Minecraft mc = Minecraft.getMinecraft();
 
 	public KeyHandler() {
@@ -34,11 +34,11 @@ public class KeyHandler {
 			return;
 
 		// Flight toggle
-		if (!IC2.keyboard.isModeSwitchKeyDown(mc.player) && !mc.gameSettings.keyBindAttack.isPressed())
+		if (!IC2.keyboard.isModeSwitchKeyDown(mc.player) && !mc.gameSettings.keyBindAttack.isKeyDown())
 			ChannelHandler.network.sendToServer(new PacketFlyKeyPressed());
 
 		// Overcharge
-		if (!IC2.keyboard.isModeSwitchKeyDown(mc.player) && mc.gameSettings.keyBindAttack.isPressed()) {
+		if (!IC2.keyboard.isModeSwitchKeyDown(mc.player) && mc.gameSettings.keyBindAttack.isKeyDown()) {
 			ItemStack armor = mc.player.inventory.armorItemInSlot(2);
 			if (!armor.isEmpty() && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
 				NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(armor);
@@ -59,7 +59,7 @@ public class KeyHandler {
 		}
 
 		// Cloak toggle
-		if (IC2.keyboard.isModeSwitchKeyDown(mc.player) && !mc.gameSettings.keyBindAttack.isPressed())
+		if (IC2.keyboard.isModeSwitchKeyDown(mc.player) && !mc.gameSettings.keyBindAttack.isKeyDown())
 			ChannelHandler.network.sendToServer(new PacketCloakKeyPressed());
 	}
 }

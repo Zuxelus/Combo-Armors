@@ -105,6 +105,8 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (!isInCreativeTab(tab))
+			return;
 		ItemStack charged = new ItemStack(this, 1);
 		ElectricItem.manager.charge(charged, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
 		items.add(charged);
