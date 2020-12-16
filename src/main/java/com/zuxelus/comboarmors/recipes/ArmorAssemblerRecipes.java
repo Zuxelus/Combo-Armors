@@ -31,15 +31,15 @@ public class ArmorAssemblerRecipes {
 	}
 
 	public static void addAssemblyRecipe(ItemStack result, ItemStack input1, Item input2) {
-		addAssemblyRecipe(result, input1, new ItemStack(input2));
+		addAssemblyRecipe(result.copy(), input1.copy(), new ItemStack(input2));
 	}
 
 	public static void addAssemblyRecipe(Item result, Item input1, ItemStack input2) {
-		addAssemblyRecipe(new ItemStack(result), new ItemStack(input1), input2);
+		addAssemblyRecipe(new ItemStack(result), new ItemStack(input1), input2.copy());
 	}
 
 	public static void addAssemblyRecipe(Item result, ItemStack input1, Item input2) {
-		addAssemblyRecipe(new ItemStack(result), input1, new ItemStack(input2));
+		addAssemblyRecipe(new ItemStack(result), input1.copy(), new ItemStack(input2));
 	}
 
 	public static void addAssemblyRecipe(Item result, Item input1, Item input2) {

@@ -1,7 +1,7 @@
 package com.zuxelus.comboarmors.recipes;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.init.ModIntegrationHandler;
+import com.zuxelus.comboarmors.init.CrossModLoader;
 import com.zuxelus.comboarmors.init.ModItems;
 import com.zuxelus.comboarmors.items.IItemUpgradeable;
 import com.zuxelus.comboarmors.items.armor.IJetpack;
@@ -424,7 +424,7 @@ public class RecipeHandler {
 				if (ComboArmors.solars.contains(input.getUnlocalizedName()) && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
 					prod += nbtin.getInteger("solarProd");
-					if (ModIntegrationHandler.isModLoaded(0)) {
+					if (CrossModLoader.isModLoaded(0)) {
 						if (input.getItem() == ModItems.lvHat)
 							prod += 7;
 						else if (input.getItem() == ModItems.mvHat)

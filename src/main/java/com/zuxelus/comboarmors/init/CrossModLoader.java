@@ -1,31 +1,20 @@
 package com.zuxelus.comboarmors.init;
 
-import java.io.File;
-
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.items.EnumUpgradeType;
 import com.zuxelus.comboarmors.items.ItemUpgrade;
-import com.zuxelus.comboarmors.recipes.ArmorAssemblerRecipes;
-import com.zuxelus.comboarmors.recipes.RecipeHandler;
-import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.server.FMLServerHandler;
-import ic2.api.recipe.Recipes;
-import ic2.core.Ic2Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.config.Configuration;
 
-public class ModIntegrationHandler {
+public class CrossModLoader {
 	public static final int COMPACT_SOLARS = 0;
 	public static final int ADVANCED_SOLAR_PANELS = 1;
 	public static final int GRAVISUITE = 2;
 	public static final int GREGTECH = 3;
-	private static final String[] modids = { "CompactSolars", "AdvancedSolarPanel" };
+	public static final String[] modids = { "CompactSolars", "AdvancedSolarPanel" };
 	private static boolean[] loaded = { false, false, false, false };
 	private static boolean[] integrateEnabled = { true, true, true, true };
 

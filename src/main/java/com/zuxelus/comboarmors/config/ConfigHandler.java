@@ -3,7 +3,7 @@ package com.zuxelus.comboarmors.config;
 import java.io.File;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.init.ModIntegrationHandler;
+import com.zuxelus.comboarmors.init.CrossModLoader;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -52,11 +52,11 @@ public class ConfigHandler {
 		try {
 			Property enableCSolars = config.get(CATEGORY_CROSSMOD, "cs-enable", true);
 			enableCSolars.comment = "Disable Compact Solars integration, regardless of whether or not the mod is found.";
-			ModIntegrationHandler.setIntegrationEnabled(0, enableCSolars.getBoolean(true));
+			CrossModLoader.setIntegrationEnabled(0, enableCSolars.getBoolean(true));
 
 			Property enableASolars = config.get(CATEGORY_CROSSMOD, "asp-enable", true);
 			enableASolars.comment = "Disabled Advanced Solar Panels integration, regardless of whether or not the mod is found.";
-			ModIntegrationHandler.setIntegrationEnabled(1, enableASolars.getBoolean(true));
+			CrossModLoader.setIntegrationEnabled(1, enableASolars.getBoolean(true));
 
 			Property soPriority1Prop = config.get(CATEGORY_GENERAL, "solarPriority1", 2);
 			soPriority1Prop.comment = "Set the charging priority for the Solar Helmets and Static Boots. Use numbers 0-3, where 0 is the boots. Default order: 2, 0, 1, 3";

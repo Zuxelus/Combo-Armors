@@ -4,6 +4,7 @@ import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 import com.zuxelus.comboarmors.utils.Util;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
@@ -11,7 +12,6 @@ import ic2.api.item.IElectricItem;
 import ic2.core.IC2;
 import ic2.core.audio.AudioSource;
 import ic2.core.audio.PositionSpec;
-import ic2.core.util.StackUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
@@ -71,7 +71,7 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	protected static boolean onHelmetSolarTick(EntityPlayer player, ItemStack stack) {
-		if (player.isClientWorld() || !isSunVisible(player.worldObj, (int) player.posX, (int) player.posY + 1, (int) player.posZ))
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient() || !isSunVisible(player.worldObj, (int) player.posX, (int) player.posY + 1, (int) player.posZ))
 			return false;
 		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
 		int prod = nbt.getInteger("solarProd") > 0 ? nbt.getInteger("solarProd") + 1 : 1;
@@ -93,6 +93,8 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	private static boolean tryChargeSolar(EntityPlayer player, int slot, int prod) {
+		if (player.inventory.armorInventory[slot] == null)
+			return false;
 		return ElectricItem.manager.charge(player.inventory.armorInventory[slot], prod, Integer.MAX_VALUE, true, false) > 0;
 	}
 
