@@ -45,7 +45,7 @@ public class PacketOverchargeKeyPressed implements IMessage, IMessageHandler<Pac
 	@Override
 	public IMessage onMessage(PacketOverchargeKeyPressed message, MessageContext ctx) {
 		EntityPlayer player = ctx.getServerHandler().player;
-		ItemStack armor = player.inventory.armorItemInSlot(2);
+		ItemStack armor = player.inventory.armorInventory.get(2);
 		if (!armor.isEmpty() && ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			overcharge(player, armor, message.x, message.y, message.z);
 		return null;

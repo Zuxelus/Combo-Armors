@@ -1,4 +1,4 @@
-package com.zuxelus.comboarmors.tileentities;
+package com.zuxelus.zlib.tileentities;
 
 import net.minecraft.nbt.NBTTagCompound;
 

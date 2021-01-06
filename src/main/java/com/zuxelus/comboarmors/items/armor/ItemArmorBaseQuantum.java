@@ -41,16 +41,11 @@ public abstract class ItemArmorBaseQuantum extends ItemArmorElectricUtility impl
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (player.inventory.armorItemInSlot(2) != stack)
+		if (player.inventory.armorInventory.get(2) != stack)
 			return;
 
 		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (onQuantumJetpackTick(player, nbtData))
 			player.inventoryContainer.detectAndSendChanges();
-	}
-
-	@Override
-	public void onFlyKeyPressed(EntityPlayer player, ItemStack stack) {
-		flyKeyPressed(player, stack);
 	}
 }

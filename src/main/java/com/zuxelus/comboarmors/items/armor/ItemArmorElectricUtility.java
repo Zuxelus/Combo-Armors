@@ -141,7 +141,7 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	}
 
 	private boolean useQuantumJetpack(EntityPlayer player, boolean hoverMode, boolean hoverModeQ, boolean boost) {
-		ItemStack jetpack = player.inventory.armorItemInSlot(2);
+		ItemStack jetpack = player.inventory.armorInventory.get(2);
 
 		if (getCharge(jetpack) == 0)
 			return false;

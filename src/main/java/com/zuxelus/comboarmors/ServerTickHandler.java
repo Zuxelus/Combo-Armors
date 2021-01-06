@@ -32,7 +32,7 @@ public class ServerTickHandler {
 			return;
 		EntityPlayer player = (EntityPlayer) event.player;
 
-		ItemStack armor = player.inventory.armorItemInSlot(2);
+		ItemStack armor = player.inventory.armorInventory.get(2);
 		if (flyList.contains(player))
 			if (!armor.isEmpty() && armor.getItem() instanceof IJetpack) {
 				NBTTagCompound tag = ItemNBTHelper.getOrCreateNbtData(armor);
@@ -68,7 +68,7 @@ public class ServerTickHandler {
 	}
 
 	public static void onPlayerLogin(EntityPlayer player) {
-		ItemStack armor = player.inventory.armorItemInSlot(2);
+		ItemStack armor = player.inventory.armorInventory.get(2);
 		if (armor.isEmpty())
 			return;
 
@@ -82,7 +82,7 @@ public class ServerTickHandler {
 	}
 
 	public static boolean switchCloakMode(EntityPlayer player) {
-		ItemStack armor = player.inventory.armorItemInSlot(2);
+		ItemStack armor = player.inventory.armorInventory.get(2);
 		if (armor.isEmpty() || !ComboArmors.chests.contains(armor.getUnlocalizedName()))
 			return false;
 		
@@ -124,7 +124,7 @@ public class ServerTickHandler {
 	}
 
 	public static void switchFlyMode(EntityPlayer player) {
-		ItemStack armor = player.inventory.armorItemInSlot(2);
+		ItemStack armor = player.inventory.armorInventory.get(2);
 		if (armor.isEmpty() || !(armor.getItem() instanceof IJetpack))
 			return;
 		

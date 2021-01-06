@@ -3,11 +3,11 @@ package com.zuxelus.comboarmors.client;
 import org.lwjgl.input.Keyboard;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.comboarmors.network.ChannelHandler;
 import com.zuxelus.comboarmors.network.PacketCloakKeyPressed;
 import com.zuxelus.comboarmors.network.PacketFlyKeyPressed;
 import com.zuxelus.comboarmors.network.PacketOverchargeKeyPressed;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
+import com.zuxelus.zlib.network.NetworkHelper;
 
 import ic2.core.IC2;
 import net.minecraft.client.Minecraft;
@@ -35,11 +35,11 @@ public class KeyHandler {
 
 		// Flight toggle
 		if (!IC2.keyboard.isModeSwitchKeyDown(mc.player) && !mc.gameSettings.keyBindAttack.isKeyDown())
-			ChannelHandler.network.sendToServer(new PacketFlyKeyPressed());
+			NetworkHelper.network.sendToServer(new PacketFlyKeyPressed());
 
 		// Overcharge
 		if (!IC2.keyboard.isModeSwitchKeyDown(mc.player) && mc.gameSettings.keyBindAttack.isKeyDown()) {
-			ItemStack armor = mc.player.inventory.armorItemInSlot(2);
+			ItemStack armor = mc.player.inventory.armorInventory.get(2);
 			if (!armor.isEmpty() && ComboArmors.chests.contains(armor.getUnlocalizedName())) {
 				NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(armor);
 				if (nbt.getBoolean("overcharge")) {
@@ -53,13 +53,13 @@ public class KeyHandler {
 						y = vec3.y;
 						z = vec3.z;
 					}
-					ChannelHandler.network.sendToServer(new PacketOverchargeKeyPressed(x, y, z));
+					NetworkHelper.network.sendToServer(new PacketOverchargeKeyPressed(x, y, z));
 				}
 			}
 		}
 
 		// Cloak toggle
 		if (IC2.keyboard.isModeSwitchKeyDown(mc.player) && !mc.gameSettings.keyBindAttack.isKeyDown())
-			ChannelHandler.network.sendToServer(new PacketCloakKeyPressed());
+			NetworkHelper.network.sendToServer(new PacketCloakKeyPressed());
 	}
 }

@@ -133,9 +133,4 @@ public class ItemArmorExoQuantum extends ItemArmorElectricUtility implements IMe
 		}
 		return result;
 	}
-
-	@Override
-	public void onFlyKeyPressed(EntityPlayer player, ItemStack stack) {
-		flyKeyPressed(player, stack);
-	}
 }

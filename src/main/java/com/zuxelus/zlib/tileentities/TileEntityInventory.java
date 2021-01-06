@@ -1,4 +1,4 @@
-package com.zuxelus.comboarmors.tileentities;
+package com.zuxelus.zlib.tileentities;
 
 import java.util.ArrayList;
 import java.util.List;

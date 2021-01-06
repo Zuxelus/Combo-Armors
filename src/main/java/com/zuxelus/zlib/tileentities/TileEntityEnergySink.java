@@ -1,6 +1,6 @@
-package com.zuxelus.comboarmors.tileentities;
+package com.zuxelus.zlib.tileentities;
 
-import com.zuxelus.comboarmors.containers.ISlotItemFilter;
+import com.zuxelus.zlib.containers.slots.ISlotItemFilter;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;

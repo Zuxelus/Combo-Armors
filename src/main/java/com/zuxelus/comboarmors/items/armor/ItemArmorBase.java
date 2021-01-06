@@ -100,22 +100,9 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	private static boolean tryChargeSolar(EntityPlayer player, int slot, double prod) {
-		if (player.inventory.armorItemInSlot(slot).isEmpty())
+		if (player.inventory.armorInventory.get(slot).isEmpty())
 			return false;
-		return ElectricItem.manager.charge(player.inventory.armorItemInSlot(slot), prod, Integer.MAX_VALUE, true, false) > 0;
-	}
-
-	protected void flyKeyPressed(EntityPlayer player, ItemStack stack) {
-		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
-		if (!nbt.hasKey("jetpack"))
-			nbt.setBoolean("jetpack", true);
-		nbt.setBoolean("jetpack", !nbt.getBoolean("jetpack"));
-		if (IC2.platform.isSimulating())
-			if (nbt.getBoolean("jetpack"))
-				player.sendMessage(new TextComponentTranslation("info.jetpack_enabled"));
-			else
-				player.sendMessage(new TextComponentTranslation("info.jetpack_disabled"));
-
+		return ElectricItem.manager.charge(player.inventory.armorInventory.get(slot), prod, Integer.MAX_VALUE, true, false) > 0;
 	}
 
 	protected static boolean doStatic(EntityPlayer player, ItemStack stack) {

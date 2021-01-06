@@ -1,6 +1,6 @@
-package com.zuxelus.comboarmors.network;
+package com.zuxelus.zlib.network;
 
-import com.zuxelus.comboarmors.tileentities.ITilePacketHandler;
+import com.zuxelus.zlib.tileentities.ITilePacketHandler;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;

@@ -62,7 +62,7 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (player.inventory.armorItemInSlot(2) != stack)
+		if (player.inventory.armorInventory.get(2) != stack)
 			return;
 		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
 		if (nbtData.getBoolean("isFlyActive"))
@@ -156,10 +156,5 @@ public class ItemArmorExoJet extends ItemArmorTankUtility implements IJetpack {
 		updateDamage(stack);
 
 		return true;
-	}
-
-	@Override
-	public void onFlyKeyPressed(EntityPlayer player, ItemStack stack) {
-		flyKeyPressed(player, stack);
 	}
 }

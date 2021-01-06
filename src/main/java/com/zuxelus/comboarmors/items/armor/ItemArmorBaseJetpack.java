@@ -29,7 +29,7 @@ public abstract class ItemArmorBaseJetpack extends ItemArmorElectricUtility impl
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		if (player.inventory.armorItemInSlot(2) != stack)
+		if (player.inventory.armorInventory.get(2) != stack)
 			return;
 
 		NBTTagCompound nbtData = ItemNBTHelper.getOrCreateNbtData(stack);
@@ -76,7 +76,7 @@ public abstract class ItemArmorBaseJetpack extends ItemArmorElectricUtility impl
 	}
 
 	private boolean useJetpack(EntityPlayer player, boolean hoverMode, boolean electric, boolean boost) {
-		ItemStack jetpack = player.inventory.armorItemInSlot(2);
+		ItemStack jetpack = player.inventory.armorInventory.get(2);
 
 		if (getCharge(jetpack) <= 0)
 			return false;
@@ -134,10 +134,5 @@ public abstract class ItemArmorBaseJetpack extends ItemArmorElectricUtility impl
 		IC2.platform.resetPlayerInAirTime(player);
 
 		return true;
-	}
-
-	@Override
-	public void onFlyKeyPressed(EntityPlayer player, ItemStack stack) {
-		flyKeyPressed(player, stack);
 	}
 }

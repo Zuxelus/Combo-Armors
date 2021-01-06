@@ -10,6 +10,7 @@ import com.zuxelus.comboarmors.items.armor.ItemArmorTankUtility;
 import com.zuxelus.comboarmors.recipes.ArmorAssemblerRecipes;
 import com.zuxelus.comboarmors.recipes.RecipeHandler;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
+import com.zuxelus.zlib.tileentities.TileEntityEnergySink;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.info.Info;
@@ -35,9 +36,9 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IT
 	public static final int SLOT_OUTPUT = 2;
 	public static final int SLOT_UPGRADE = 3;
 	public static final int SLOT_DISCHARGER = 4;
-	public static final int TIER = 2;
+	public static final int TIER = 3;
 	public static final int CAPACITY = 50000;
-	public static final int OUTPUT = 128;
+	public static final int OUTPUT = 512;
 	public static final int CONSUMPTION = 32;
 	public static final int TIMEFACTOR = 14;
 	private int production;

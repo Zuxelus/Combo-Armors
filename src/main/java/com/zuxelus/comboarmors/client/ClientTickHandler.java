@@ -1,7 +1,7 @@
 package com.zuxelus.comboarmors.client;
 
-import com.zuxelus.comboarmors.network.ChannelHandler;
 import com.zuxelus.comboarmors.network.PacketWorldLoad;
+import com.zuxelus.zlib.network.NetworkHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -23,7 +23,7 @@ public class ClientTickHandler {
 		if (event.phase == TickEvent.Phase.START && event.player.world != null && event.side == event.side.CLIENT)
 			if (firstLoad) {
 				firstLoad = false;
-				ChannelHandler.network.sendToServer(new PacketWorldLoad());
+				NetworkHelper.network.sendToServer(new PacketWorldLoad());
 			}
 	}
 

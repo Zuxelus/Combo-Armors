@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.tileentities.TileEntityArmorAssembler;
-import com.zuxelus.comboarmors.tileentities.TileEntityFacing;
-import com.zuxelus.comboarmors.tileentities.TileEntityInventory;
+import com.zuxelus.zlib.tileentities.TileEntityFacing;
+import com.zuxelus.zlib.tileentities.TileEntityInventory;
 
 import ic2.api.tile.IWrenchable;
 import ic2.core.item.tool.ItemToolWrench;

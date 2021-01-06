@@ -1,4 +1,4 @@
-package com.zuxelus.comboarmors.containers;
+package com.zuxelus.zlib.containers.slots;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
