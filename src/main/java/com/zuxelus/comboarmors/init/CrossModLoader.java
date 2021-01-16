@@ -20,7 +20,7 @@ public class CrossModLoader {
 	public static final int GREGTECH = 3;
 	private static final String[] modids = { "compactsolars", "advanced_solar_panels" };
 	private static boolean[] loaded = { false, false, false, false };
-	private static boolean[] integrateEnabled = { true, true, true, true };
+	private static boolean[] integrateEnabled = { false, false, false, false };
 
 	private static void integrateCompactSolars(Register<Item> event) {
 		ModItems.lvHat = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modids[0], "solar_hat_low_voltage"));
@@ -68,6 +68,8 @@ public class CrossModLoader {
 
 	public static void loadIntegrationModules(Register<Item> event) {
 		ComboArmors.logger.info("Loading Cross-Mod Integration Modules");
+		integrateEnabled[0] = ComboArmors.config.enableCSolars;
+		integrateEnabled[1] = ComboArmors.config.enableASolars;
 		int l = modids.length;
 		for (int i = 0; i < l; i++) {
 			String modid = modids[i];

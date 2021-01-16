@@ -354,6 +354,18 @@ public class RecipeHandler {
 					nbtout.setInteger("tier", outputItem.getDefaultTier() - out);
 					if (nbtout.getInteger("tier") < 1)
 						nbtout.setInteger("tier", 1);
+
+					int prod = nbtout.getInteger("solarProd");
+					prod += nbtin.getInteger("solarProd");
+					if (prod > ComboArmors.config.maxProdUpgrades)
+						prod = ComboArmors.config.maxProdUpgrades;
+					nbtout.setInteger("solarProd", prod);
+
+					prod = nbtout.getInteger("staticProd");
+					prod += nbtin.getInteger("staticProd");
+					if (prod > ComboArmors.config.maxProdUpgrades)
+						prod = ComboArmors.config.maxProdUpgrades;
+					nbtout.setInteger("staticProd", prod);
 					updateElectricDamageBars(output);
 				}
 				if (ComboArmors.solars.contains(input.getUnlocalizedName()) && ComboArmors.solars.contains(output.getUnlocalizedName())) {

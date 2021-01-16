@@ -5,111 +5,94 @@ import java.io.File;
 import com.zuxelus.comboarmors.ComboArmors;
 
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigHandler {
 	public Configuration config;
 
-	public static int[] soPriority = new int[4];
-	public static int[] stPriority = new int[4];
-	public static int maxProdUpgrades;
-	public static int maxEnergyUpgrades;
-	public static int maxTransferUpgrades;
-	public static int nanoBowBoost;
-	public static int turbineEUAmount;
-	public static int jetpackEUAmount;
-	public static boolean craftSolarProd;
-	public static boolean craftStaticProd;
-	public static boolean craftFlightTurbine;
-	public static boolean craftCloakingModule;
-	public static boolean craftDischargeModule;
-	public static boolean craftCellModule;
-	public static boolean craftEnergyMk2;
-	public static boolean craftEnergyMk3;
-	public static boolean useEnergyMk1;
-	public static boolean useOverclocker;
-	public static boolean useTransformer;
-	public static boolean craftNanoBow;
-	public static boolean rapidFireMode;
-	public static boolean spreadMode;
-	public static boolean sniperMode;
-	public static boolean flameMode;
-	public static boolean explosiveMode;
+	public boolean enableCSolars;
+	public boolean enableASolars;
+	public int[] soPriority = new int[4];
+	public int[] stPriority = new int[4];
+	public int maxProdUpgrades;
+	public int maxEnergyUpgrades;
+	public int maxTransferUpgrades;
+	public int nanoBowBoost;
+	public int turbineEUAmount;
+	public int jetpackEUAmount;
+	public boolean craftSolarProd;
+	public boolean craftStaticProd;
+	public boolean craftFlightTurbine;
+	public boolean craftCloakingModule;
+	public boolean craftDischargeModule;
+	public boolean craftCellModule;
+	public boolean craftEnergyMk2;
+	public boolean craftEnergyMk3;
+	public boolean useEnergyMk1;
+	public boolean useOverclocker;
+	public boolean useTransformer;
+	public boolean craftNanoBow;
+	public boolean rapidFireMode;
+	public boolean spreadMode;
+	public boolean sniperMode;
+	public boolean flameMode;
+	public boolean explosiveMode;
 
 	public void init(File configFile) {
 		if (config == null)
 			config = new Configuration(configFile);
-		
-		loadConfiguration();
+		loadConfig();
 	}
 
-	private void loadConfiguration() {
+	private void loadConfig() {
 		final String CATEGORY_CROSSMOD = "cross-mod";
 		final String CATEGORY_GENERAL = Configuration.CATEGORY_GENERAL;
 		try {
-			Property enableCSolars = config.get(CATEGORY_CROSSMOD, "cs-enable", true);
-			enableCSolars.setComment("Disable Compact Solars integration, regardless of whether or not the mod is found.");
-			//ModIntegrationHandler.setIntegrationEnabled(0, enableCSolars.getBoolean(true));
+			enableCSolars = config.getBoolean("cs-enable", CATEGORY_CROSSMOD, true, "Disable Compact Solars integration, regardless of whether or not the mod is found.", "config.cs-enable");
+			enableASolars = config.getBoolean("asp-enable", CATEGORY_CROSSMOD, true, "Disabled Advanced Solar Panels integration, regardless of whether or not the mod is found.", "config.asp-enable");
 
-			Property enableASolars = config.get(CATEGORY_CROSSMOD, "asp-enable", true);
-			enableASolars.setComment("Disabled Advanced Solar Panels integration, regardless of whether or not the mod is found.");
-			//ModIntegrationHandler.setIntegrationEnabled(1, enableASolars.getBoolean(true));
+			String comment = "Set the charging priority for the Solar Helmets and Static Boots. Use numbers 0-3, where 0 is the boots. Default order: 2, 0, 1, 3";
+			soPriority[0] = config.getInt("solarPriority1", CATEGORY_GENERAL, 2, 0, 3, comment, "config.solarPriority1");
+			soPriority[1] = config.getInt("solarPriority2", CATEGORY_GENERAL, 0, 0, 3, "", "config.solarPriority2");
+			soPriority[2] = config.getInt("solarPriority3", CATEGORY_GENERAL, 1, 0, 3, "", "config.solarPriority3");
+			soPriority[3] = config.getInt("solarPriority4", CATEGORY_GENERAL, 3, 0, 3, "", "config.solarPriority4");
+			stPriority[0] = config.getInt("staticPriority1", CATEGORY_GENERAL, 2, 0, 3, "", "config.staticPriority1");
+			stPriority[1] = config.getInt("staticPriority2", CATEGORY_GENERAL, 0, 0, 3, "", "config.staticPriority2");
+			stPriority[2] = config.getInt("staticPriority3", CATEGORY_GENERAL, 1, 0, 3, "", "config.staticPriority3");
+			stPriority[3] = config.getInt("staticPriority4", CATEGORY_GENERAL, 3, 0, 3, "", "config.staticPriority4");
 
-			Property soPriority1Prop = config.get(CATEGORY_GENERAL, "solarPriority1", 2);
-			soPriority1Prop.setComment("Set the charging priority for the Solar Helmets and Static Boots. Use numbers 0-3, where 0 is the boots. Default order: 2, 0, 1, 3");
-			soPriority[0] = soPriority1Prop.getInt();
-			soPriority[1] = config.get(CATEGORY_GENERAL, "solarPriority2", 0).getInt();
-			soPriority[2] = config.get(CATEGORY_GENERAL, "solarPriority3", 1).getInt();
-			soPriority[3] = config.get(CATEGORY_GENERAL, "solarPriority4", 3).getInt();
-			stPriority[0] = config.get(CATEGORY_GENERAL, "staticPriority1", 2).getInt();
-			stPriority[1] = config.get(CATEGORY_GENERAL, "staticPriority2", 0).getInt();
-			stPriority[2] = config.get(CATEGORY_GENERAL, "staticPriority3", 1).getInt();
-			stPriority[3] = config.get(CATEGORY_GENERAL, "staticPriority4", 3).getInt();
+			turbineEUAmount = config.getInt("euUsageTurbine", CATEGORY_GENERAL, 10, 0, 10000, "", "config.euUsageTurbine");
+			jetpackEUAmount = config.getInt("euUsageJetpack", CATEGORY_GENERAL, 8, 0, 10000, "Change the EU Usage of Jetpacks and Turbines. Hover mode uses 25% less than the value below.", "config.euUsageJetpack");
+			maxProdUpgrades = config.getInt("maxProductionUpgrades", CATEGORY_GENERAL, 511, 0, 65530,
+					"Set the max number of Solar Production or Static Production upgrades to be installed in one item. Note that the max will be one more than the number you enter, as the default has 1. Default value: 511.",
+					"config.maxProductionUpgrades");
+			maxEnergyUpgrades = config.getInt("maxEnergyUpgrades", CATEGORY_GENERAL, 100000000, 0, Integer.MAX_VALUE, "Set the max Energy that an upgraded item can have. Default: 100,000,000", "config.maxEnergyUpgrades");
+			maxTransferUpgrades = config.getInt("maxTransferUpgrades", CATEGORY_GENERAL, 200000, 0, 10000000, "Set the max Transfer Limit that an upgraded item can have. Default: 200,000", "config.maxTransferUpgrades");
 
-			turbineEUAmount = config.get(CATEGORY_GENERAL, "euUsageTurbine", 10).getInt();
-			Property jetpackTurbine = config.get(CATEGORY_GENERAL, "euUsageJetpack", 8);
-			jetpackTurbine.setComment("Change the EU Usage of Jetpacks and Turbines. Hover mode uses 25% less than the value below.");
-			jetpackEUAmount = jetpackTurbine.getInt(8);
+			comment = "Enable whether or not the upgrades can be crafted. They can still be spawned in and used if you are an admin. Default: true.";
+			craftCellModule =  config.getBoolean("enableCraftingCellModule", CATEGORY_GENERAL, true, comment, "config.enableCraftingCellModule");
+			craftSolarProd = config.getBoolean("enableCraftingSolarProduction", CATEGORY_GENERAL, true, "", "config.enableCraftingSolarProduction");
+			craftStaticProd = config.getBoolean("enableCraftingStaticProduction", CATEGORY_GENERAL, true, "", "config.enableCraftingStaticProduction");
+			craftFlightTurbine = config.getBoolean("enableCraftingFlightTurbine", CATEGORY_GENERAL, true, "", "config.enableCraftingFlightTurbine");
+			craftCloakingModule = config.getBoolean("enableCraftingCloakingModule", CATEGORY_GENERAL, true, "", "config.enableCraftingCloakingModule");
+			craftDischargeModule = config.getBoolean("enableCraftingDischargeModule", CATEGORY_GENERAL, true, "", "config.enableCraftingDischargeModule");
+			craftEnergyMk2 = config.getBoolean("enableCraftingEnergyMk2", CATEGORY_GENERAL, true, "", "config.enableCraftingEnergyMk2");
+			craftEnergyMk3 = config.getBoolean("enableCraftingEnergyMk3", CATEGORY_GENERAL, true, "", "config.enableCraftingEnergyMk3");
+			craftNanoBow = config.getBoolean("enableCraftingNanoBow", CATEGORY_GENERAL, true, "", "config.enableCraftingNanoBow");
+			useEnergyMk1 = config.getBoolean("enableUseEnergyMk1", CATEGORY_GENERAL, true, "", "config.enableUseEnergyMk1");
+			useOverclocker = config.getBoolean("enableUseOverclocker", CATEGORY_GENERAL, true, "", "config.enableUseOverclocker");
+			useTransformer = config.getBoolean("enableUseTransformer", CATEGORY_GENERAL, true, "", "config.enableUseTransformer");
 
-			Property maxProdUpgradesProp = config.get(CATEGORY_GENERAL, "maxProductionUpgrades", 511);
-			maxProdUpgradesProp.setComment("Set the max number of Solar Production or Static Production upgrades to be installed in one item. Note that the max will be one more than the number you enter, as the default has 1. Default value: 511.");
-			maxProdUpgrades = maxProdUpgradesProp.getInt();
+			nanoBowBoost = config.getInt("nanoBowDamageBoost", CATEGORY_GENERAL, 0, 0, 10000,
+					"Boost the damage of the NanoBow, for use with things like Divine RPG. Each number adds 1 level of the Power enchantment.", "config.nanoBowDamageBoost");
 
-			Property maxEnergyUpgradesProp = config.get(CATEGORY_GENERAL, "maxEnergyUpgrades", 100000000);
-			maxEnergyUpgradesProp.setComment("Set the max Energy that an upgraded item can have. Default: 100,000,000");
-			maxEnergyUpgrades = maxEnergyUpgradesProp.getInt();
-			Property maxTransferUpgradesProp = config.get(CATEGORY_GENERAL, "maxTransferUpgrades", 200000);
-			maxTransferUpgradesProp.setComment("Set the max Transfer Limit that an upgraded item can have. Default: 200,000");
-			maxTransferUpgrades = maxTransferUpgradesProp.getInt();
-
-			Property enableCraftingCloak = config.get(CATEGORY_GENERAL, "enableCraftingCloakingModule", true);
-			enableCraftingCloak.setComment("Enable whether or not the upgrades can be crafted. They can still be spawned in and used if you are an admin. Default: all true.");
-			craftSolarProd = config.get(CATEGORY_GENERAL, "enableCraftingSolarProduction", true).getBoolean(true);
-			craftStaticProd = config.get(CATEGORY_GENERAL, "enableCraftingStaticProduction", true).getBoolean(true);
-			craftFlightTurbine = config.get(CATEGORY_GENERAL, "enableCraftingFlightTurbine", true).getBoolean(true);
-			craftCloakingModule = enableCraftingCloak.getBoolean(true);
-			craftDischargeModule = config.get(CATEGORY_GENERAL, "enableCraftingDischargeModule", true).getBoolean(true);
-			craftCellModule =  config.get(CATEGORY_GENERAL, "enableCraftingCellModule", true).getBoolean(true);
-			craftEnergyMk2 = config.get(CATEGORY_GENERAL, "enableCraftingEnergyMk2", true).getBoolean(true);
-			craftEnergyMk3 = config.get(CATEGORY_GENERAL, "enableCraftingEnergyMk3", true).getBoolean(true);
-			craftNanoBow = config.get(CATEGORY_GENERAL, "enableCraftingNanoBow", true).getBoolean(true);
-			useEnergyMk1 = config.get(CATEGORY_GENERAL, "enableUseEnergyMk1", true).getBoolean(true);
-			useOverclocker = config.get(CATEGORY_GENERAL, "enableUseOverclocker", true).getBoolean(true);
-			useTransformer = config.get(CATEGORY_GENERAL, "enableUseTransformer", true).getBoolean(true);
-
-			Property nanoboost = config.get(CATEGORY_GENERAL, "nanoBowDamageBoost", 0);
-			nanoboost.setComment("Boost the damage of the NanoBow, for use with things like Divine RPG. Each number adds 1 level of the Power enchantment.");
-			nanoBowBoost = nanoboost.getInt();
-
-			Property nanoBowMods = config.get(CATEGORY_GENERAL, "bowExplosiveMode", true);
-			nanoBowMods.setComment("Enabled NanoBow modes { \"Normal\", \"Rapid fire\", \"Spread\", \"Sniper\", \"Flame\", \"Explosive\" }");
-			explosiveMode = nanoBowMods.getBoolean(true);
-			flameMode = config.get(CATEGORY_GENERAL, "bowFlameMode", true).getBoolean(true);
-			rapidFireMode = config.get(CATEGORY_GENERAL, "bowRapidFireMode", true).getBoolean(true);
-			sniperMode = config.get(CATEGORY_GENERAL, "bowSniperMode", true).getBoolean(true);
-			spreadMode = config.get(CATEGORY_GENERAL, "bowSpreadMode", true).getBoolean(true);
+			comment = "Enabled NanoBow modes { \"Normal\", \"Rapid fire\", \"Spread\", \"Sniper\", \"Flame\", \"Explosive\" }";
+			explosiveMode = config.getBoolean("bowExplosiveMode", CATEGORY_GENERAL, true, comment, "config.bowExplosiveMode");
+			flameMode = config.getBoolean("bowFlameMode", CATEGORY_GENERAL, true, "", "config.bowFlameMode");
+			rapidFireMode = config.getBoolean("bowRapidFireMode", CATEGORY_GENERAL, true, "", "config.bowRapidFireMode");
+			sniperMode = config.getBoolean("bowSniperMode", CATEGORY_GENERAL, true, "", "config.bowSniperMode");
+			spreadMode = config.getBoolean("bowSpreadMode", CATEGORY_GENERAL, true, "", "config.bowSpreadMode");
 		} catch (Exception e) {
 			ComboArmors.logger.error("Mod has a problem loading it's configuration", e);
 		} finally {
@@ -121,6 +104,6 @@ public class ConfigHandler {
 	@SubscribeEvent
 	public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(ComboArmors.MODID))
-			loadConfiguration();
+			loadConfig();
 	}
 }
