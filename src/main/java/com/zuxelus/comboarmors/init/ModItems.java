@@ -5,6 +5,7 @@ import com.zuxelus.comboarmors.blocks.BlockArmorAssembler;
 import com.zuxelus.comboarmors.ic2.CrossIC2;
 import com.zuxelus.comboarmors.items.EnumUpgradeType;
 import com.zuxelus.comboarmors.items.ItemAssemblerUpgrade;
+import com.zuxelus.comboarmors.items.ItemExoFoamSprayer;
 import com.zuxelus.comboarmors.items.ItemIc2ca;
 import com.zuxelus.comboarmors.items.ItemNanoBow;
 import com.zuxelus.comboarmors.items.ItemUpgrade;
@@ -92,6 +93,7 @@ public class ModItems {
 	public static Item exoStatic;
 	public static Item exoJet;
 	public static Item exoCFPack;
+	public static Item exoFoamSprayer;
 	public static Item exoModule;
 	public static Item flightModule;
 	public static Item jetBooster;
@@ -145,6 +147,7 @@ public class ModItems {
 		exoStatic = register(event, new ItemArmorExoStatic(), "exo_static");
 		exoJet = register(event, new ItemArmorExoJet(), "exo_jet");
 		exoCFPack = register(event, new ItemArmorExoCFPack(), "exo_cfpack");
+		exoFoamSprayer = register(event, new ItemExoFoamSprayer(), "exo_foam_sprayer");
 
 		solarNanoHelm = register(event, new ItemHelmetNanoSolar(), "solar_nano_helm");
 		solarQuantumHelm = register(event, new ItemHelmetQuantumSolar(), "solar_quantum_helm");
@@ -219,6 +222,7 @@ public class ModItems {
 		registerItemModel(exoStatic, "exo_static");
 		registerItemModel(exoJet, "exo_jet");
 		registerItemModel(exoCFPack, "exo_cfpack");
+		registerItemModel(exoFoamSprayer, "exo_foam_sprayer");
 
 		registerItemModel(solarNanoHelm, "solar_nano_helm");
 		registerItemModel(solarQuantumHelm , "solar_quantum_helm");

@@ -15,6 +15,7 @@ import com.zuxelus.zlib.tileentities.TileEntityEnergySink;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -274,22 +275,19 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IT
 
 		RecipeHandler.onCrafting(output, this);
 
-		int charge = 0;
-		NBTTagCompound nbtout = ItemNBTHelper.getOrCreateNbtData(output);
-		NBTTagCompound nbtin1 = ItemNBTHelper.getOrCreateNbtData(input1);
-		NBTTagCompound nbtin2 = ItemNBTHelper.getOrCreateNbtData(input2);
-		charge += nbtin1.getInteger("charge");
-		charge += nbtin2.getInteger("charge");
-		if (charge > nbtout.getInteger("maxCharge"))
-			charge = nbtout.getInteger("maxCharge");
-		nbtout.setInteger("charge", charge);
-		RecipeHandler.updateElectricDamageBars(output);
+		if (output.getItem() instanceof IElectricItem) {
+			int charge = 0;
+			NBTTagCompound nbtout = ItemNBTHelper.getOrCreateNbtData(output);
+			NBTTagCompound nbtin1 = ItemNBTHelper.getOrCreateNbtData(input1);
+			NBTTagCompound nbtin2 = ItemNBTHelper.getOrCreateNbtData(input2);
+			charge += nbtin1.getInteger("charge");
+			charge += nbtin2.getInteger("charge");
+			if (charge > nbtout.getInteger("maxCharge"))
+				charge = nbtout.getInteger("maxCharge");
+			nbtout.setInteger("charge", charge);
+			RecipeHandler.updateElectricDamageBars(output);
+		}
 		setInventorySlotContents(SLOT_OUTPUT, output);
-		/*if (this.outputSlot.get() == null) {
-			this.outputSlot.add(output);
-		} else if (this.outputSlot.get().isItemEqual(output)) {
-			this.outputSlot.get().stackSize += output.stackSize;
-		}*/
 		input1.shrink(1);
 		if (input1.getCount() <= 0)
 			setInventorySlotContents(SLOT_INPUT1, ItemStack.EMPTY);

@@ -9,7 +9,8 @@
             "item": "comboarmors:exo_module"
         },
         "N": {
-            "item": "ic2:quantum_boots"
+            "item": "ic2:quantum_boots",
+            "data": 32767
         }
     },
     "result": {

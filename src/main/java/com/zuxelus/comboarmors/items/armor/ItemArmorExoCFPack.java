@@ -42,13 +42,10 @@ public class ItemArmorExoCFPack extends ItemArmorTankUtility {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if (!isInCreativeTab(tab))
 			return;
-		ItemStack stack = new ItemStack(ModItems.exoCFPack, 1);
+		ItemStack stack = new ItemStack(ModItems.exoCFPack);
 		fillTank(stack);
 		stack.setItemDamage(1);
 		items.add(stack);
-
-		stack = new ItemStack(ModItems.exoCFPack, 1);
-		stack.setItemDamage(getMaxDamage());
-		items.add(stack);
+		items.add(new ItemStack(ModItems.exoCFPack));
 	}
 }

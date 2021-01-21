@@ -15,7 +15,8 @@
             "ore": "circuitAdvanced"
         },
         "L": {
-            "item": "ic2:lapotron_crystal"
+            "item": "ic2:lapotron_crystal",
+            "data": 32767
         },
         "B": {
             "item": "comboarmors:jet_booster"

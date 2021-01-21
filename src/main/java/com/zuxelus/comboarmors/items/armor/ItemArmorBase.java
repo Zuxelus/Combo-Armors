@@ -134,7 +134,7 @@ public class ItemArmorBase extends ItemArmor {
 	}
 
 	private static boolean tryChargeStatic(NonNullList<ItemStack> armor, int slot, double distance, int prod) {
-		if (!armor.get(slot).isEmpty() || !(armor.get(slot).getItem() instanceof IElectricItem))
+		if (armor.get(slot).isEmpty() || !(armor.get(slot).getItem() instanceof IElectricItem))
 			return false;
 		return ElectricItem.manager.charge(armor.get(slot), Math.min(3, (int) distance / 5) + prod, Integer.MAX_VALUE, true, false) > 0;
 	}

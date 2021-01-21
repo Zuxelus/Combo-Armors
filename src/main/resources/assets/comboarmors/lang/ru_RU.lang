@@ -33,6 +33,7 @@ item.cell_module.name=Cell Module
 item.exo_jetpack.name=Улучшенный электрический реактивный ранец
 item.exo_jet.name=Jetpack
 item.exo_cfpack.name=CF Backpack
+item.exo_foam_sprayer.name=Распылитель строительной пены
 item.exo_batpack.name=Улучшенный аккумуляторный ранец
 item.exo_advbatpack.name=Улучшенный прод. аккумуляторный ранец
 item.exo_energypack.name=Улучшенный энергетический ранец

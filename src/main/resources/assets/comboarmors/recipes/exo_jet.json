@@ -10,7 +10,8 @@
             "item": "comboarmors:exo_module"
         },
         "B": {
-            "item": "ic2:jetpack"
+            "item": "ic2:jetpack",
+            "data": 32767
         }
     },
     "result": {

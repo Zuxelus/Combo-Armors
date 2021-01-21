@@ -3,8 +3,10 @@ package com.zuxelus.comboarmors.recipes;
 import com.zuxelus.comboarmors.ComboArmors;
 import com.zuxelus.comboarmors.init.ModItems;
 import com.zuxelus.comboarmors.items.IItemUpgradeable;
+import com.zuxelus.comboarmors.items.ItemExoFoamSprayer;
 import com.zuxelus.comboarmors.items.armor.IJetpack;
 import com.zuxelus.comboarmors.items.armor.ItemArmorTankUtility;
+import com.zuxelus.comboarmors.tileentities.TileEntityArmorAssembler;
 //import com.zuxelus.comboarmors.utils.ModIntegrationHandler;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 
@@ -196,6 +198,7 @@ public class RecipeHandler {
 
 	public void addCellRecipes(Item upgrade) {
 		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.exoCFPack, ModItems.exoCFPack, upgrade);
+		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.exoFoamSprayer, ModItems.exoFoamSprayer, upgrade);
 		ArmorAssemblerRecipes.addAssemblyRecipe(ModItems.exoJet, ModItems.exoJet, upgrade);
 	}
 
@@ -203,7 +206,7 @@ public class RecipeHandler {
 		if (output.isEmpty())
 			return;
 		Item item = output.getItem();
-		if (!(item instanceof IItemUpgradeable) && !(item instanceof ItemArmorTankUtility))
+		if (!(item instanceof IItemUpgradeable) && !(item instanceof ItemArmorTankUtility) && !(item instanceof ItemExoFoamSprayer))
 			return;
 
 		output.setTagCompound(null);
@@ -211,7 +214,7 @@ public class RecipeHandler {
 
 		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
 			ItemStack input = inventory.getStackInSlot(i);
-			if (!input.isEmpty()) {
+			if (!input.isEmpty() && (i == TileEntityArmorAssembler.SLOT_INPUT1 || i == TileEntityArmorAssembler.SLOT_INPUT2)) {
 				NBTTagCompound nbtin = ItemNBTHelper.getOrCreateNbtData(input);
 				if (input.getItem() == ModItems.flightModule && output.getItem() instanceof IJetpack)
 					nbtout.setBoolean("flight", true);
@@ -222,7 +225,7 @@ public class RecipeHandler {
 				if (input.getItem() == ModItems.solarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
 					prod += input.getCount();
-					input.setCount(0);
+					input.setCount(1);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
@@ -230,7 +233,7 @@ public class RecipeHandler {
 				if (ModItems.lvSolarModule != null && input.getItem() == ModItems.lvSolarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
 					prod += input.getCount() * 8;
-					input.setCount(0);
+					input.setCount(1);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
@@ -238,7 +241,7 @@ public class RecipeHandler {
 				if (ModItems.mvSolarModule != null && input.getItem() == ModItems.mvSolarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
 					prod += input.getCount() * 64;
-					input.setCount(0);
+					input.setCount(1);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
@@ -246,7 +249,7 @@ public class RecipeHandler {
 				if (ModItems.hvSolarModule != null && input.getItem() == ModItems.hvSolarModule && ComboArmors.solars.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("solarProd");
 					prod += input.getCount() * 512;
-					input.setCount(0);
+					input.setCount(1);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
@@ -254,18 +257,18 @@ public class RecipeHandler {
 				if (input.getItem() == ModItems.staticModule && ComboArmors.statics.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("staticProd");
 					prod += input.getCount();
-					input.setCount(0);
+					input.setCount(1);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("staticProd", prod);
 				}
-				if (input.getItem() == ModItems.cellModule && output.getItem() instanceof ItemArmorTankUtility) {
+				if (input.getItem() == ModItems.cellModule && (output.getItem() instanceof ItemArmorTankUtility || output.getItem() instanceof ItemExoFoamSprayer)) {
 					int prod = nbtout.getInteger("addCapacity");
-					prod += input.getCount();
-					input.setCount(0);
-					if (prod > ComboArmors.config.maxProdUpgrades)
-						prod = ComboArmors.config.maxProdUpgrades;
-					nbtout.setInteger("addCapacity", prod * 10000);
+					prod += input.getCount() * 10000;
+					input.setCount(1);
+					if (prod > ComboArmors.config.maxProdUpgrades * 10000)
+						prod = ComboArmors.config.maxProdUpgrades * 10000;
+					nbtout.setInteger("addCapacity", prod);
 				}
 				if (input.isItemEqual(ComboArmors.ic2.getItemStack("energyStorageUpgrade")) && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
 					IItemUpgradeable outputItem = (IItemUpgradeable) output.getItem();
@@ -273,7 +276,7 @@ public class RecipeHandler {
 					charge += input.getCount() * 10000;
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.setCount(0);
+					input.setCount(1);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 					updateElectricDamageBars(output);
@@ -284,7 +287,7 @@ public class RecipeHandler {
 					charge += input.getCount() * 100000;
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.setCount(0);
+					input.setCount(1);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 					updateElectricDamageBars(output);
@@ -295,7 +298,7 @@ public class RecipeHandler {
 					charge += input.getCount() * 1000000;
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.setCount(0);
+					input.setCount(1);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 					updateElectricDamageBars(output);
@@ -306,7 +309,7 @@ public class RecipeHandler {
 					transfer += input.getCount() * 100;
 					if (transfer > outputItem.getMaxUpgradeableTransfer())
 						transfer = outputItem.getMaxUpgradeableTransfer();
-					input.setCount(0);
+					input.setCount(1);
 					nbtout.setInteger("upgradedTransfer", transfer);
 					nbtout.setInteger("transferLimit", outputItem.getDefaultTransferLimit() + transfer);
 					updateElectricDamageBars(output);
@@ -317,15 +320,18 @@ public class RecipeHandler {
 					tier += input.getCount();
 					if (outputItem.getDefaultTier() - tier < 1)
 						tier = outputItem.getDefaultTier() - 1;
-					input.setCount(0);
+					input.shrink(tier - 1);
 					nbtout.setInteger("upgradedTier", tier);
 					nbtout.setInteger("tier", outputItem.getDefaultTier() - tier);
 					if (nbtout.getInteger("tier") < 1)
 						nbtout.setInteger("tier", 1);
 					updateElectricDamageBars(output);
 				}
-				if (input.getItem() instanceof ItemArmorTankUtility && output.getItem() instanceof ItemArmorTankUtility)
+				if ((input.getItem() instanceof ItemArmorTankUtility && output.getItem() instanceof ItemArmorTankUtility)
+						|| (input.getItem() instanceof ItemExoFoamSprayer && output.getItem() instanceof ItemExoFoamSprayer)) {
 					nbtout.setTag("Fluid", nbtin.getCompoundTag("Fluid"));
+					nbtout.setInteger("addCapacity", nbtin.getInteger("addCapacity"));
+				}
 				if (input.getItem() instanceof IElectricItem && input.getItem() instanceof IItemUpgradeable && output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
 					IItemUpgradeable outputItem = (IItemUpgradeable) output.getItem();
 
@@ -333,7 +339,6 @@ public class RecipeHandler {
 					charge += nbtin.getInteger("upgradedCharge");
 					if (charge > outputItem.getMaxUpgradeableCharge())
 						charge = outputItem.getMaxUpgradeableCharge();
-					input.setCount(0);
 					nbtout.setInteger("upgradedCharge", charge);
 					nbtout.setInteger("maxCharge", outputItem.getDefaultMaxCharge() + charge);
 
@@ -341,7 +346,6 @@ public class RecipeHandler {
 					transfer += nbtin.getInteger("upgradedTransfer");
 					if (transfer > outputItem.getMaxUpgradeableTransfer())
 						transfer = outputItem.getMaxUpgradeableTransfer();
-					input.setCount(0);
 					nbtout.setInteger("upgradedTransfer", transfer);
 					nbtout.setInteger("transferLimit", outputItem.getDefaultTransferLimit() + transfer);
 
@@ -349,23 +353,11 @@ public class RecipeHandler {
 					out += nbtin.getInteger("upgradedTier");
 					if (outputItem.getDefaultTier() - out < 1)
 						out = outputItem.getDefaultTier() - 1;
-					input.setCount(0);
 					nbtout.setInteger("upgradedTier", out);
 					nbtout.setInteger("tier", outputItem.getDefaultTier() - out);
 					if (nbtout.getInteger("tier") < 1)
 						nbtout.setInteger("tier", 1);
 
-					int prod = nbtout.getInteger("solarProd");
-					prod += nbtin.getInteger("solarProd");
-					if (prod > ComboArmors.config.maxProdUpgrades)
-						prod = ComboArmors.config.maxProdUpgrades;
-					nbtout.setInteger("solarProd", prod);
-
-					prod = nbtout.getInteger("staticProd");
-					prod += nbtin.getInteger("staticProd");
-					if (prod > ComboArmors.config.maxProdUpgrades)
-						prod = ComboArmors.config.maxProdUpgrades;
-					nbtout.setInteger("staticProd", prod);
 					updateElectricDamageBars(output);
 				}
 				if (ComboArmors.solars.contains(input.getUnlocalizedName()) && ComboArmors.solars.contains(output.getUnlocalizedName())) {
@@ -379,7 +371,6 @@ public class RecipeHandler {
 						else if (input.getItem() == ModItems.hvHat)
 							prod += 511;
 					}*/
-					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("solarProd", prod);
@@ -387,7 +378,6 @@ public class RecipeHandler {
 				if (ComboArmors.statics.contains(input.getUnlocalizedName()) && ComboArmors.statics.contains(output.getUnlocalizedName())) {
 					int prod = nbtout.getInteger("staticProd");
 					prod += nbtin.getInteger("staticProd");
-					input.setCount(0);
 					if (prod > ComboArmors.config.maxProdUpgrades)
 						prod = ComboArmors.config.maxProdUpgrades;
 					nbtout.setInteger("staticProd", prod);
@@ -404,39 +394,8 @@ public class RecipeHandler {
 		}
 	}
 
-	public static void updateElectricDamageBars(ItemStack itemstack)
-	{
+	public static void updateElectricDamageBars(ItemStack itemstack) {
 		if (itemstack.getItem() instanceof IElectricItem)
-		{
 			ElectricItem.manager.discharge(itemstack, 0, Integer.MAX_VALUE, true, false, false);
-			/*NBTTagCompound nbt = StackUtil.getOrCreateNbtData(itemstack);
-			if (nbt.getInteger("maxCharge") <= 0 && itemstack.getItem() instanceof IItemUpgradeable)
-			{
-				IItemUpgradeable item = (IItemUpgradeable)itemstack.getItem();
-				nbt.setInteger("maxCharge", item.getDefaultMaxCharge());
-			}
-			int maxcharge = nbt.getInteger("maxCharge");
-			int charge = nbt.getInteger("charge");
-			if (itemstack.getItem() instanceof IElectricItem)
-			{
-				if (itemstack.getMaxDamage() > 2)
-				{
-					long a = (long)(maxcharge - charge);
-					long b = (long)(a * (itemstack.getMaxDamage() - 2));
-					long c = (long)(b / maxcharge);
-					int d = (int)c;
-					int p = d + 1;
-					itemstack.setItemDamage(p);
-				}
-				else
-				{
-					itemstack.setItemDamage(0);
-				}
-			}
-			else
-			{
-				itemstack.setItemDamage(0);
-			}*/
-		}
 	}
 }

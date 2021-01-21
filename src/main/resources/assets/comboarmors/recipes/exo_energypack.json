@@ -10,7 +10,8 @@
             "item": "comboarmors:exo_module"
         },
         "L": {
-            "item": "ic2:energy_pack"
+            "item": "ic2:energy_pack",
+            "data": 32767
         }
     },
     "result": {

@@ -10,7 +10,8 @@
             "item": "comboarmors:exo_module"
         },
         "N": {
-            "item": "ic2:quantum_chestplate"
+            "item": "ic2:quantum_chestplate",
+            "data": 32767
         }
     },
     "result": {

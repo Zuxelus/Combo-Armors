@@ -2,19 +2,19 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "EBE",
-        "EEE",
-        "EEE"
+        "E E"
     ],
     "key": {
         "E": {
             "item": "comboarmors:exo_module"
         },
         "B": {
-            "item": "ic2:cf_pack",
-            "data": 32767
+            "type": "minecraft:item_nbt",
+            "item": "ic2:foam_sprayer",
+            "data": 0
         }
     },
     "result": {
-        "item": "comboarmors:exo_cfpack"
+        "item": "comboarmors:exo_foam_sprayer"
     }
 }

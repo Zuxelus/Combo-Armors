@@ -33,6 +33,7 @@ item.cell_module.name=Cell Module
 item.exo_jetpack.name=Electric Jetpack
 item.exo_jet.name=Jetpack
 item.exo_cfpack.name=CF Backpack
+item.exo_foam_sprayer.name=CF Sprayer
 item.exo_batpack.name=Batpack
 item.exo_advbatpack.name=AdvBatpack
 item.exo_energypack.name=Energypack

@@ -10,7 +10,8 @@
             "item": "comboarmors:exo_module"
         },
         "A": {
-            "item": "ic2:advanced_batpack"
+            "item": "ic2:advanced_batpack",
+            "data": 32767
         }
     },
     "result": {

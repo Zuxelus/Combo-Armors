@@ -9,6 +9,7 @@ import com.zuxelus.comboarmors.utils.ItemNBTHelper;
 import com.zuxelus.comboarmors.utils.TankFluidHandlerItemStack;
 
 import ic2.core.util.Util;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,9 +43,9 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
 		FluidStack fs = FluidUtil.getFluidContained(stack);
 		if (fs != null)
-			tooltip.add("< " + FluidRegistry.getFluidName(fs) + ", " + fs.amount + "/" + getCapacity(stack) + " mB >");
+			tooltip.add("< " + fs.getLocalizedName() + ", " + fs.amount + "/" + getCapacity(stack) + " mB >");
 		else
-			tooltip.add("< 0/" + getCapacity(stack) + " mB >");
+			tooltip.add(I18n.format("ic2.item.FluidContainer.Empty"));
 	}
 
 	// ISpecialArmor
@@ -90,57 +91,7 @@ public abstract class ItemArmorTankUtility extends ItemArmorBase implements ISpe
 		return capacity;
 	}
 
-	/*public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
-		if (stack.stackSize != 1)
-			return 0;
-		if (resource == null)
-			return 0;
-		if (resource.getFluid() != allowfluid)
-			return 0;
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
-		NBTTagCompound fluidTag = tag.getCompoundTag("Fluid");
-
-		FluidStack fs = FluidStack.loadFluidStackFromNBT(fluidTag);
-		if (fs == null)
-			fs = new FluidStack(resource, 0);
-		if (!fs.isFluidEqual(resource))
-			return 0;
-		int amount = Math.min(getCapacity(stack) - fs.amount, resource.amount);
-		if (doFill && amount > 0) {
-			fs.amount += amount;
-			fs.writeToNBT(fluidTag);
-			tag.setTag("Fluid", fluidTag);
-		}
-		updateDamage(stack);
-		return amount;
-	}
-
-	public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
-		if (stack.stackSize != 1)
-			return null;
-
-		NBTTagCompound tag = StackUtil.getOrCreateNbtData(stack);
-		NBTTagCompound fluidTag = tag.getCompoundTag("Fluid");
-		FluidStack fs = FluidStack.loadFluidStackFromNBT(fluidTag);
-		if (fs == null)
-			return null;
-
-		maxDrain = Math.min(fs.amount, maxDrain);
-		if (doDrain) {
-			fs.amount -= maxDrain;
-			if (fs.amount <= 0)
-				tag.removeTag("Fluid");
-			else {
-				fs.writeToNBT(fluidTag);
-				tag.setTag("Fluid", fluidTag);
-			}
-		}
-		updateDamage(stack);
-		return new FluidStack(fs, maxDrain);
-	}*/
-
 	public void updateDamage(ItemStack stack) {
-		stack.setItemDamage(stack.getMaxDamage() - 1
-				- (int) Util.map(getCharge(stack), getCapacity(stack), stack.getMaxDamage() - 2));
+		stack.setItemDamage(stack.getMaxDamage() - 1 - (int) Util.map(getCharge(stack), getCapacity(stack), stack.getMaxDamage() - 2));
 	}
 }

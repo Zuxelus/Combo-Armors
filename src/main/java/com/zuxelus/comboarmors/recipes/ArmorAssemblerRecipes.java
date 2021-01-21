@@ -3,9 +3,15 @@ package com.zuxelus.comboarmors.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.items.IItemUpgradeable;
+import com.zuxelus.comboarmors.utils.ItemNBTHelper;
+
+import ic2.api.item.IElectricItem;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ArmorAssemblerRecipes {
 
@@ -80,8 +86,24 @@ public class ArmorAssemblerRecipes {
 		if (input1.isEmpty() || input2.isEmpty())
 			return ItemStack.EMPTY;
 		for (Recipe recipe : recipes)
-			if (recipe.matches(input1, input2))
+			if (recipe.matches(input1, input2) && checkRecipe(input1, input2, recipe.output))
 				return recipe.output;
 		return ItemStack.EMPTY;
+	}
+
+	private static boolean checkRecipe(ItemStack input1, ItemStack input2, ItemStack output) {
+		if (output.getItem() instanceof IElectricItem && output.getItem() instanceof IItemUpgradeable) {
+			if (input1.isItemEqual(ComboArmors.ic2.getItemStack("transformerUpgrade")) && input2.getItem() instanceof IElectricItem && input2.getItem() instanceof IItemUpgradeable) {
+				NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(input2);
+				if (nbt.getInteger("tier") == 1)
+					return false;
+			}
+			if (input2.isItemEqual(ComboArmors.ic2.getItemStack("transformerUpgrade")) && input1.getItem() instanceof IElectricItem && input1.getItem() instanceof IItemUpgradeable) {
+				NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(input1);
+				if (nbt.getInteger("tier") == 1)
+					return false;
+			}
+		}
+		return true;
 	}
 }

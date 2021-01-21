@@ -10,7 +10,8 @@
             "item": "comboarmors:exo_module"
         },
         "N": {
-            "item": "ic2:quantum_leggings"
+            "item": "ic2:quantum_leggings",
+            "data": 32767
         }
     },
     "result": {

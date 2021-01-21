@@ -19,7 +19,7 @@
         },
         "P": {
             "item": "ic2:re_battery",
-            "data": 32768
+            "data": 32767
         }
     },
     "result": {
