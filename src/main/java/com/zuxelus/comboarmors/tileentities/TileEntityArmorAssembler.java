@@ -399,4 +399,28 @@ public class TileEntityArmorAssembler extends TileEntityEnergySink implements IT
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return oldState.getBlock() != newSate.getBlock();
 	}
+
+	// ISidedInventory
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+		if (side == EnumFacing.UP)
+			return new int[] { SLOT_INPUT1, SLOT_INPUT2 };
+		if (side == EnumFacing.DOWN)
+			return new int[] { SLOT_OUTPUT };
+		return super.getSlotsForFace(side);
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+		if (side == EnumFacing.UP)
+			return true;
+		return super.canInsertItem(slot, stack, side);
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
+		if (side == EnumFacing.DOWN)
+			return true;
+		return super.canExtractItem(slot, stack, side);
+	}
 }

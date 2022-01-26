@@ -3,11 +3,11 @@ package com.zuxelus.comboarmors.client;
 import org.lwjgl.input.Keyboard;
 
 import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.network.NetworkHelper;
 import com.zuxelus.comboarmors.network.PacketCloakKeyPressed;
 import com.zuxelus.comboarmors.network.PacketFlyKeyPressed;
 import com.zuxelus.comboarmors.network.PacketOverchargeKeyPressed;
 import com.zuxelus.comboarmors.utils.ItemNBTHelper;
-import com.zuxelus.zlib.network.NetworkHelper;
 
 import ic2.core.IC2;
 import net.minecraft.client.Minecraft;

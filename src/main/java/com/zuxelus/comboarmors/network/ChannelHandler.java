@@ -1,7 +1,6 @@
 package com.zuxelus.comboarmors.network;
 
 import com.zuxelus.comboarmors.ComboArmors;
-import com.zuxelus.zlib.network.NetworkHelper;
 import com.zuxelus.zlib.network.PacketTileEntity;
 
 public class ChannelHandler {

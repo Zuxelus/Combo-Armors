@@ -1,9 +1,5 @@
 package com.zuxelus.zlib.tileentities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,22 +11,32 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public abstract class TileEntityInventory extends TileEntityFacing implements ISidedInventory {
 	protected NonNullList<ItemStack> inventory;
+	private HashMap<EnumFacing, IItemHandler> itemHandlers = new HashMap<>();
 	protected String customName;
 
 	public TileEntityInventory(String name) {
 		customName = name;
-		inventory = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
+		inventory = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
 	}
 
 	@Override
 	protected void readProperties(NBTTagCompound tag) {
 		super.readProperties(tag);
 		NBTTagList list = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-		inventory = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
+		inventory = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound stackTag = list.getCompoundTagAt(i);
 			inventory.set(stackTag.getByte("Slot"), new ItemStack(stackTag));
@@ -97,8 +103,8 @@ public abstract class TileEntityInventory extends TileEntityFacing implements IS
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		inventory.set(slot, stack);
-		if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
-			stack.setCount(this.getInventoryStackLimit());
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
+			stack.setCount(getInventoryStackLimit());
 		markDirty();
 	}
 
@@ -109,7 +115,7 @@ public abstract class TileEntityInventory extends TileEntityFacing implements IS
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
-		return world.getTileEntity(this.pos) != this ? false : player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
+		return world.getTileEntity(this.pos) == this && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -136,6 +142,25 @@ public abstract class TileEntityInventory extends TileEntityFacing implements IS
 		inventory.clear();
 	}
 
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing side) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, side);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			IItemHandler handler = itemHandlers.get(side);
+			if (handler == null) {
+				handler = new SidedInvWrapper(this, side);
+				itemHandlers.put(side, handler);
+			}
+			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler);
+		}
+
+		return super.getCapability(capability, side);
+	}
+
 	public List<ItemStack> getDrops(int fortune) {
 		List<ItemStack> list = new ArrayList<>();
 		for (int i = 0; i < getSizeInventory(); i++) {
@@ -158,7 +183,7 @@ public abstract class TileEntityInventory extends TileEntityFacing implements IS
 					new ItemStack(stack.getItem(), stack.getCount(), stack.getItemDamage()));
 
 			if (stack.hasTagCompound())
-				entityItem.getItem().setTagCompound((NBTTagCompound) stack.getTagCompound().copy());
+				entityItem.getItem().setTagCompound(stack.getTagCompound().copy());
 
 			float factor = 0.05F;
 			entityItem.motionX = rand.nextGaussian() * factor;
@@ -172,7 +197,7 @@ public abstract class TileEntityInventory extends TileEntityFacing implements IS
 	// ISidedInventory
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
-		return null;
+		return new int[0];
 	}
 
 	@Override

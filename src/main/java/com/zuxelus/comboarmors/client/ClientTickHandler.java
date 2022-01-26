@@ -1,7 +1,7 @@
 package com.zuxelus.comboarmors.client;
 
+import com.zuxelus.comboarmors.network.NetworkHelper;
 import com.zuxelus.comboarmors.network.PacketWorldLoad;
-import com.zuxelus.zlib.network.NetworkHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderPlayerEvent;

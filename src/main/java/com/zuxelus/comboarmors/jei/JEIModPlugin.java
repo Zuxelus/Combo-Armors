@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.zuxelus.comboarmors.ComboArmors;
+import com.zuxelus.comboarmors.gui.GuiArmorAssembler;
 import com.zuxelus.comboarmors.init.ModItems;
 import com.zuxelus.comboarmors.recipes.ArmorAssemblerRecipes;
 import com.zuxelus.comboarmors.recipes.ArmorAssemblerRecipes.Recipe;
@@ -39,6 +40,7 @@ public class JEIModPlugin implements IModPlugin {
 		registry.addRecipes(ArmorAssemblerRecipes.getRecipeList(), ArmorAssemblerRecipeCategory.UID);
 		registry.handleRecipes(Recipe.class, recipe -> new ArmorAssemblerRecipeWrapper(recipe), ArmorAssemblerRecipeCategory.UID);
 		registry.addRecipeCatalyst(new ItemStack(ModItems.armorAssembler), ArmorAssemblerRecipeCategory.UID);
+		registry.addRecipeClickArea(GuiArmorAssembler.class, 79, 34, 22, 15, new String[] { ArmorAssemblerRecipeCategory.UID });
 	}
 
 	public class ArmorAssemblerRecipeCategory implements IRecipeCategory<ArmorAssemblerRecipeWrapper> {

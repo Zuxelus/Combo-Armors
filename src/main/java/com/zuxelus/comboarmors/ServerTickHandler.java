@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 public class ServerTickHandler {
 	public static List<EntityPlayer> cloakingList = new ArrayList<EntityPlayer>();
 	public static List<EntityPlayer> flyList = new ArrayList<EntityPlayer>();
-	
+
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
 		if (event.phase != TickEvent.Phase.START || event.side != event.side.SERVER)

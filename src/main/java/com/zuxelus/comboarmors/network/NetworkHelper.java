@@ -1,6 +1,8 @@
-package com.zuxelus.zlib.network;
+package com.zuxelus.comboarmors.network;
 
 import java.util.List;
+
+import com.zuxelus.zlib.network.PacketTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
