@@ -28,7 +28,7 @@ public class ServerTickHandler {
 		if (event.phase != TickEvent.Phase.START || event.side != event.side.SERVER)
 			return;
 
-		if (!(event.player instanceof EntityPlayer))
+		if (event.player == null)
 			return;
 		EntityPlayer player = (EntityPlayer) event.player;
 

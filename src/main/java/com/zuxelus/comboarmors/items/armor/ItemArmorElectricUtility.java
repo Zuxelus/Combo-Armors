@@ -72,6 +72,9 @@ public abstract class ItemArmorElectricUtility extends ItemArmorBase implements 
 	}
 
 	@Override
+	public void setDamage(ItemStack stack, int damage) { }
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		NBTTagCompound nbt = ItemNBTHelper.getOrCreateNbtData(stack);
